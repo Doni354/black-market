@@ -11,11 +11,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses = {
   primary:
-    "bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white shadow-sm",
+    "bg-red-600 hover:bg-red-500 active:bg-red-700 text-white shadow-sm shadow-red-950/30",
   secondary:
     "bg-zinc-800 hover:bg-zinc-700 active:bg-zinc-600 text-zinc-100 shadow-sm",
   danger:
-    "bg-red-600 hover:bg-red-700 active:bg-red-800 text-white shadow-sm",
+    "bg-red-700 hover:bg-red-600 active:bg-red-800 text-white shadow-sm",
   ghost:
     "bg-transparent hover:bg-zinc-800 active:bg-zinc-700 text-zinc-300",
   outline:
@@ -46,8 +46,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={cn(
-          "inline-flex items-center justify-center font-medium transition-colors",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950",
+          "inline-flex items-center justify-center font-medium transition-colors cursor-pointer",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950",
           "disabled:pointer-events-none disabled:opacity-50",
           variantClasses[variant],
           sizeClasses[size],

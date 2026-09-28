@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { ToastProvider } from "@/components/ui/Toast";
 import "./globals.css";
 
 const geist = Geist({
@@ -22,7 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={`${geist.variable} h-full antialiased`}>
-      <body className="h-full bg-zinc-950 text-zinc-100">{children}</body>
+      <body className="h-full bg-zinc-950 text-zinc-100">
+        <ToastProvider>{children}</ToastProvider>
+      </body>
     </html>
   );
 }

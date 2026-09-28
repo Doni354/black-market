@@ -1,18 +1,11 @@
 /**
- * Admin Layout — Server Component
+ * Admin Root Layout
  *
- * Verifies the session cookie server-side.
- * Redirects to login if not authenticated.
- * Passes user data to AdminShell for rendering.
+ * Defines metadata for all /admin routes.
+ * Authentication is enforced inside the (protected) route group.
  */
 
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth/session";
-import { AdminShell } from "@/components/layout/AdminShell";
 import type { Metadata } from "next";
-
-// Force dynamic rendering — admin pages require auth (runtime env vars)
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
@@ -23,16 +16,10 @@ export const metadata: Metadata = {
   robots: "noindex, nofollow",
 };
 
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    redirect("/admin/login");
-  }
-
-  return <AdminShell user={user}>{children}</AdminShell>;
+  return children;
 }

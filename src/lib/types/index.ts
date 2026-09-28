@@ -5,25 +5,29 @@
  * All monetary values are integers (Rupiah), never floats.
  */
 
-// Flexible Timestamp type — works with both firebase client SDK and firebase-admin
-// In practice, Firestore returns an object with toDate() method
-export type FirestoreTimestamp = {
-  toDate: () => Date;
-  seconds: number;
-  nanoseconds: number;
-};
+// Flexible Timestamp type — works with both firebase client SDK and firebase-admin,
+// as well as ISO date strings serialized across Next.js Server-to-Client boundaries.
+export type FirestoreTimestamp =
+  | {
+      toDate: () => Date;
+      seconds: number;
+      nanoseconds: number;
+    }
+  | string;
 
 // ============================================================
 // USER
 // ============================================================
 
 export type UserRole = "ADMIN" | "CASHIER";
+export type UserStatus = "ACTIVE" | "PENDING" | "REJECTED";
 
 export interface User {
   id: string;
   name: string;
   email: string;
   role: UserRole;
+  status: UserStatus;
   photoURL?: string;
   createdAt: FirestoreTimestamp;
   updatedAt: FirestoreTimestamp;
@@ -60,6 +64,9 @@ export interface Product {
   createdAt: FirestoreTimestamp;
   updatedAt: FirestoreTimestamp;
 }
+
+export type CreateProductInput = Omit<Product, "id" | "createdAt" | "updatedAt">;
+export type UpdateProductInput = Partial<CreateProductInput>;
 
 // ============================================================
 // ORDER
@@ -107,6 +114,10 @@ export interface Order {
   redemptionCode?: string;
   redemptionQrUrl?: string;
   notes?: string;
+  items?: OrderItem[];
+  proofUrl?: string;
+  redeemedAt?: FirestoreTimestamp;
+  redeemedBy?: string;
   createdBy: string;
   createdAt: FirestoreTimestamp;
   updatedAt: FirestoreTimestamp;

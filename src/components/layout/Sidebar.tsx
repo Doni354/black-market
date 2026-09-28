@@ -29,6 +29,14 @@ function PosIcon() {
     </svg>
   );
 }
+function QrIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 6.75h.008v.008H6.75V6.75zM6.75 16.5h.008v.008H6.75V16.5zM16.5 6.75h.008v.008H16.5V6.75zM13.5 13.5h3v3h-3v-3zM16.5 19.5h3v-3h-3v3zM19.5 13.5h.008v.008H19.5V13.5zM13.5 19.5h.008v.008H13.5V19.5z" />
+    </svg>
+  );
+}
 function OrdersIcon() {
   return (
     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -90,6 +98,7 @@ function LogoutIcon() {
 const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/admin/dashboard", icon: <DashboardIcon /> },
   { label: "POS / Kasir", href: "/admin/pos", icon: <PosIcon /> },
+  { label: "Redeem Tiket", href: "/admin/pos/redeem", icon: <QrIcon /> },
   { label: "Orders", href: "/admin/orders", icon: <OrdersIcon /> },
   { label: "Products", href: "/admin/products", icon: <ProductsIcon />, adminOnly: true },
   { label: "Inventory", href: "/admin/inventory", icon: <InventoryIcon />, adminOnly: true },
@@ -143,8 +152,8 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
       >
         {/* Logo */}
         <div className="flex h-16 items-center gap-3 border-b border-zinc-800 px-5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500">
-            <span className="text-sm font-black text-black">BM</span>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600 shadow-md shadow-red-950/40">
+            <span className="text-sm font-black text-white">BM</span>
           </div>
           <div>
             <h1 className="text-sm font-bold text-zinc-100">Black Market</h1>
@@ -165,11 +174,11 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                       isActive
-                        ? "bg-amber-500/10 text-amber-400"
+                        ? "bg-red-600/15 text-red-400 font-semibold"
                         : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
                     )}
                   >
-                    <span className={isActive ? "text-amber-400" : "text-zinc-500"}>
+                    <span className={isActive ? "text-red-400" : "text-zinc-500"}>
                       {item.icon}
                     </span>
                     {item.label}

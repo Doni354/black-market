@@ -17,7 +17,7 @@ interface BadgeProps {
 const variantClasses: Record<BadgeVariant, string> = {
   default: "bg-zinc-800 text-zinc-300 border-zinc-700",
   success: "bg-emerald-950 text-emerald-400 border-emerald-800",
-  warning: "bg-amber-950 text-amber-400 border-amber-800",
+  warning: "bg-yellow-950/70 text-yellow-400 border-yellow-800/60",
   danger: "bg-red-950 text-red-400 border-red-800",
   info: "bg-blue-950 text-blue-400 border-blue-800",
   muted: "bg-zinc-900 text-zinc-500 border-zinc-800",

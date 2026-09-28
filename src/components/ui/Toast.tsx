@@ -16,7 +16,7 @@ interface ToastProps {
 const variantClasses: Record<ToastVariant, string> = {
   success: "border-emerald-700 bg-emerald-950 text-emerald-300",
   error: "border-red-700 bg-red-950 text-red-300",
-  warning: "border-amber-700 bg-amber-950 text-amber-300",
+  warning: "border-yellow-700/80 bg-yellow-950/80 text-yellow-300",
   info: "border-blue-700 bg-blue-950 text-blue-300",
 };
 

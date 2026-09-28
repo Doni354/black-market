@@ -59,7 +59,14 @@ function getAdminApp(): App {
 // Lazy-initialized singletons — only call getAdminApp() when actually used
 export const adminDb: Firestore = new Proxy({} as Firestore, {
   get(_target, prop) {
-    if (!_db) _db = getFirestore(getAdminApp());
+    if (!_db) {
+      _db = getFirestore(getAdminApp());
+      try {
+        _db.settings({ ignoreUndefinedProperties: true });
+      } catch {
+        // Settings can only be called once before any other calls
+      }
+    }
     return (_db as unknown as Record<string | symbol, unknown>)[prop];
   },
 });

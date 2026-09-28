@@ -9,6 +9,7 @@ import { cookies } from "next/headers";
 import { adminAuth, adminDb } from "@/lib/firebase/admin";
 import type { User, UserRole } from "@/lib/types";
 import { SESSION_COOKIE_NAME, SESSION_EXPIRY_MS } from "./constants";
+import { serializeFirestoreData } from "@/lib/utils/serialization";
 
 // Re-export constants for convenience
 export { SESSION_COOKIE_NAME, SESSION_EXPIRY_MS } from "./constants";
@@ -45,6 +46,7 @@ export async function verifySession() {
 /**
  * Get the current authenticated user with their Firestore profile.
  * Returns null if not authenticated.
+ * All Timestamps are serialized to plain strings for safe Client Component passing.
  */
 export async function getCurrentUser(): Promise<User | null> {
   const session = await verifySession();
@@ -54,8 +56,28 @@ export async function getCurrentUser(): Promise<User | null> {
     const userDoc = await adminDb.collection("users").doc(session.uid).get();
     if (!userDoc.exists) return null;
 
-    return { id: userDoc.id, ...userDoc.data() } as User;
-  } catch {
+    const data = userDoc.data();
+    if (!data) return null;
+
+    // If user is not ACTIVE (e.g. PENDING or REJECTED), deny access to admin session
+    if (data.status && data.status !== "ACTIVE") {
+      return null;
+    }
+
+    const rawUser = {
+      id: userDoc.id,
+      name: data.name || session.name || session.email?.split("@")[0] || "User",
+      email: data.email || session.email || "",
+      role: data.role || "CASHIER",
+      status: data.status || "ACTIVE",
+      photoURL: data.photoURL || session.picture || undefined,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+    };
+
+    return serializeFirestoreData<User>(rawUser);
+  } catch (error) {
+    console.error("getCurrentUser error:", error);
     return null;
   }
 }
