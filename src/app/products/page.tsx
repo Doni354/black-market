@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getProducts } from "@/lib/db/products";
 import { HomeClient } from "@/components/home/HomeClient";
+import type { Product } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Katalog Produk | Black Market",
@@ -10,7 +11,12 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
-  const products = await getProducts({ isActive: true });
+  let products: Product[] = [];
+  try {
+    products = await getProducts({ isActive: true });
+  } catch (err) {
+    console.error("ProductsPage error loading products:", err);
+  }
 
   return <HomeClient products={products} />;
 }

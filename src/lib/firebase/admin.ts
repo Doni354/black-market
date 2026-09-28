@@ -25,6 +25,19 @@ let _app: App | null = null;
 let _db: Firestore | null = null;
 let _auth: Auth | null = null;
 
+function formatPrivateKey(key: string): string {
+  let formatted = key.trim();
+  // Strip surrounding quotes if copied with quotes
+  if (
+    (formatted.startsWith('"') && formatted.endsWith('"')) ||
+    (formatted.startsWith("'") && formatted.endsWith("'"))
+  ) {
+    formatted = formatted.slice(1, -1);
+  }
+  // Replace escaped \n with actual newlines
+  return formatted.replace(/\\n/g, "\n");
+}
+
 function getAdminApp(): App {
   if (_app) return _app;
 
@@ -48,8 +61,7 @@ function getAdminApp(): App {
     credential: cert({
       projectId,
       clientEmail,
-      // Replace escaped newlines that may come from env var formatting
-      privateKey: privateKey.replace(/\\n/g, "\n"),
+      privateKey: formatPrivateKey(privateKey),
     }),
   });
 

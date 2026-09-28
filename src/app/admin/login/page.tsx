@@ -13,7 +13,13 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function AdminLoginPage() {
-  const user = await getCurrentUser();
+  let user = null;
+  try {
+    user = await getCurrentUser();
+  } catch (err) {
+    console.error("AdminLoginPage error checking user:", err);
+  }
+
   if (user && user.status === "ACTIVE") {
     redirect("/admin/dashboard");
   }
