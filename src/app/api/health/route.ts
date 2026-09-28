@@ -49,9 +49,17 @@ export async function GET() {
     );
 
     const db = getFirestore(app);
-    // Ping firestore
+    // Ping firestore directly
     const testDoc = await db.collection("products").limit(1).get();
-    firebaseStatus = `CONNECTED (Found ${testDoc.size} products)`;
+    
+    // Also ping via adminDb and getProducts()
+    const { adminDb } = await import("@/lib/firebase/admin");
+    const adminDbDoc = await adminDb.collection("products").limit(1).get();
+
+    const { getProducts } = await import("@/lib/db/products");
+    const products = await getProducts();
+
+    firebaseStatus = `CONNECTED (Direct: ${testDoc.size}, AdminDb: ${adminDbDoc.size}, getProducts: ${products.length})`;
   } catch (err: unknown) {
     firebaseStatus = "FAILED";
     firebaseError = err instanceof Error ? `${err.name}: ${err.message}` : String(err);

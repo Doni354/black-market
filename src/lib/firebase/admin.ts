@@ -79,13 +79,15 @@ export const adminDb: Firestore = new Proxy({} as Firestore, {
         // Settings can only be called once before any other calls
       }
     }
-    return (_db as unknown as Record<string | symbol, unknown>)[prop];
+    const val = (_db as unknown as Record<string | symbol, unknown>)[prop];
+    return typeof val === "function" ? val.bind(_db) : val;
   },
 });
 
 export const adminAuth: Auth = new Proxy({} as Auth, {
   get(_target, prop) {
     if (!_auth) _auth = getAuth(getAdminApp());
-    return (_auth as unknown as Record<string | symbol, unknown>)[prop];
+    const val = (_auth as unknown as Record<string | symbol, unknown>)[prop];
+    return typeof val === "function" ? val.bind(_auth) : val;
   },
 });

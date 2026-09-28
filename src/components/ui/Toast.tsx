@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext, useContext, useCallback } from "react";
 import { cn } from "@/lib/utils/cn";
 
 export type ToastVariant = "success" | "error" | "warning" | "info";
@@ -65,8 +65,6 @@ function Toast({ id, message, variant = "info", duration = 4000, onRemove }: Toa
 }
 
 // Toast context and provider
-import { createContext, useContext, useCallback } from "react";
-
 interface ToastItem {
   id: string;
   message: string;
