@@ -1,8 +1,151 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ============================================================
+    // Helper functions
+    // ============================================================
+
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Get user document from Firestore
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    // Check if user has a specific role
+    function hasRole(role) {
+      return isAuthenticated() && getUserData().role == role;
+    }
+
+    // Check if user is ADMIN
+    function isAdmin() {
+      return hasRole('ADMIN');
+    }
+
+    // Check if user is CASHIER or ADMIN
+    function isStaff() {
+      return isAuthenticated() && (getUserData().role == 'ADMIN' || getUserData().role == 'CASHIER');
+    }
+
+    // ============================================================
+    // USERS collection
+    // ============================================================
+    match /users/{userId} {
+      // Staff can read their own profile; admin can read all
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      // Only admin can write user documents (role management)
+      allow write: if isAdmin();
+    }
+
+    // ============================================================
+    // PRODUCTS collection
+    // ============================================================
+    match /products/{productId} {
+      // Public read for active products (catalog)
+      allow read: if resource.data.isActive == true;
+      // Staff can read all products (including inactive)
+      allow read: if isStaff();
+      // Only admin can write products
+      allow write: if isAdmin();
+    }
+
+    // ============================================================
+    // ORDERS collection + subcollections
+    // ============================================================
+    match /orders/{orderId} {
+      // Staff can read all orders
+      allow read: if isStaff();
+      // Public can read their own order by orderNumber (for order status page)
+      // This is handled server-side via Admin SDK — client access is limited
+      allow read: if false; // Override: always use Admin SDK for public order lookup
+
+      // Staff (cashier) can create orders (POS, pre-order management)
+      allow create: if isStaff();
+      // Staff can update orders (status changes)
+      allow update: if isStaff();
+      // Only admin can delete orders
+      allow delete: if isAdmin();
+
+      // Order items subcollection
+      match /items/{itemId} {
+        allow read: if isStaff();
+        allow write: if isStaff();
+      }
+    }
+
+    // ============================================================
+    // PAYMENTS collection
+    // ============================================================
+    match /payments/{paymentId} {
+      allow read: if isStaff();
+      // Staff can create payment records
+      allow create: if isStaff();
+      // Only admin can update/verify payments
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ============================================================
+    // INVENTORY MOVEMENTS collection
+    // ============================================================
+    match /inventoryMovements/{movementId} {
+      allow read: if isStaff();
+      // Movements are created by server-side (Admin SDK) only
+      // Allowing staff create for direct stock adjustments
+      allow create: if isStaff();
+      // Movements should be immutable — no updates/deletes
+      allow update, delete: if isAdmin();
+    }
+
+    // ============================================================
+    // EXPENSES collection
+    // ============================================================
+    match /expenses/{expenseId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ============================================================
+    // CUSTOMERS collection
+    // ============================================================
+    match /customers/{customerId} {
+      allow read: if isStaff();
+      allow write: if isStaff();
+    }
+
+    // ============================================================
+    // REDEMPTIONS collection
+    // ============================================================
+    match /redemptions/{redemptionId} {
+      allow read: if isStaff();
+      // Redemptions are created/updated server-side (atomic)
+      // Staff can read for display purposes
+      allow create: if isStaff();
+      // Updates must be atomic — use Admin SDK in server actions
+      allow update: if isStaff();
+      allow delete: if isAdmin();
+    }
+
+    // ============================================================
+    // SETTINGS collection
+    // ============================================================
+    match /settings/{settingId} {
+      allow read: if isStaff();
+      allow write: if isAdmin();
+    }
+
+    // ============================================================
+    // DEFAULT: deny all unmatched paths
+    // ============================================================
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 }
