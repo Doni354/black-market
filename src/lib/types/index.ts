@@ -290,7 +290,8 @@ export interface CustomMerchRequest {
   customerName: string;
   customerPhone: string;
   customerEmail?: string;
-  merchType: CustomMerchType;
+  merchType: CustomMerchType; // primary / backward compatibility
+  merchTypes?: CustomMerchType[]; // array of selected types (multi-select)
   quantity: number;
   designUrl?: string;
   notes?: string;

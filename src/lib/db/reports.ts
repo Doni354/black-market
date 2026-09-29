@@ -61,8 +61,9 @@ export interface ReportSummary {
   totalStockUnits: number;
   totalStockAssetValue: number;
   lowStockProducts: Array<{ id: string; name: string; stock: number }>;
-  // Recent transactions in period
+  // Complete transactions in period for audit dossier
   orders: Order[];
+  allPeriodOrders: Order[];
   expenses: Expense[];
 }
 
@@ -145,18 +146,8 @@ export async function getReportData(filters?: ReportFilters): Promise<ReportSumm
     serializeFirestoreData<Product>({ id: doc.id, ...doc.data() })
   );
 
-  // Filter orders by date range and paid status
-  const validOrders = allOrders.filter((order) => {
-    // Only count orders that have been paid or completed
-    const isPaid =
-      order.paymentStatus === "PAID" ||
-      order.status === "PAID" ||
-      order.status === "READY_FOR_REDEMPTION" ||
-      order.status === "REDEEMED" ||
-      order.status === "COMPLETED";
-
-    if (!isPaid) return false;
-
+  // Filter orders by date range
+  const allPeriodOrders = allOrders.filter((order) => {
     const orderDate = toDate(order.createdAt);
     if (!orderDate) return true;
 
@@ -164,6 +155,18 @@ export async function getReportData(filters?: ReportFilters): Promise<ReportSumm
     if (endBoundary && orderDate > endBoundary) return false;
 
     return true;
+  });
+
+  // Filter orders by paid or completed status for sales & revenue calculation
+  const validOrders = allPeriodOrders.filter((order) => {
+    const isPaid =
+      order.paymentStatus === "PAID" ||
+      order.status === "PAID" ||
+      order.status === "READY_FOR_REDEMPTION" ||
+      order.status === "REDEEMED" ||
+      order.status === "COMPLETED";
+
+    return isPaid;
   });
 
   // Filter expenses by date range
@@ -336,7 +339,8 @@ export async function getReportData(filters?: ReportFilters): Promise<ReportSumm
     totalStockUnits,
     totalStockAssetValue,
     lowStockProducts,
-    orders: validOrders.slice(0, 50),
-    expenses: validExpenses.slice(0, 50),
+    orders: validOrders,
+    allPeriodOrders: allPeriodOrders,
+    expenses: validExpenses,
   };
 }

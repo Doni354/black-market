@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Badge, getOrderStatusVariant, getPaymentStatusVariant } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
@@ -212,6 +213,14 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
             <option value="POS">POS (Langsung)</option>
             <option value="ONLINE">Online (Pre-Order)</option>
           </select>
+
+          <Link
+            href="/admin/reports"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 text-xs font-semibold whitespace-nowrap transition cursor-pointer"
+          >
+            <span>📑</span>
+            <span>Buku Audit & Bukti</span>
+          </Link>
 
           <Button
             type="button"

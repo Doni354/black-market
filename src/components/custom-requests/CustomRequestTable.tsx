@@ -209,7 +209,11 @@ export function CustomRequestTable({ initialRequests }: CustomRequestTableProps)
                       <p className="font-semibold text-zinc-100">{req.customerName}</p>
                       <a
                         href={`https://wa.me/${req.customerPhone.replace(/[^0-9]/g, "").replace(/^0/, "62")}?text=${encodeURIComponent(
-                          `Halo kak ${req.customerName}, kami dari Black Market mengenai Request Custom Merch #${req.requestNumber} (${req.merchType})...`
+                          `Halo kak ${req.customerName}, kami dari Black Market mengenai Request Custom Merch #${req.requestNumber} (${(
+                            req.merchTypes && req.merchTypes.length > 0
+                              ? req.merchTypes
+                              : [req.merchType]
+                          ).join(", ")})...`
                         )}`}
                         target="_blank"
                         rel="noreferrer"
@@ -219,7 +223,14 @@ export function CustomRequestTable({ initialRequests }: CustomRequestTableProps)
                       </a>
                     </td>
                     <td className="py-3.5 px-4">
-                      {getMerchBadge(req.merchType)}
+                      <div className="flex flex-wrap gap-1">
+                        {(req.merchTypes && req.merchTypes.length > 0
+                          ? req.merchTypes
+                          : [req.merchType]
+                        ).map((t) => (
+                          <span key={t}>{getMerchBadge(t)}</span>
+                        ))}
+                      </div>
                       {req.notes && (
                         <p className="text-[11px] text-zinc-400 mt-1 max-w-xs truncate" title={req.notes}>
                           {req.notes}
@@ -334,7 +345,15 @@ export function CustomRequestTable({ initialRequests }: CustomRequestTableProps)
           <form onSubmit={handleConvertSubmit} className="space-y-4">
             <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-xs space-y-1">
               <p className="text-zinc-400">Pemesan: <strong className="text-white">{convertingRequest.customerName}</strong></p>
-              <p className="text-zinc-400">Jenis: <strong className="text-white">{convertingRequest.merchType}</strong></p>
+              <p className="text-zinc-400">
+                Jenis:{" "}
+                <strong className="text-white">
+                  {(convertingRequest.merchTypes && convertingRequest.merchTypes.length > 0
+                    ? convertingRequest.merchTypes
+                    : [convertingRequest.merchType]
+                  ).join(", ")}
+                </strong>
+              </p>
               <p className="text-zinc-400">Jumlah: <strong className="text-white">{convertingRequest.quantity} pcs</strong></p>
             </div>
 

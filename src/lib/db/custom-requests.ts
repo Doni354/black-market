@@ -13,7 +13,8 @@ export interface CreateCustomRequestInput {
   customerName: string;
   customerPhone: string;
   customerEmail?: string;
-  merchType: CustomMerchType;
+  merchType?: CustomMerchType;
+  merchTypes?: CustomMerchType[];
   quantity: number;
   designUrl?: string;
   notes?: string;
@@ -29,7 +30,7 @@ function generateRequestNumber(): string {
 }
 
 /**
- * Public: Customer submits a custom merch design request
+ * Public: Customer submits a custom merch design request (supports multiple merchandise types)
  */
 export async function createCustomRequest(
   input: CreateCustomRequestInput
@@ -39,7 +40,17 @@ export async function createCustomRequest(
 
   if (!cleanName) throw new Error("Nama pemesan wajib diisi.");
   if (!cleanPhone) throw new Error("Nomor WhatsApp wajib diisi.");
-  if (!input.merchType) throw new Error("Jenis merchandise wajib dipilih.");
+
+  const chosenTypes: CustomMerchType[] =
+    input.merchTypes && input.merchTypes.length > 0
+      ? input.merchTypes
+      : input.merchType
+      ? [input.merchType]
+      : [];
+
+  if (chosenTypes.length === 0) {
+    throw new Error("Pilih minimal satu jenis merchandise.");
+  }
 
   const requestNumber = generateRequestNumber();
   const requestRef = adminDb.collection("customMerchRequests").doc();
@@ -48,7 +59,8 @@ export async function createCustomRequest(
     requestNumber,
     customerName: cleanName,
     customerPhone: cleanPhone,
-    merchType: input.merchType,
+    merchType: chosenTypes[0],
+    merchTypes: chosenTypes,
     quantity: Math.max(1, Number(input.quantity) || 1),
     status: "PENDING" as CustomRequestStatus,
     createdAt: FieldValue.serverTimestamp(),
@@ -142,12 +154,18 @@ export async function convertCustomRequestToPreOrder(
 
   // 1. Create a specialized product or order item for this custom merch
   const merchLabels: Record<CustomMerchType, string> = {
-    PIN: "Custom Pin (Pin Peniti)",
-    STICKER: "Custom Sticker (Die-cut Vinyl)",
-    KEYCHAIN: "Custom Gantungan Kunci (Akrilik)",
+    PIN: "Pin Peniti",
+    STICKER: "Sticker Custom",
+    KEYCHAIN: "Gantungan Kunci",
   };
 
-  const productName = `${merchLabels[reqData.merchType] || "Custom Merch"} — ${reqData.customerName}`;
+  const types =
+    reqData.merchTypes && reqData.merchTypes.length > 0
+      ? reqData.merchTypes
+      : [reqData.merchType || "PIN"];
+
+  const typesTitle = types.map((t) => merchLabels[t] || t).join(" + ");
+  const productName = `Custom ${typesTitle} — ${reqData.customerName}`;
 
   // Find or create product doc for custom merch
   const prodRef = adminDb.collection("products").doc();
@@ -160,7 +178,7 @@ export async function convertCustomRequestToPreOrder(
     trackInventory: false,
     isActive: true,
     imageUrl: reqData.designUrl || null,
-    description: `Pesanan Custom ${reqData.merchType}: ${reqData.notes || "-"}`,
+    description: `Pesanan Custom ${typesTitle}: ${reqData.notes || "-"}`,
     createdAt: FieldValue.serverTimestamp(),
     updatedAt: FieldValue.serverTimestamp(),
   });

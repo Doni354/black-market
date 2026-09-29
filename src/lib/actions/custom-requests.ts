@@ -24,8 +24,10 @@ export async function submitCustomRequestAction(
     if (!input.customerPhone?.trim()) {
       return { success: false, message: "Nomor WhatsApp wajib diisi." };
     }
-    if (!input.merchType) {
-      return { success: false, message: "Pilih salah satu jenis merchandise (Pin, Sticker, atau Gantungan Kunci)." };
+    const hasType =
+      (input.merchTypes && input.merchTypes.length > 0) || Boolean(input.merchType);
+    if (!hasType) {
+      return { success: false, message: "Pilih minimal satu jenis merchandise (Pin, Sticker, atau Gantungan Kunci)." };
     }
 
     const result = await createCustomRequest(input);

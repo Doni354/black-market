@@ -17,7 +17,7 @@ interface CustomMerchModalProps {
 export function CustomMerchModal({ isOpen, onClose }: CustomMerchModalProps) {
   const { toast } = useToast();
 
-  const [merchType, setMerchType] = useState<CustomMerchType>("PIN");
+  const [selectedTypes, setSelectedTypes] = useState<CustomMerchType[]>(["PIN"]);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [quantity, setQuantity] = useState("5");
@@ -26,6 +26,20 @@ export function CustomMerchModal({ isOpen, onClose }: CustomMerchModalProps) {
   const [uploadingDesign, setUploadingDesign] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState<CustomMerchRequest | null>(null);
+
+  function toggleType(type: CustomMerchType) {
+    setSelectedTypes((prev) => {
+      if (prev.includes(type)) {
+        if (prev.length === 1) {
+          toast("Pilih minimal 1 jenis merchandise.", "warning");
+          return prev;
+        }
+        return prev.filter((t) => t !== type);
+      } else {
+        return [...prev, type];
+      }
+    });
+  }
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -79,12 +93,18 @@ export function CustomMerchModal({ isOpen, onClose }: CustomMerchModalProps) {
       return;
     }
 
+    if (selectedTypes.length === 0) {
+      toast("Pilih minimal 1 jenis merchandise.", "warning");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const res = await submitCustomRequestAction({
         customerName: customerName.trim(),
         customerPhone: customerPhone.trim(),
-        merchType,
+        merchType: selectedTypes[0],
+        merchTypes: selectedTypes,
         quantity: Math.max(1, Number(quantity) || 1),
         designUrl: designUrl || undefined,
         notes: notes.trim() || undefined,
@@ -110,6 +130,7 @@ export function CustomMerchModal({ isOpen, onClose }: CustomMerchModalProps) {
     setNotes("");
     setDesignUrl(null);
     setQuantity("5");
+    setSelectedTypes(["PIN"]);
     onClose();
   }
 
@@ -166,10 +187,29 @@ export function CustomMerchModal({ isOpen, onClose }: CustomMerchModalProps) {
             <span className="text-red-400 font-bold">{submittedData.requestNumber}</span>
           </div>
 
+          <div className="flex flex-wrap justify-center gap-1.5 pt-1">
+            {(submittedData.merchTypes && submittedData.merchTypes.length > 0
+              ? submittedData.merchTypes
+              : [submittedData.merchType]
+            ).map((t) => (
+              <span
+                key={t}
+                className="px-2.5 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-xs font-semibold text-zinc-200"
+              >
+                {merchOptions.find((o) => o.type === t)?.icon}{" "}
+                {merchOptions.find((o) => o.type === t)?.label || t}
+              </span>
+            ))}
+          </div>
+
           <div className="flex flex-col gap-2 pt-2">
             <a
               href={`https://wa.me/6281234567890?text=${encodeURIComponent(
-                `Halo Admin Black Market, saya sudah mengirim Request Custom Merch #${submittedData.requestNumber} (${submittedData.merchType}) atas nama ${submittedData.customerName}. Mohon info selanjutnya ya!`
+                `Halo Admin Black Market, saya sudah mengirim Request Custom Merch #${submittedData.requestNumber} (${(
+                  submittedData.merchTypes || [submittedData.merchType]
+                )
+                  .map((t) => merchOptions.find((o) => o.type === t)?.label || t)
+                  .join(" + ")}) atas nama ${submittedData.customerName}. Mohon info selanjutnya ya!`
               )}`}
               target="_blank"
               rel="noreferrer"
@@ -190,29 +230,50 @@ export function CustomMerchModal({ isOpen, onClose }: CustomMerchModalProps) {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Merch Type Selector */}
+          {/* Merch Type Selector (Multi-Select) */}
           <div>
-            <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5 block">
-              Pilih Jenis Merchandise
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              {merchOptions.map((opt) => (
-                <button
-                  key={opt.type}
-                  type="button"
-                  onClick={() => setMerchType(opt.type)}
-                  className={`p-2.5 rounded-xl border text-center transition cursor-pointer flex flex-col items-center gap-1 ${
-                    merchType === opt.type
-                      ? "bg-red-600/20 border-red-500 text-white shadow-sm shadow-red-500/10"
-                      : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700"
-                  }`}
-                >
-                  <span className="text-lg">{opt.icon}</span>
-                  <span className="text-xs font-bold leading-tight">{opt.label}</span>
-                  <span className="text-[9px] text-zinc-500 leading-tight">{opt.desc}</span>
-                </button>
-              ))}
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 block">
+                Pilih Jenis Merchandise
+              </label>
+              <span className="text-[10px] text-zinc-400 font-medium">
+                (Bisa dipilih lebih dari 1)
+              </span>
             </div>
+            <div className="grid grid-cols-3 gap-2">
+              {merchOptions.map((opt) => {
+                const isSelected = selectedTypes.includes(opt.type);
+                return (
+                  <button
+                    key={opt.type}
+                    type="button"
+                    onClick={() => toggleType(opt.type)}
+                    className={`relative p-2.5 rounded-xl border text-center transition cursor-pointer flex flex-col items-center gap-1 ${
+                      isSelected
+                        ? "bg-red-600/20 border-red-500 text-white shadow-sm shadow-red-500/10 ring-1 ring-red-500/50"
+                        : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700"
+                    }`}
+                  >
+                    {isSelected && (
+                      <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-red-600 text-white text-[10px] flex items-center justify-center font-bold">
+                        ✓
+                      </span>
+                    )}
+                    <span className="text-lg">{opt.icon}</span>
+                    <span className="text-xs font-bold leading-tight">{opt.label}</span>
+                    <span className="text-[9px] text-zinc-500 leading-tight">{opt.desc}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-[11px] text-zinc-400 mt-1.5 flex items-center gap-1">
+              <span>Terpilih ({selectedTypes.length}):</span>
+              <strong className="text-zinc-200">
+                {selectedTypes
+                  .map((t) => merchOptions.find((o) => o.type === t)?.label)
+                  .join(" + ")}
+              </strong>
+            </p>
           </div>
 
           {/* Customer Contacts */}
