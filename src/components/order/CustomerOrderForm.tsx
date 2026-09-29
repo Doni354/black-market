@@ -421,89 +421,115 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
               Metode Pembayaran
             </h2>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => setPaymentMethod("QRIS")}
-                className={`p-3 rounded-xl border text-xs font-bold transition flex flex-col items-center gap-1 ${
+                className={`p-3 rounded-xl border text-xs font-bold transition flex flex-col items-center gap-1 cursor-pointer ${
                   paymentMethod === "QRIS"
                     ? "bg-red-600/20 border-red-500 text-white"
                     : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700"
                 }`}
               >
-                <span>QRIS All Payment</span>
-                <span className="text-[10px] font-normal text-zinc-400">Gopay, OVO, Dana, Shopee</span>
+                <span>📱 QRIS</span>
+                <span className="text-[10px] font-normal text-zinc-400 text-center">E-Wallet / Bank</span>
               </button>
               <button
                 type="button"
                 onClick={() => setPaymentMethod("BANK_TRANSFER")}
-                className={`p-3 rounded-xl border text-xs font-bold transition flex flex-col items-center gap-1 ${
+                className={`p-3 rounded-xl border text-xs font-bold transition flex flex-col items-center gap-1 cursor-pointer ${
                   paymentMethod === "BANK_TRANSFER"
                     ? "bg-red-600/20 border-red-500 text-white"
                     : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700"
                 }`}
               >
-                <span>Transfer Bank</span>
-                <span className="text-[10px] font-normal text-zinc-400">BCA, Mandiri, BRI</span>
+                <span>🏦 Transfer</span>
+                <span className="text-[10px] font-normal text-zinc-400 text-center">BCA / Mandiri</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPaymentMethod("COD")}
+                className={`p-3 rounded-xl border text-xs font-bold transition flex flex-col items-center gap-1 cursor-pointer ${
+                  paymentMethod === "COD"
+                    ? "bg-red-600/20 border-red-500 text-white"
+                    : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700"
+                }`}
+              >
+                <span>💵 COD</span>
+                <span className="text-[10px] font-normal text-zinc-400 text-center">Bayar di Stand</span>
               </button>
             </div>
 
-            {/* Account destination instructions */}
-            <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3.5 space-y-2 text-xs">
-              <p className="font-semibold text-zinc-300">Rekening Tujuan:</p>
-              <div className="font-mono text-zinc-200 space-y-1">
-                <p>Bank: <strong className="text-white">BCA</strong></p>
-                <p>No. Rekening: <strong className="text-red-400">1234567890</strong></p>
-                <p>Atas Nama: <strong className="text-white">BLACK MARKET OFFICIAL</strong></p>
+            {/* Contextual payment instruction */}
+            {paymentMethod === "COD" ? (
+              <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5 space-y-1 text-xs text-amber-200">
+                <p className="font-bold flex items-center gap-1.5 text-amber-300">
+                  <span>💵</span> Bayar Tunai / QRIS Saat Pengambilan (COD)
+                </p>
+                <p className="text-[11px] text-amber-300/80 leading-relaxed">
+                  Pesanan Anda akan disiapkan lebih awal. Anda dapat melakukan pembayaran langsung di stan Market Day saat mengambil barang dengan menunjukkan Nomor Pesanan.
+                </p>
               </div>
-            </div>
-
-            {/* Bukti Transfer Upload */}
-            <div className="space-y-2">
-              <label className="block text-xs font-semibold text-zinc-300">
-                Unggah Bukti Transfer / Screenshot (Opsional)
-              </label>
-
-              {proofUrl ? (
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30">
-                  <Image
-                    src={proofUrl}
-                    alt="Bukti Transfer"
-                    width={48}
-                    height={48}
-                    className="w-12 h-12 rounded-lg object-cover border border-emerald-500/40"
-                  />
-                  <div className="flex-1 min-w-0 text-xs">
-                    <p className="font-semibold text-emerald-400">Bukti berhasil diunggah</p>
-                    <p className="text-[11px] text-zinc-400 truncate">Siap diverifikasi admin</p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setProofUrl(null)}
-                    className="text-xs text-red-400 hover:underline"
-                  >
-                    Ganti
-                  </button>
+            ) : (
+              /* Account destination instructions */
+              <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3.5 space-y-2 text-xs">
+                <p className="font-semibold text-zinc-300">Rekening Tujuan:</p>
+                <div className="font-mono text-zinc-200 space-y-1">
+                  <p>Bank: <strong className="text-white">BCA</strong></p>
+                  <p>No. Rekening: <strong className="text-red-400">1234567890</strong></p>
+                  <p>Atas Nama: <strong className="text-white">BLACK MARKET OFFICIAL</strong></p>
                 </div>
-              ) : (
-                <label className="flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-zinc-700 hover:border-zinc-500 bg-zinc-950 cursor-pointer transition">
-                  <svg className="w-6 h-6 text-zinc-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span className="text-xs text-zinc-300 font-semibold">
-                    {uploadingProof ? "Mengunggah..." : "Pilih Gambar Bukti Transfer"}
-                  </span>
-                  <span className="text-[11px] text-zinc-500 mt-0.5">JPG, PNG, atau Screenshot</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    disabled={uploadingProof}
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
+              </div>
+            )}
+
+            {/* Bukti Transfer Upload (Only for Transfer / QRIS) */}
+            {paymentMethod !== "COD" && (
+              <div className="space-y-2">
+                <label className="block text-xs font-semibold text-zinc-300">
+                  Unggah Bukti Transfer / Screenshot (Opsional)
                 </label>
-              )}
-            </div>
+
+                {proofUrl ? (
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30">
+                    <Image
+                      src={proofUrl}
+                      alt="Bukti Transfer"
+                      width={48}
+                      height={48}
+                      className="w-12 h-12 rounded-lg object-cover border border-emerald-500/40"
+                    />
+                    <div className="flex-1 min-w-0 text-xs">
+                      <p className="font-semibold text-emerald-400">Bukti berhasil diunggah</p>
+                      <p className="text-[11px] text-zinc-400 truncate">Siap diverifikasi admin</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setProofUrl(null)}
+                      className="text-xs text-red-400 hover:underline"
+                    >
+                      Ganti
+                    </button>
+                  </div>
+                ) : (
+                  <label className="flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-zinc-700 hover:border-zinc-500 bg-zinc-950 cursor-pointer transition">
+                    <svg className="w-6 h-6 text-zinc-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-xs text-zinc-300 font-semibold">
+                      {uploadingProof ? "Mengunggah..." : "Pilih Gambar Bukti Transfer"}
+                    </span>
+                    <span className="text-[11px] text-zinc-500 mt-0.5">JPG, PNG, atau Screenshot</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      disabled={uploadingProof}
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+              </div>
+            )}
 
             {/* Submit Button */}
             <button

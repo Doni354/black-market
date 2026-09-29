@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cloudinary } from "@/lib/cloudinary/config";
-import { getCurrentUser } from "@/lib/auth/session";
 import type { UploadApiResponse } from "cloudinary";
 
 export async function POST(request: NextRequest) {
   try {
-    // 1. Verify authentication
-    const user = await getCurrentUser();
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // 2. Read multipart form data
+    // 1. Read multipart form data (Public upload permitted for pre-order payment proofs and admin catalog)
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
     const folder = (formData.get("folder") as string) || "black-market/products";

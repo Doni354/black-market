@@ -265,19 +265,19 @@ export function CreatePreOrderModal({
           <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5 block">
             Rencana Metode Pembayaran
           </label>
-          <div className="grid grid-cols-3 gap-2">
-            {(["BANK_TRANSFER", "QRIS", "CASH"] as PaymentMethod[]).map((m) => (
+          <div className="grid grid-cols-4 gap-2">
+            {(["BANK_TRANSFER", "QRIS", "CASH", "COD"] as PaymentMethod[]).map((m) => (
               <button
                 key={m}
                 type="button"
                 onClick={() => setPaymentMethod(m)}
                 className={`rounded-lg border py-2 text-center text-xs font-semibold transition-all cursor-pointer ${
                   paymentMethod === m
-                    ? "border-red-600 bg-red-600/10 text-red-400"
+                    ? "border-red-600 bg-red-600/10 text-red-400 font-bold"
                     : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
                 }`}
               >
-                {m === "BANK_TRANSFER" ? "🏦 Transfer" : m === "QRIS" ? "📱 QRIS" : "💵 Tunai"}
+                {m === "BANK_TRANSFER" ? "🏦 Transfer" : m === "QRIS" ? "📱 QRIS" : m === "CASH" ? "💵 Tunai" : "🤝 COD"}
               </button>
             ))}
           </div>

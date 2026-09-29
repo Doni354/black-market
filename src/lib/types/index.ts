@@ -85,7 +85,7 @@ export type OrderStatus =
   | "CANCELLED";
 
 export type PaymentStatus = "UNPAID" | "PENDING" | "PAID" | "FAILED" | "REFUNDED";
-export type PaymentMethod = "CASH" | "QRIS" | "BANK_TRANSFER" | "OTHER";
+export type PaymentMethod = "CASH" | "QRIS" | "BANK_TRANSFER" | "COD" | "OTHER";
 
 export interface Order {
   id: string;

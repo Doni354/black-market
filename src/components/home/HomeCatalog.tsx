@@ -483,54 +483,76 @@ export function HomeCatalog({ products, onOpenTracker }: HomeCatalogProps) {
             <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5 block">
               Metode Pembayaran
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => setPaymentMethod("QRIS")}
-                className={`rounded-xl border py-2.5 px-3 text-center text-xs font-semibold transition-all cursor-pointer ${
+                className={`rounded-xl border py-2 px-2 text-center text-xs font-semibold transition-all cursor-pointer ${
                   paymentMethod === "QRIS"
-                    ? "border-red-600 bg-red-600/10 text-red-400"
+                    ? "border-red-600 bg-red-600/10 text-red-400 font-bold"
                     : "border-zinc-800 bg-zinc-900 text-zinc-400"
                 }`}
               >
-                📱 QRIS (Gopay/OVO/Dana/BCA)
+                📱 QRIS
               </button>
               <button
                 type="button"
                 onClick={() => setPaymentMethod("BANK_TRANSFER")}
-                className={`rounded-xl border py-2.5 px-3 text-center text-xs font-semibold transition-all cursor-pointer ${
+                className={`rounded-xl border py-2 px-2 text-center text-xs font-semibold transition-all cursor-pointer ${
                   paymentMethod === "BANK_TRANSFER"
-                    ? "border-red-600 bg-red-600/10 text-red-400"
+                    ? "border-red-600 bg-red-600/10 text-red-400 font-bold"
                     : "border-zinc-800 bg-zinc-900 text-zinc-400"
                 }`}
               >
-                🏦 Transfer Bank BCA/Mandiri
+                🏦 Transfer
+              </button>
+              <button
+                type="button"
+                onClick={() => setPaymentMethod("COD")}
+                className={`rounded-xl border py-2 px-2 text-center text-xs font-semibold transition-all cursor-pointer ${
+                  paymentMethod === "COD"
+                    ? "border-red-600 bg-red-600/10 text-red-400 font-bold"
+                    : "border-zinc-800 bg-zinc-900 text-zinc-400"
+                }`}
+              >
+                💵 COD
               </button>
             </div>
           </div>
 
-          {/* Optional Proof Upload */}
-          <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-3">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 block mb-1">
-              Upload Bukti Transfer (Opsional)
-            </span>
-            {proofUrl ? (
-              <div className="relative h-20 w-20 rounded-lg overflow-hidden border border-zinc-700">
-                <Image src={proofUrl} alt="Bukti transfer" fill className="object-cover" unoptimized />
-              </div>
-            ) : (
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                disabled={uploadingProof}
-                className="text-xs text-zinc-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-zinc-800 file:text-zinc-200 cursor-pointer"
-              />
-            )}
-            <p className="text-[10px] text-zinc-500 mt-1">
-              Jika belum transfer sekarang, Anda dapat melampirkannya nanti saat konfirmasi.
-            </p>
-          </div>
+          {/* Contextual Payment Instructions / Proof Upload */}
+          {paymentMethod === "COD" ? (
+            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
+              <p className="font-bold flex items-center gap-1.5 text-amber-300">
+                <span>💵</span> Bayar di Tempat (COD)
+              </p>
+              <p className="text-[11px] text-amber-300/80 mt-0.5 leading-relaxed">
+                Pesanan Anda akan langsung disiapkan. Bayar secara tunai atau QRIS saat mengambil pesanan di stan Market Day.
+              </p>
+            </div>
+          ) : (
+            <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-3">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 block mb-1">
+                Upload Bukti Transfer (Opsional)
+              </span>
+              {proofUrl ? (
+                <div className="relative h-20 w-20 rounded-lg overflow-hidden border border-zinc-700">
+                  <Image src={proofUrl} alt="Bukti transfer" fill className="object-cover" unoptimized />
+                </div>
+              ) : (
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  disabled={uploadingProof}
+                  className="text-xs text-zinc-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-zinc-800 file:text-zinc-200 cursor-pointer"
+                />
+              )}
+              <p className="text-[10px] text-zinc-500 mt-1">
+                Jika belum transfer sekarang, Anda dapat melampirkannya nanti saat konfirmasi.
+              </p>
+            </div>
+          )}
         </form>
       </Modal>
 
