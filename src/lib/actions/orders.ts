@@ -6,6 +6,7 @@ import {
   createPreOrder,
   verifyOrderPayment,
   cancelOrder,
+  updateOrderProof,
   type CreatePreOrderResult,
 } from "@/lib/db/orders";
 import type { ActionState, PaymentMethod, Order } from "@/lib/types";
@@ -20,6 +21,7 @@ export interface CreatePreOrderPayload {
   customerEmail?: string;
   paymentMethod: PaymentMethod;
   notes?: string;
+  pickupMethod?: "MARKET_DAY" | "FLEXIBLE";
   proofUrl?: string;
 }
 
@@ -243,4 +245,81 @@ export async function lookupCustomerOrderAction(
     };
   }
 }
+
+/**
+ * Public Action: Attach or update payment proof on an existing order.
+ * Used when a COD or Transfer customer submits/uploads a payment receipt on their ticket page.
+ */
+export async function uploadOrderProofAction(
+  orderId: string,
+  proofUrl: string
+): Promise<ActionState> {
+  try {
+    if (!orderId || !proofUrl) {
+      return { success: false, message: "ID pesanan dan bukti bayar wajib diisi." };
+    }
+
+    await updateOrderProof(orderId, proofUrl);
+
+    revalidatePath("/admin/orders");
+    revalidatePath("/admin/pos/redeem");
+
+    return {
+      success: true,
+      message: "Bukti pembayaran berhasil diunggah!",
+    };
+  } catch (error) {
+    console.error("uploadOrderProofAction error:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Gagal mengunggah bukti.",
+    };
+  }
+}
+
+/**
+ * Admin Action: Update production status for custom merch / pre-orders.
+ */
+export async function updateProductionStatusAction(
+  orderId: string,
+  productionStatus: "NOT_STARTED" | "IN_PRODUCTION" | "READY"
+): Promise<ActionState> {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { success: false, message: "Sesi telah berakhir. Silakan login kembali." };
+    }
+
+    const { adminDb } = await import("@/lib/firebase/admin");
+    const { FieldValue } = await import("firebase-admin/firestore");
+
+    const updateData: Record<string, unknown> = {
+      productionStatus,
+      updatedAt: FieldValue.serverTimestamp(),
+    };
+
+    if (productionStatus === "READY") {
+      updateData.readyForPickupAt = FieldValue.serverTimestamp();
+    }
+
+    await adminDb.collection("orders").doc(orderId).update(updateData);
+
+    revalidatePath("/admin/orders");
+    revalidatePath("/admin/dashboard");
+
+    return {
+      success: true,
+      message: `Status pengerjaan berhasil diperbarui menjadi ${
+        productionStatus === "READY" ? "Siap Diambil" : "Sedang Dikerjakan"
+      }.`,
+    };
+  } catch (error) {
+    console.error("updateProductionStatusAction error:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Gagal memperbarui status produksi.",
+    };
+  }
+}
+
 

@@ -4,6 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatRupiah } from "@/lib/utils/money";
+import { useToast } from "@/components/ui/Toast";
+import { uploadOrderProofAction } from "@/lib/actions/orders";
 import type { Order } from "@/lib/types";
 
 interface OrderTicketProps {
@@ -12,7 +14,45 @@ interface OrderTicketProps {
 }
 
 export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
+  const { toast } = useToast();
   const [copied, setCopied] = useState(false);
+  const [currentProofUrl, setCurrentProofUrl] = useState<string | null>(order.proofUrl || null);
+  const [uploadingProof, setUploadingProof] = useState(false);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast("Ukuran file maksimal 5MB.", "error");
+      return;
+    }
+
+    try {
+      setUploadingProof(true);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "black-market/proofs");
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Gagal mengunggah foto bukti.");
+      }
+
+      setCurrentProofUrl(data.url);
+      await uploadOrderProofAction(order.id, data.url);
+      toast("Bukti pembayaran berhasil diunggah!", "success");
+    } catch (err) {
+      toast(err instanceof Error ? err.message : "Gagal mengunggah foto.", "error");
+    } finally {
+      setUploadingProof(false);
+    }
+  }
 
   function handleCopyCode() {
     if (!order.redemptionCode) return;
@@ -25,6 +65,7 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
     window.print();
   }
 
+  const isCod = order.paymentMethod === "COD";
   const isReady = order.status === "READY_FOR_REDEMPTION";
   const isRedeemed = order.status === "REDEEMED";
   const isPending =
@@ -72,10 +113,10 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
         <div className="bg-gradient-to-r from-red-950 via-zinc-900 to-zinc-900 p-5 border-b border-zinc-800 text-center relative print:border-b-zinc-300 print:bg-none">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/20 border border-red-500/30 text-red-400 text-xs font-semibold mb-2 print:border-zinc-400 print:text-black">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse print:hidden" />
-            BLACK MARKET OFFICIAL TICKET
+            {isCod ? "BLACK MARKET OFFICIAL INVOICE" : "BLACK MARKET OFFICIAL TICKET"}
           </div>
           <h1 className="text-xl font-black tracking-wider text-zinc-100 uppercase print:text-black">
-            E-Ticket Penukaran
+            {isCod ? "Lembar Tagihan COD" : "E-Ticket Penukaran"}
           </h1>
           <p className="text-xs text-zinc-400 mt-1 font-mono print:text-zinc-700">
             #{order.orderNumber}
@@ -84,7 +125,29 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
 
         {/* Status Badge */}
         <div className="px-6 pt-5 pb-3">
-          {isReady && (
+          {/* COD Tagihan Active State */}
+          {isCod && !isRedeemed && !isCancelled && (
+            <div className="flex items-center justify-between p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0 text-amber-300 font-bold">
+                  <span>🤝</span>
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider">
+                    Tagihan Booking COD: {formatRupiah(order.total)}
+                  </p>
+                  <p className="text-[11px] text-amber-300/80">
+                    Barang disiapkan lebih awal. Bayar di stan saat pengambilan.
+                  </p>
+                </div>
+              </div>
+              <span className="text-[10px] bg-amber-500/20 px-2 py-0.5 rounded font-mono font-bold">
+                TAGIHAN
+              </span>
+            </div>
+          )}
+
+          {!isCod && isReady && (
             <div className="flex items-center justify-between p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 print:border-zinc-300 print:text-black">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 text-emerald-300 print:bg-zinc-100 print:text-black">
@@ -120,32 +183,20 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
             </div>
           )}
 
-          {isPending && (
+          {!isCod && isPending && (
             <div className="flex items-center justify-between p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0 text-amber-300">
-                  {order.paymentMethod === "COD" ? (
-                    <span className="text-sm font-bold">💵</span>
-                  ) : (
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  )}
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                 </div>
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider">
-                    {order.paymentMethod === "COD" ? "Bayar di Tempat (COD)" : "Menunggu Pembayaran"}
-                  </p>
-                  <p className="text-[11px] text-amber-300/80">
-                    {order.paymentMethod === "COD"
-                      ? "Tunjukkan No. Order ini ke kasir stan saat pengambilan"
-                      : "QR terbit otomatis setelah diverifikasi"}
-                  </p>
+                  <p className="text-xs font-bold uppercase tracking-wider">Menunggu Pembayaran</p>
+                  <p className="text-[11px] text-amber-300/80">QR terbit otomatis setelah diverifikasi</p>
                 </div>
               </div>
-              <span className="text-[10px] bg-amber-500/20 px-2 py-0.5 rounded font-mono font-bold">
-                {order.paymentMethod === "COD" ? "COD" : "PENDING"}
-              </span>
+              <span className="text-[10px] bg-amber-500/20 px-2 py-0.5 rounded font-mono font-bold">PENDING</span>
             </div>
           )}
 
@@ -168,7 +219,7 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
         </div>
 
         {/* QR Code Section */}
-        {isReady && qrDataUrl ? (
+        {(isReady || (isCod && !isRedeemed && !isCancelled)) && qrDataUrl ? (
           <div className="px-6 py-4 flex flex-col items-center text-center">
             <div className="p-3 bg-white rounded-2xl shadow-xl border border-zinc-200 inline-block relative">
               <Image
@@ -185,12 +236,12 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
             {/* Redemption Code String */}
             <div className="mt-4 flex items-center justify-center gap-2 w-full max-w-xs">
               <div className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-1.5 flex-1 font-mono text-xs tracking-wider text-zinc-200 text-center truncate">
-                {order.redemptionCode}
+                {order.redemptionCode || order.orderNumber}
               </div>
               <button
                 type="button"
                 onClick={handleCopyCode}
-                className="px-3 py-1.5 text-xs font-medium rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition flex items-center gap-1 active:scale-95"
+                className="px-3 py-1.5 text-xs font-medium rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition flex items-center gap-1 active:scale-95 cursor-pointer"
                 title="Salin Kode"
               >
                 {copied ? (
@@ -211,8 +262,57 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
               </button>
             </div>
             <p className="text-[11px] text-zinc-500 mt-2">
-              Tunjukkan layar ini kepada kasir saat acara berlangsung.
+              {isCod
+                ? "Tunjukkan QR ini ke kasir stan saat mengambil barang untuk validasi tagihan & serah terima."
+                : "Tunjukkan layar ini kepada kasir saat acara berlangsung."}
             </p>
+
+            {/* Upload Bukti Bayar Tagihan (Khusus COD di Stan) */}
+            {isCod && !isRedeemed && (
+              <div className="mt-4 w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3.5 text-left">
+                <p className="text-xs font-bold text-zinc-200 flex items-center gap-1.5">
+                  <span>📱</span> Bayar Non-Tunai / QRIS di Stan?
+                </p>
+                <p className="text-[11px] text-zinc-400 mt-1 leading-relaxed">
+                  Jika Anda membayar via QRIS di stan, lampirkan bukti screenshot di bawah ini agar kasir dapat langsung mencocokkannya.
+                </p>
+
+                {currentProofUrl ? (
+                  <div className="mt-3 flex items-center justify-between gap-2 p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/40">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-emerald-400 text-sm">✅</span>
+                      <span className="text-xs font-semibold text-emerald-400 truncate">
+                        Bukti bayar terlampir
+                      </span>
+                    </div>
+                    <a
+                      href={currentProofUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs text-red-400 hover:underline font-semibold"
+                    >
+                      Buka Foto
+                    </a>
+                  </div>
+                ) : (
+                  <div className="mt-3">
+                    <label className="flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-lg border border-dashed border-zinc-700 hover:border-zinc-500 bg-zinc-900 text-xs text-zinc-300 font-semibold cursor-pointer transition">
+                      <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <span>{uploadingProof ? "Mengunggah..." : "Upload Bukti Pembayaran Tagihan"}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={uploadingProof}
+                        onChange={handleFileUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         ) : isRedeemed ? (
           <div className="px-6 py-8 text-center flex flex-col items-center">
@@ -269,11 +369,29 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
               <p className="font-medium text-zinc-300 mt-0.5">{orderDate}</p>
             </div>
             <div>
-              <p className="text-zinc-500">Metode Pengambilan</p>
+              <p className="text-zinc-500">Pengambilan</p>
               <p className="font-medium text-zinc-300 mt-0.5">
-                Stand Market Day
+                {order.pickupMethod === "FLEXIBLE"
+                  ? "📦 Ambil Kapan Saja (Setelah Jadi)"
+                  : "🎪 Stand Market Day"}
               </p>
             </div>
+            {order.productionStatus && (
+              <div className="col-span-2 pt-2 border-t border-zinc-800/60 flex items-center justify-between">
+                <span className="text-zinc-500">Status Pengerjaan:</span>
+                <span
+                  className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
+                    order.productionStatus === "READY"
+                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                      : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                  }`}
+                >
+                  {order.productionStatus === "READY"
+                    ? "🟢 Sudah Selesai — Siap Diambil"
+                    : "🟡 Sedang Diproduksi / Dikerjakan"}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Item Breakdown */}

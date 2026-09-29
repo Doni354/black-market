@@ -22,6 +22,7 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerNotes, setCustomerNotes] = useState("");
+  const [pickupMethod, setPickupMethod] = useState<"MARKET_DAY" | "FLEXIBLE">("MARKET_DAY");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("QRIS");
   const [proofUrl, setProofUrl] = useState<string | null>(null);
   const [uploadingProof, setUploadingProof] = useState(false);
@@ -139,6 +140,7 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
         customerPhone: customerPhone.trim(),
         customerEmail: customerEmail.trim() || undefined,
         notes: customerNotes.trim() || undefined,
+        pickupMethod,
         paymentMethod,
         proofUrl: proofUrl || undefined,
         items: cartList.map((i) => ({
@@ -414,7 +416,40 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
 
           {/* Payment Method & Proof Upload */}
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 space-y-4">
-            <h2 className="text-sm font-bold text-zinc-100 uppercase tracking-wider flex items-center gap-2">
+            {/* Waktu & Lokasi Pengambilan */}
+            <div>
+              <label className="text-xs font-semibold text-zinc-300 block mb-2">
+                Waktu & Lokasi Pengambilan
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPickupMethod("MARKET_DAY")}
+                  className={`p-3 rounded-xl border text-left transition cursor-pointer ${
+                    pickupMethod === "MARKET_DAY"
+                      ? "bg-red-600/20 border-red-500 text-white"
+                      : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700"
+                  }`}
+                >
+                  <p className="text-xs font-bold">🎪 Stand Market Day</p>
+                  <p className="text-[10px] text-zinc-400 mt-0.5">Ambil di stan hari H</p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPickupMethod("FLEXIBLE")}
+                  className={`p-3 rounded-xl border text-left transition cursor-pointer ${
+                    pickupMethod === "FLEXIBLE"
+                      ? "bg-red-600/20 border-red-500 text-white"
+                      : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700"
+                  }`}
+                >
+                  <p className="text-xs font-bold">📦 Ambil Kapan Saja</p>
+                  <p className="text-[10px] text-zinc-400 mt-0.5">Fleksibel setelah jadi</p>
+                </button>
+              </div>
+            </div>
+
+            <h2 className="text-sm font-bold text-zinc-100 uppercase tracking-wider flex items-center gap-2 pt-2 border-t border-zinc-800/60">
               <span className="w-5 h-5 rounded-full bg-red-600 text-white text-[11px] flex items-center justify-center font-bold">
                 4
               </span>

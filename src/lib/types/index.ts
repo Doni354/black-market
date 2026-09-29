@@ -109,7 +109,9 @@ export interface Order {
   amountPaid?: number;
   /** Integer Rupiah — change = amountPaid - total */
   change?: number;
-  pickupMethod?: "MARKET_DAY";
+  pickupMethod?: "MARKET_DAY" | "FLEXIBLE";
+  productionStatus?: "NOT_STARTED" | "IN_PRODUCTION" | "READY";
+  readyForPickupAt?: FirestoreTimestamp;
   /** Secure token for QR — not sequential */
   redemptionCode?: string;
   redemptionQrUrl?: string;
@@ -266,3 +268,38 @@ export interface ActionState<T = null> {
   data?: T;
   errors?: Record<string, string[]>;
 }
+
+// ============================================================
+// CUSTOM MERCH REQUEST (Pin, Sticker, Gantungan Kunci)
+// ============================================================
+
+export type CustomMerchType = "PIN" | "STICKER" | "KEYCHAIN";
+
+export type CustomRequestStatus =
+  | "PENDING"
+  | "CONTACTED"
+  | "APPROVED"
+  | "IN_PRODUCTION"
+  | "READY_FOR_PICKUP"
+  | "COMPLETED"
+  | "REJECTED";
+
+export interface CustomMerchRequest {
+  id: string;
+  requestNumber: string; // e.g. CMR-0001
+  customerName: string;
+  customerPhone: string;
+  customerEmail?: string;
+  merchType: CustomMerchType;
+  quantity: number;
+  designUrl?: string;
+  notes?: string;
+  estimatedPrice?: number;
+  status: CustomRequestStatus;
+  orderId?: string; // If converted into pre-order
+  orderNumber?: string;
+  adminNotes?: string;
+  createdAt: FirestoreTimestamp;
+  updatedAt: FirestoreTimestamp;
+}
+

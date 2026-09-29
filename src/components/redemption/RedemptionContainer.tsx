@@ -62,12 +62,19 @@ export function RedemptionContainer() {
     setIsReviewOpen(true);
   }
 
-  // Handle confirming the redemption
-  async function handleConfirmRedeem(code: string) {
+  // Handle confirming the redemption (standard or COD settlement)
+  async function handleConfirmRedeem(
+    code: string,
+    options?: {
+      settleCod?: boolean;
+      settleMethod?: "CASH" | "QRIS";
+      amountPaid?: number;
+    }
+  ) {
     setIsRedeeming(true);
     setErrorMessage(null);
 
-    const res = await redeemOrderAction(code);
+    const res = await redeemOrderAction(code, options);
     setIsRedeeming(false);
 
     if (!res.success || !res.data) {

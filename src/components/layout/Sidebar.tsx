@@ -95,11 +95,20 @@ function LogoutIcon() {
   );
 }
 
+function CustomMerchIcon() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-1.677c0-.28-.027-.552-.078-.816a1.5 1.5 0 01.358-1.385l5.24-5.24a3 3 0 00-4.24-4.24l-5.24 5.24a1.5 1.5 0 01-1.385.358A4.47 4.47 0 009.53 16.122z" />
+    </svg>
+  );
+}
+
 const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/admin/dashboard", icon: <DashboardIcon /> },
   { label: "POS / Kasir", href: "/admin/pos", icon: <PosIcon /> },
   { label: "Redeem Tiket", href: "/admin/pos/redeem", icon: <QrIcon /> },
   { label: "Orders", href: "/admin/orders", icon: <OrdersIcon /> },
+  { label: "Custom Merch", href: "/admin/custom-requests", icon: <CustomMerchIcon /> },
   { label: "Products", href: "/admin/products", icon: <ProductsIcon />, adminOnly: true },
   { label: "Inventory", href: "/admin/inventory", icon: <InventoryIcon />, adminOnly: true },
   { label: "Expenses", href: "/admin/expenses", icon: <ExpensesIcon />, adminOnly: true },

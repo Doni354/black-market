@@ -422,6 +422,7 @@ export interface CreatePreOrderInput {
   customerEmail?: string;
   paymentMethod: PaymentMethod;
   notes?: string;
+  pickupMethod?: "MARKET_DAY" | "FLEXIBLE";
   source: OrderSource;
   proofUrl?: string;
   createdBy: string;
@@ -435,7 +436,8 @@ export interface CreatePreOrderResult {
 
 /**
  * Create a new Pre-Order.
- * NOTE: Stock is NOT deducted at creation — stock is deducted upon payment verification!
+ * NOTE: For Transfer/QRIS, stock is deducted upon payment verification.
+ * For COD, customer immediately receives an active Bill Pass / Ticket, and stock/payment is finalized upon redemption at the stand.
  */
 export async function createPreOrder(
   input: CreatePreOrderInput
@@ -492,7 +494,13 @@ export async function createPreOrder(
 
   const total = subtotal;
   const orderNumber = generateOrderNumber();
-  const status: OrderStatus = input.proofUrl ? "WAITING_VERIFICATION" : "PENDING_PAYMENT";
+  const isCod = input.paymentMethod === "COD";
+  const redemptionCode = isCod ? generateRedemptionCode() : undefined;
+  const status: OrderStatus = isCod
+    ? "READY_FOR_REDEMPTION"
+    : input.proofUrl
+    ? "WAITING_VERIFICATION"
+    : "PENDING_PAYMENT";
   const paymentStatus: PaymentStatus = "PENDING";
 
   // 2. Create Order document
@@ -508,13 +516,17 @@ export async function createPreOrder(
     subtotal,
     discount: 0,
     total,
-    pickupMethod: "MARKET_DAY",
+    pickupMethod: input.pickupMethod || "MARKET_DAY",
+    productionStatus: "IN_PRODUCTION",
     items: orderItemsSnapshot,
     createdBy: input.createdBy,
     createdAt: FieldValue.serverTimestamp(),
     updatedAt: FieldValue.serverTimestamp(),
   };
 
+  if (redemptionCode) {
+    orderData.redemptionCode = redemptionCode;
+  }
   if (input.customerPhone?.trim()) {
     orderData.customerPhone = input.customerPhone.trim();
   }
@@ -529,6 +541,17 @@ export async function createPreOrder(
   }
 
   await orderRef.set(orderData);
+
+  // For COD, create active redemption pass immediately
+  if (isCod && redemptionCode) {
+    const redemptionRef = adminDb.collection("redemptions").doc();
+    await redemptionRef.set({
+      orderId: orderRef.id,
+      redemptionCode,
+      status: "READY",
+      createdAt: FieldValue.serverTimestamp(),
+    });
+  }
 
   // 3. Create Payment document
   const paymentRef = adminDb.collection("payments").doc();

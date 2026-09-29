@@ -6,6 +6,7 @@ import {
   getRedemptionByCode,
   executeRedemption,
   type RedemptionDetails,
+  type ExecuteRedemptionOptions,
 } from "@/lib/db/redemptions";
 import type { ActionState, Order, Redemption } from "@/lib/types";
 
@@ -55,7 +56,8 @@ export async function lookupRedemptionAction(
  * Single-use only; prevents race conditions / double redemptions.
  */
 export async function redeemOrderAction(
-  rawCode: string
+  rawCode: string,
+  options?: ExecuteRedemptionOptions
 ): Promise<ActionState<{ order: Order; redemption: Redemption }>> {
   try {
     const user = await getCurrentUser();
@@ -68,7 +70,7 @@ export async function redeemOrderAction(
       return { success: false, message: "Kode redemption tidak boleh kosong." };
     }
 
-    const result = await executeRedemption(cleanCode, user.id);
+    const result = await executeRedemption(cleanCode, user.id, options);
 
     // Revalidate affected routes
     revalidatePath("/admin/pos");

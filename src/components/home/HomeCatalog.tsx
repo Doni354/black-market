@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useToast } from "@/components/ui/Toast";
 import { createCustomerOrderAction } from "@/lib/actions/orders";
+import { CustomMerchModal } from "@/components/home/CustomMerchModal";
 import type { Product, PaymentMethod } from "@/lib/types";
 
 interface HomeCatalogProps {
@@ -31,12 +32,16 @@ export function HomeCatalog({ products, onOpenTracker }: HomeCatalogProps) {
   // Customer Pre-Order Cart: Map<productId, quantity>
   const [cart, setCart] = useState<Map<string, number>>(new Map());
 
+  // Custom Merch Request Modal
+  const [isCustomMerchOpen, setIsCustomMerchOpen] = useState(false);
+
   // Customer Checkout Modal
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerNotes, setCustomerNotes] = useState("");
+  const [pickupMethod, setPickupMethod] = useState<"MARKET_DAY" | "FLEXIBLE">("MARKET_DAY");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("QRIS");
   const [proofUrl, setProofUrl] = useState("");
   const [uploadingProof, setUploadingProof] = useState(false);
@@ -158,6 +163,7 @@ export function HomeCatalog({ products, onOpenTracker }: HomeCatalogProps) {
         customerPhone: customerPhone.trim(),
         customerEmail: customerEmail.trim() || undefined,
         notes: customerNotes.trim() || undefined,
+        pickupMethod,
         paymentMethod,
         proofUrl: proofUrl || undefined,
         items: cartList.map((i) => ({
@@ -214,6 +220,28 @@ export function HomeCatalog({ products, onOpenTracker }: HomeCatalogProps) {
             Sudah pesan? Cek tiket di sini →
           </button>
         </div>
+      </div>
+
+      {/* Custom Merch Banner (Pin, Sticker, Gantungan Kunci) */}
+      <div className="relative overflow-hidden rounded-2xl border border-red-500/30 bg-gradient-to-r from-red-950/70 via-zinc-900 to-zinc-900 p-4 sm:p-5 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-600/20 text-red-400 text-[11px] font-bold">
+            <span>🎨</span> CUSTOM DESAIN SENDIRI
+          </div>
+          <h3 className="text-base sm:text-lg font-bold text-white">
+            Punya Desain Sendiri? Request Custom Merch di Sini!
+          </h3>
+          <p className="text-xs text-zinc-400 max-w-xl">
+            Pesan Pin, Sticker, atau Gantungan Kunci dengan desain pilihanmu. Kami buatkan mock-up, konfirmasi via WhatsApp, dan siap diambil kapan saja!
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsCustomMerchOpen(true)}
+          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-xs shadow-lg shadow-red-600/20 transition whitespace-nowrap cursor-pointer self-start sm:self-auto flex items-center gap-1.5 active:scale-95"
+        >
+          <span>✨</span> Request Custom Merch
+        </button>
       </div>
 
       {/* Search Bar & Category Carousel */}
@@ -478,6 +506,39 @@ export function HomeCatalog({ products, onOpenTracker }: HomeCatalogProps) {
             onChange={(e) => setCustomerNotes(e.target.value)}
           />
 
+          {/* Waktu & Metode Pengambilan */}
+          <div>
+            <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5 block">
+              Waktu & Lokasi Pengambilan
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setPickupMethod("MARKET_DAY")}
+                className={`rounded-xl border py-2 px-2.5 text-left transition-all cursor-pointer ${
+                  pickupMethod === "MARKET_DAY"
+                    ? "border-red-600 bg-red-600/10 text-white font-bold"
+                    : "border-zinc-800 bg-zinc-900 text-zinc-400"
+                }`}
+              >
+                <p className="text-xs font-bold">🎪 Stand Event</p>
+                <p className="text-[10px] text-zinc-400 font-normal">Ambil saat Market Day</p>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPickupMethod("FLEXIBLE")}
+                className={`rounded-xl border py-2 px-2.5 text-left transition-all cursor-pointer ${
+                  pickupMethod === "FLEXIBLE"
+                    ? "border-red-600 bg-red-600/10 text-white font-bold"
+                    : "border-zinc-800 bg-zinc-900 text-zinc-400"
+                }`}
+              >
+                <p className="text-xs font-bold">📦 Ambil Kapan Saja</p>
+                <p className="text-[10px] text-zinc-400 font-normal">Fleksibel setelah jadi</p>
+              </button>
+            </div>
+          </div>
+
           {/* Payment Method Selector */}
           <div>
             <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5 block">
@@ -589,6 +650,12 @@ export function HomeCatalog({ products, onOpenTracker }: HomeCatalogProps) {
           </p>
         </div>
       </Modal>
+
+      {/* Custom Merch Request Modal */}
+      <CustomMerchModal
+        isOpen={isCustomMerchOpen}
+        onClose={() => setIsCustomMerchOpen(false)}
+      />
     </div>
   );
 }

@@ -7,7 +7,14 @@ import type { Order, Redemption } from "@/lib/types";
 
 interface RedemptionReviewProps {
   details: RedemptionDetails;
-  onConfirmRedeem: (code: string) => Promise<void>;
+  onConfirmRedeem: (
+    code: string,
+    options?: {
+      settleCod?: boolean;
+      settleMethod?: "CASH" | "QRIS";
+      amountPaid?: number;
+    }
+  ) => Promise<void>;
   onClose: () => void;
   isSubmitting: boolean;
   errorMsg: string | null;
@@ -29,9 +36,13 @@ export function RedemptionReview({
 
   const isAlreadyRedeemed =
     redemption.status === "REDEEMED" || order.status === "REDEEMED";
-  const isUnpaid = order.paymentStatus !== "PAID";
+  const isCodUnpaid = order.paymentMethod === "COD" && order.paymentStatus !== "PAID";
+  const isNonCodUnpaid = order.paymentMethod !== "COD" && order.paymentStatus !== "PAID";
   const isCancelled =
     redemption.status === "CANCELLED" || order.status === "CANCELLED";
+
+  const [settleMethod, setSettleMethod] = useState<"CASH" | "QRIS">("CASH");
+  const [amountPaidInput, setAmountPaidInput] = useState<string>(String(order.total));
 
   function formatTimestamp(ts: unknown): string {
     if (!ts) return "sebelumnya";
@@ -156,7 +167,97 @@ export function RedemptionReview({
           </div>
         )}
 
-        {isUnpaid && (
+        {/* COD Settlement Panel */}
+        {isCodUnpaid && (
+          <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/50 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-base">🤝</span>
+                <div>
+                  <p className="text-xs font-bold text-amber-300 uppercase tracking-wide">
+                    Tagihan COD — Pelunasan di Stan
+                  </p>
+                  <p className="text-[11px] text-amber-400/80">
+                    Wajib tagih pembayaran sebelum barang diserahkan ke pelanggan.
+                  </p>
+                </div>
+              </div>
+              <span className="text-base font-extrabold text-amber-400 font-mono">
+                {formatRupiah(order.total)}
+              </span>
+            </div>
+
+            {order.proofUrl && (
+              <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-zinc-900 border border-emerald-500/40">
+                <span className="text-sm">📷</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] font-semibold text-emerald-400">Pembeli Mengunggah Bukti Bayar:</p>
+                  <a
+                    href={order.proofUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[11px] text-zinc-300 hover:text-white underline truncate block"
+                  >
+                    Buka Foto Bukti Transfer/QRIS ↗
+                  </a>
+                </div>
+              </div>
+            )}
+
+            {/* Settle Method Toggle */}
+            <div className="pt-2 border-t border-amber-500/30">
+              <label className="text-[11px] font-semibold text-zinc-300 block mb-1.5">
+                Metode Pembayaran Pelunasan:
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSettleMethod("CASH")}
+                  className={`py-2 px-3 rounded-lg text-xs font-semibold border transition cursor-pointer ${
+                    settleMethod === "CASH"
+                      ? "bg-amber-500/20 border-amber-400 text-amber-300 font-bold"
+                      : "bg-zinc-900 border-zinc-800 text-zinc-400"
+                  }`}
+                >
+                  💵 Tunai (Cash)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSettleMethod("QRIS")}
+                  className={`py-2 px-3 rounded-lg text-xs font-semibold border transition cursor-pointer ${
+                    settleMethod === "QRIS"
+                      ? "bg-amber-500/20 border-amber-400 text-amber-300 font-bold"
+                      : "bg-zinc-900 border-zinc-800 text-zinc-400"
+                  }`}
+                >
+                  📱 QRIS Stan
+                </button>
+              </div>
+
+              {settleMethod === "CASH" && (
+                <div className="mt-2.5 grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <label className="text-[10px] text-zinc-400 block mb-1">Uang Diterima (Rp)</label>
+                    <input
+                      type="number"
+                      value={amountPaidInput}
+                      onChange={(e) => setAmountPaidInput(e.target.value)}
+                      className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-xs text-white font-mono focus:border-amber-500 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-zinc-400 block mb-1">Kembalian (Rp)</label>
+                    <div className="rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-xs font-mono font-bold text-emerald-400">
+                      {formatRupiah(Math.max(0, (Number(amountPaidInput) || 0) - order.total))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {isNonCodUnpaid && (
           <div className="p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/40 text-amber-400 flex items-start gap-3">
             <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -164,7 +265,7 @@ export function RedemptionReview({
             <div className="text-xs">
               <p className="font-bold uppercase">PESANAN BELUM LUNAS</p>
               <p className="text-amber-300/80 mt-0.5">
-                Status pembayaran: {order.paymentStatus}. Tiket belum dapat ditukarkan.
+                Status pembayaran: {order.paymentStatus}. Tiket transfer belum dapat ditukarkan.
               </p>
             </div>
           </div>
@@ -291,9 +392,19 @@ export function RedemptionReview({
 
         <button
           type="button"
-          onClick={() => onConfirmRedeem(redemption.redemptionCode)}
-          disabled={isAlreadyRedeemed || isUnpaid || isCancelled || isSubmitting}
-          className="flex-2 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-red-600/20"
+          onClick={() =>
+            onConfirmRedeem(redemption.redemptionCode, {
+              settleCod: isCodUnpaid,
+              settleMethod,
+              amountPaid: settleMethod === "CASH" ? Number(amountPaidInput) || order.total : order.total,
+            })
+          }
+          disabled={isAlreadyRedeemed || isNonCodUnpaid || isCancelled || isSubmitting}
+          className={`flex-2 py-2.5 px-4 rounded-xl text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg cursor-pointer ${
+            isCodUnpaid
+              ? "bg-amber-600 hover:bg-amber-500 shadow-amber-600/25"
+              : "bg-red-600 hover:bg-red-700 shadow-red-600/20"
+          } disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed`}
         >
           {isSubmitting ? (
             <>
@@ -308,7 +419,11 @@ export function RedemptionReview({
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span>Konfirmasi Serah Terima</span>
+              <span>
+                {isCodUnpaid
+                  ? "Terima Pembayaran COD & Serahkan Barang"
+                  : "Konfirmasi Serah Terima"}
+              </span>
             </>
           )}
         </button>
