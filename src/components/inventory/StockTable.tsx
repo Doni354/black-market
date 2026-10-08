@@ -179,8 +179,8 @@ export function StockTable({ initialProducts }: StockTableProps) {
                               />
                             </div>
                           ) : (
-                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-[#D5E4DF] bg-[#EAF5F1] text-base">
-                              🥗
+                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-[#D5E4DF] bg-[#EAF5F1] text-xs font-bold text-[#7A9C96]">
+                              <span className="font-mono text-[10px]">MENU</span>
                             </div>
                           )}
 

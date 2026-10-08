@@ -51,7 +51,7 @@ export function ProductCard({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-[#EAF5F1] text-[#3D8383] font-bold text-xs uppercase tracking-wider">
-            🥗 Noury Fresh
+            Noury Fresh
           </div>
         )}
 

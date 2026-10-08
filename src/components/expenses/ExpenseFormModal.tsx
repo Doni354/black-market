@@ -17,12 +17,12 @@ interface ExpenseFormModalProps {
 }
 
 const CATEGORY_OPTIONS: Array<{ value: ExpenseCategory; label: string }> = [
-  { value: "FOOD_MATERIAL", label: "🍉 Bahan Baku Buah, Sayur & Bahan Segar" },
-  { value: "MERCH_PRODUCTION", label: "🥣 Mangkok, Wadah & Botol Minuman" },
-  { value: "PACKAGING", label: "📦 Cup, Sendok, Sedotan & Kantong Segar" },
-  { value: "OPERATIONAL", label: "🧊 Es Batu Kristal, Air Galon & Operasional Stand" },
-  { value: "PROMOTION", label: "📢 Cetak Brosur, Banner & Promosi" },
-  { value: "OTHER", label: "📎 Kebutuhan Stand Lainnya" },
+  { value: "FOOD_MATERIAL", label: "Bahan Baku Buah, Sayur & Bahan Segar" },
+  { value: "MERCH_PRODUCTION", label: "Mangkok, Wadah & Botol Minuman" },
+  { value: "PACKAGING", label: "Cup, Sendok, Sedotan & Kantong Segar" },
+  { value: "OPERATIONAL", label: "Es Batu Kristal, Air Galon & Operasional Stand" },
+  { value: "PROMOTION", label: "Cetak Brosur, Banner & Promosi" },
+  { value: "OTHER", label: "Kebutuhan Stand Lainnya" },
 ];
 
 export function ExpenseFormModal({

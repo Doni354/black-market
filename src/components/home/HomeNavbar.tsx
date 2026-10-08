@@ -24,13 +24,6 @@ export function HomeNavbar() {
 
         {/* Navigation links & Actions */}
         <div className="flex items-center gap-2 sm:gap-3.5">
-          <Link
-            href="/products"
-            className="text-xs font-semibold text-[#3A5E58] hover:text-[#47957F] transition-colors px-2.5 py-1"
-          >
-            Katalog Menu
-          </Link>
-
           {/* Customer Portal Link */}
           <Link
             href="/account"
@@ -47,22 +40,21 @@ export function HomeNavbar() {
                     className="rounded-full object-cover"
                   />
                 ) : (
-                  <span>👤</span>
+                  <svg className="h-3.5 w-3.5 text-[#2A5E56]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
                 )}
                 <span className="max-w-[80px] truncate sm:max-w-none">
                   {user.displayName?.split(" ")[0] || "Akun Saya"}
                 </span>
                 {account?.stampsCount ? (
                   <span className="ml-0.5 rounded-full bg-[#CDD272] text-[#223908] px-1.5 py-0.2 text-[9px] font-black">
-                    {account.stampsCount}★
+                    {account.stampsCount} Stempel
                   </span>
                 ) : null}
               </>
             ) : (
-              <>
-                <span>🎁</span>
-                <span>Kupon & Akun</span>
-              </>
+              <span>Kupon & Akun</span>
             )}
           </Link>
         </div>

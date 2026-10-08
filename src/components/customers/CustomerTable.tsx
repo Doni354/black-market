@@ -223,7 +223,7 @@ export function CustomerTable({ initialCustomers }: CustomerTableProps) {
                             rel="noreferrer"
                             className="inline-flex items-center gap-1 text-[#47957F] hover:text-[#3D8383] hover:underline font-bold"
                           >
-                            <span>📱 {cust.phone}</span>
+                            <span>{cust.phone}</span>
                           </a>
                         ) : (
                           <span className="text-[#A0BCB6]">—</span>
@@ -233,7 +233,6 @@ export function CustomerTable({ initialCustomers }: CustomerTableProps) {
                       {/* Stamps Count */}
                       <td className="px-4 py-3 text-center whitespace-nowrap">
                         <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200 px-2.5 py-0.5 text-xs font-bold text-amber-700">
-                          <span>⭐</span>
                           <span>{stamps}</span>
                         </span>
                       </td>
@@ -242,7 +241,6 @@ export function CustomerTable({ initialCustomers }: CustomerTableProps) {
                       <td className="px-4 py-3 text-center whitespace-nowrap">
                         {activeCouponsCount > 0 ? (
                           <span className="inline-flex items-center gap-1 rounded-full bg-[#EAF5F1] border border-[#CDE5DD] px-2.5 py-0.5 text-xs font-bold text-[#2A5E56]">
-                            <span>🎁</span>
                             <span>{activeCouponsCount} Kupon</span>
                           </span>
                         ) : (
@@ -351,7 +349,7 @@ export function CustomerTable({ initialCustomers }: CustomerTableProps) {
             <div className="p-4 rounded-2xl bg-[#EAF5F1]/70 border border-[#CDE5DD] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <div className="flex items-center gap-1.5 font-bold text-[#183331] text-sm">
-                  <span>⭐ Stempel Loyalitas Saat Ini:</span>
+                  <span>Stempel Loyalitas Saat Ini:</span>
                   <span className="text-base text-amber-700 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
                     {selectedCustomer.stampsCount || 0} Stempel
                   </span>

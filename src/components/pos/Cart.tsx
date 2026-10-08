@@ -124,7 +124,6 @@ export function Cart({
                     onClick={() => setShowDiscountInput(true)}
                     className="text-[11px] font-semibold text-[#47957F] hover:text-[#3D8383] hover:underline flex items-center gap-1 cursor-pointer"
                   >
-                    <span>🏷️</span>
                     <span>{discount > 0 ? "Ubah Diskon / Kupon" : "+ Tambah Kupon / Diskon"}</span>
                   </button>
                 ) : (

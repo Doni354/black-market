@@ -42,7 +42,6 @@ export function HomeClient({ products }: HomeClientProps) {
               href="/admin/login"
               className="text-[#65857F] hover:text-[#47957F] transition-colors flex items-center gap-1"
             >
-              <span>🔒</span>
               <span>Portal Kasir & Staf</span>
             </Link>
           </div>

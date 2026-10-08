@@ -7,6 +7,7 @@ import { UserRoleManager } from "@/components/settings/UserRoleManager";
 import { LoyaltySettingsManager } from "@/components/settings/LoyaltySettingsManager";
 import { PaymentSettingsManager } from "@/components/settings/PaymentSettingsManager";
 import { BatchSettingsManager } from "@/components/settings/BatchSettingsManager";
+import { DataResetManager } from "@/components/settings/DataResetManager";
 
 export const metadata: Metadata = {
   title: "Pengaturan Sistem | Noury",
@@ -50,6 +51,9 @@ export default async function SettingsPage() {
         initialUsers={users}
         currentUserId={currentUser?.id || ""}
       />
+
+      {/* 5. Zona Bahaya: Reset Data Sistem Uji Coba (Go-Live) */}
+      {currentUser?.role === "ADMIN" && <DataResetManager />}
 
       {/* App Info Box */}
       <div className="rounded-2xl border border-[#E2ECE8] bg-white p-4 sm:p-5 text-xs text-[#52706C] flex flex-col gap-2 shadow-xs">

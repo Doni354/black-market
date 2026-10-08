@@ -232,7 +232,6 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
             href="/admin/reports"
             className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 text-xs font-semibold whitespace-nowrap transition cursor-pointer shadow-xs"
           >
-            <span>📑</span>
             <span>Buku Audit & Bukti</span>
           </Link>
 
@@ -301,7 +300,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                         <div>{order.orderNumber}</div>
                         {order.redemptionCode && (
                           <div className="mt-0.5 inline-flex items-center gap-1 rounded bg-[#47957F]/10 border border-[#47957F]/20 px-1.5 py-0.2 text-[10px] text-[#3D8383] font-semibold">
-                            🎫 {order.redemptionCode}
+                            {order.redemptionCode}
                           </div>
                         )}
                       </td>
@@ -321,15 +320,15 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                             className="mt-1 inline-flex items-center gap-1 rounded-md bg-[#CDD272]/25 border border-[#CDD272]/60 px-1.5 py-0.5 text-[10px] font-bold text-[#565C17]"
                             title={order.batchInfo || "Batch Pre-Order"}
                           >
-                            📦 Batch
+                            Batch
                           </span>
                         ) : order.source === "POS" ? (
                           <span className="mt-0.5 inline-block text-[10px] text-zinc-400">
-                            ⚡ Kasir Stand
+                            Kasir Stand
                           </span>
                         ) : (
                           <span className="mt-0.5 inline-flex items-center gap-1 text-[10px] font-medium text-[#47957F]">
-                            🎪 Market Day
+                            Market Day
                           </span>
                         )}
                       </td>
@@ -539,7 +538,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                   <span className="text-zinc-600 font-semibold">Tiket Redemption QR:</span>
                   <div className="flex items-center gap-2">
                     <span className="font-mono font-bold text-xs text-[#3D8383] bg-[#47957F]/10 border border-[#47957F]/30 px-2.5 py-1 rounded-md">
-                      🎫 {selectedOrder.redemptionCode}
+                      {selectedOrder.redemptionCode}
                     </span>
                     <a
                       href={`/order/${selectedOrder.orderNumber}`}
@@ -567,7 +566,6 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                 {selectedOrder.pickupMethod === "BATCH_PICKUP" ? (
                   <div className="rounded-xl bg-[#EAF5F1] border border-[#CDE5DD] p-2.5 text-xs text-[#1E4B43]">
                     <div className="flex items-center gap-1.5 font-bold text-[#2A5E56]">
-                      <span>📦</span>
                       <span>Ambil Sesuai Batch Pre-Order</span>
                     </div>
                     {selectedOrder.batchInfo && (
@@ -576,11 +574,11 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                   </div>
                 ) : selectedOrder.source === "POS" ? (
                   <div className="rounded-xl bg-zinc-100 border border-zinc-200 p-2 text-xs text-zinc-700">
-                    ⚡ Transaksi Langsung di Stand POS (Takeaway)
+                    Transaksi Langsung di Stand POS (Takeaway)
                   </div>
                 ) : (
                   <div className="rounded-xl bg-[#EAF5F1]/60 border border-[#D0E7E0] p-2 text-xs text-[#2A5E56] font-medium">
-                    🎪 Diambil Langsung di Stand Hari Market Day
+                    Diambil Langsung di Stand Hari Market Day
                   </div>
                 )}
               </div>
@@ -592,8 +590,8 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                     <span className="text-zinc-500 block">Status Pengerjaan:</span>
                     <span className="font-semibold text-xs text-zinc-800">
                       {selectedOrder.productionStatus === "READY"
-                        ? "✅ Siap Diambil Pelanggan"
-                        : "⏳ Sedang Disiapkan"}
+                        ? "Siap Diambil Pelanggan"
+                        : "Sedang Disiapkan"}
                     </span>
                   </div>
                   <button

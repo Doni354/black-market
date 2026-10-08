@@ -201,7 +201,6 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                 : "text-[#52706C] hover:text-[#183331]"
             }`}
           >
-            <span>📊</span>
             <span>Analisis Keuangan & Penjualan</span>
           </button>
 
@@ -214,7 +213,6 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                 : "text-[#52706C] hover:text-[#183331]"
             }`}
           >
-            <span>🛡️</span>
             <span>Buku Audit Transaksi & Bukti Pembayaran</span>
             <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${mainView === "AUDIT" ? "bg-white/20 text-white" : "bg-[#EAF5F1] text-[#3D8383]"}`}>
               {filteredAuditOrders.length}
@@ -803,7 +801,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                               ) : order.paymentMethod === "CASH" || order.paymentMethod === "COD" ? (
                                 <div className="inline-flex flex-col items-center">
                                   <span className="px-2 py-0.5 rounded-md bg-[#EAF5F1] border border-[#E2ECE8] text-[10px] font-semibold text-[#3D8383]">
-                                    💵 Tunai di Kasir
+                                    Tunai di Kasir
                                   </span>
                                   <span className="text-[9px] text-[#7A9C96] mt-0.5">Validasi Fisik</span>
                                 </div>
@@ -1182,7 +1180,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                       </div>
                     ) : order.paymentMethod === "CASH" || order.paymentMethod === "COD" ? (
                       <div className="text-center p-2 border border-dashed border-zinc-400 bg-zinc-50 rounded w-full">
-                        <p className="font-bold text-[11px] text-zinc-800">💵 VALIDASI TUNAI / KASIR</p>
+                        <p className="font-bold text-[11px] text-zinc-800">VALIDASI TUNAI / KASIR</p>
                         <p className="text-[9px] text-zinc-600 mt-0.5">
                           Uang fisik diterima langsung di stand saat transaksi/redemption.
                         </p>

@@ -114,7 +114,7 @@ export function TicketTrackerModal({ isOpen, onClose }: TicketTrackerModalProps)
                       Tiket Penukaran Noury
                     </span>
                     <span className="mt-0.5 font-mono text-base font-black text-[#183331]">
-                      🎫 {order.redemptionCode}
+                      {order.redemptionCode}
                     </span>
                     <p className="mt-1 text-[10px] text-[#52706C]">
                       Tunjukkan kode ini kepada kasir saat pengambilan pesanan di stan Noury.
@@ -131,8 +131,8 @@ export function TicketTrackerModal({ isOpen, onClose }: TicketTrackerModalProps)
                 ) : (
                   <div className="mt-1 rounded-xl border border-[#E2ECE8] bg-white p-2.5 text-[11px] text-[#52706C]">
                     {order.status === "WAITING_VERIFICATION"
-                      ? "⏳ Bukti pembayaran Anda sedang diverifikasi admin. Tiket QR akan segera diterbitkan."
-                      : "⚠️ Pembayaran belum selesai atau belum diverifikasi."}
+                      ? "Bukti pembayaran Anda sedang diverifikasi admin. Tiket QR akan segera diterbitkan."
+                      : "Pembayaran belum selesai atau belum diverifikasi."}
                   </div>
                 )}
               </div>

@@ -341,7 +341,7 @@ export function QRScanner({
               : "bg-white border-[#E2ECE8] text-[#52706C] hover:text-[#183331] hover:bg-[#F8FAF9]"
           }`}
         >
-          {isManualPaused ? "▶ Nyalakan Kamera" : "⏸ Matikan Kamera"}
+          {isManualPaused ? "Nyalakan Kamera" : "Matikan Kamera"}
         </button>
       </div>
     </div>

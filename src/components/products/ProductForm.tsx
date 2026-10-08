@@ -17,11 +17,11 @@ interface ProductFormProps {
 }
 
 const PRODUCT_TYPES: { value: ProductType; label: string }[] = [
-  { value: "FRUIT_BOWL", label: "🍉 Fruit Bowl & Salad Buah" },
-  { value: "SMOOTHIE_JUICE", label: "🥤 Cold-Pressed Smoothie & Juice" },
-  { value: "INFUSED_WATER", label: "💧 Infused Water Segar" },
-  { value: "HEALTHY_FOOD", label: "🥗 Healthy Food & Wraps" },
-  { value: "BUNDLE", label: "🎁 Paket Bundling Hemat" },
+  { value: "FRUIT_BOWL", label: "Fruit Bowl & Salad Buah" },
+  { value: "SMOOTHIE_JUICE", label: "Cold-Pressed Smoothie & Juice" },
+  { value: "INFUSED_WATER", label: "Infused Water Segar" },
+  { value: "HEALTHY_FOOD", label: "Healthy Food & Wraps" },
+  { value: "BUNDLE", label: "Paket Bundling Hemat" },
   { value: "FOOD", label: "Makanan Sehat Lainnya" },
   { value: "DRINK", label: "Minuman Sehat Lainnya" },
   { value: "OTHER", label: "Lainnya" },

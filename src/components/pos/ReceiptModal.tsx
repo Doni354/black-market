@@ -84,7 +84,7 @@ export function ReceiptModal({
             {order.customerName && <p>Customer: {order.customerName}</p>}
             {order.customerPhone && (
               <p className="text-[10px] text-[#47957F] font-semibold">
-                WhatsApp: {order.customerPhone} (Stempel Bertambah ⭐)
+                WhatsApp: {order.customerPhone} (Stempel Bertambah)
               </p>
             )}
           </div>

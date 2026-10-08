@@ -58,7 +58,6 @@ export function BatchSettingsManager({ initialSettings }: BatchSettingsManagerPr
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EEF5F2] pb-4 mb-5">
         <div>
           <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#CDD272]/30 text-[#384a14] border border-[#CDD272] text-[11px] font-bold mb-1">
-            <span>📦</span>
             <span>MANAJEMEN BATCH PRE-ORDER</span>
           </div>
           <h2 className="text-base sm:text-lg font-bold text-[#183331]">

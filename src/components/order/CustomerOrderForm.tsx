@@ -217,7 +217,7 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
 
       await refreshAccount();
       toast(
-        `Pre-Order #${res.result.order.orderNumber} berhasil dibuat! 🎉`,
+        `Pre-Order #${res.result.order.orderNumber} berhasil dibuat!`,
         "success"
       );
 
@@ -262,7 +262,6 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
       {!user ? (
         <div className="rounded-2xl border border-amber-300 bg-amber-50/70 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
           <div className="flex items-start gap-3">
-            <span className="text-2xl">🔒</span>
             <div>
               <h3 className="text-sm font-bold text-amber-900">
                 Wajib Masuk Akun Google untuk Melakukan Pre-Order
@@ -301,11 +300,10 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
       ) : (
         <div className="rounded-2xl border border-noury-mint/30 bg-[#F0F7F4] p-3.5 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
-            <span>👤</span>
             <span className="text-[#183331] font-bold">{user.displayName || user.email}</span>
           </div>
           <span className="text-noury-teal font-mono font-bold">
-            {account?.stampsCount || 0}★ Stempel Terkumpul
+            {account?.stampsCount || 0} Stempel Terkumpul
           </span>
         </div>
       )}
@@ -346,8 +344,14 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
                             sizes="48px"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-xl">
-                            {p.type === "FRUIT_BOWL" ? "🍉" : p.type === "SMOOTHIE_JUICE" ? "🥤" : "🥗"}
+                          <div className="w-full h-full flex items-center justify-center p-2 text-[#7A9C96]">
+                            <Image
+                              src="/icons/Logo.svg"
+                              alt="Noury"
+                              width={40}
+                              height={14}
+                              className="opacity-40 grayscale object-contain"
+                            />
                           </div>
                         )}
                       </div>
@@ -544,7 +548,7 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
           {user && availableCoupons.length > 0 && (
             <div className="rounded-2xl border border-[#DCE8E4] bg-white p-4 space-y-2.5 shadow-xs">
               <p className="text-xs font-bold text-noury-teal uppercase tracking-wider">
-                🎟️ Pakai Voucher Diskon
+                Pakai Voucher Diskon
               </p>
               <div className="space-y-1.5">
                 {availableCoupons.map((coupon) => {
@@ -591,7 +595,7 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
                       : "bg-white border-[#DCE8E4] text-[#4A6864] hover:bg-[#F4F9F7]"
                   }`}
                 >
-                  <p className="text-xs font-bold">🎪 Stand Market Day</p>
+                  <p className="text-xs font-bold">Stand Market Day</p>
                   <p className="text-[10px] text-[#63847F] mt-0.5">Ambil di stan hari H</p>
                 </button>
 
@@ -604,14 +608,14 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
                       : "bg-white border-[#DCE8E4] text-[#4A6864] hover:bg-[#F4F9F7]"
                   }`}
                 >
-                  <p className="text-xs font-bold">📦 {batchSettings.activeBatchName}</p>
+                  <p className="text-xs font-bold">{batchSettings.activeBatchName}</p>
                   <p className="text-[10px] text-[#63847F] mt-0.5">{batchSettings.batchPickupSchedule}</p>
                 </button>
               </div>
 
               {pickupMethod === "BATCH_PICKUP" && (
                 <p className="mt-2 text-[10px] text-[#47957F] bg-[#EDF6F3] p-2 rounded-lg border border-[#D0E5DF]">
-                  📍 <strong>Titik Ambil:</strong> {batchSettings.batchPickupLocation}
+                  <strong>Titik Ambil:</strong> {batchSettings.batchPickupLocation}
                 </p>
               )}
             </div>
@@ -634,7 +638,7 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
                     : "bg-white border-[#DCE8E4] text-[#4A6864] hover:bg-[#F4F9F7]"
                 }`}
               >
-                <span>📱 QRIS</span>
+                <span>QRIS</span>
                 <span className="text-[10px] font-normal text-[#63847F] text-center">E-Wallet / Bank</span>
               </button>
               <button
@@ -646,7 +650,7 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
                     : "bg-white border-[#DCE8E4] text-[#4A6864] hover:bg-[#F4F9F7]"
                 }`}
               >
-                <span>🏦 Transfer Bank</span>
+                <span>Transfer Bank</span>
                 <span className="text-[10px] font-normal text-[#63847F] text-center">
                   {paymentSettings.bankName || "BCA"}
                 </span>
@@ -657,7 +661,7 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
             {paymentMethod === "QRIS" ? (
               <div className="rounded-xl border border-[#DCE8E4] bg-[#F7FAFA] p-3.5 text-center space-y-2">
                 <p className="font-bold text-xs text-[#183331]">
-                  📱 Scan QRIS: {paymentSettings.qrisMerchantName}
+                  Scan QRIS: {paymentSettings.qrisMerchantName}
                 </p>
                 {paymentSettings.qrisImageUrl ? (
                   <div className="relative h-44 w-44 mx-auto rounded-lg overflow-hidden border border-[#DCE8E4] bg-white shadow-xs">

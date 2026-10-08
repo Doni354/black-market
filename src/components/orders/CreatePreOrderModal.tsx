@@ -277,7 +277,7 @@ export function CreatePreOrderModal({
                     : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100"
                 }`}
               >
-                {m === "BANK_TRANSFER" ? "🏦 Transfer" : m === "QRIS" ? "📱 QRIS" : "💵 Tunai"}
+                {m === "BANK_TRANSFER" ? "Transfer Bank" : m === "QRIS" ? "QRIS" : "Tunai"}
               </button>
             ))}
           </div>

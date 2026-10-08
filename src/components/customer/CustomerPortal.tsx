@@ -150,8 +150,10 @@ export function CustomerPortal() {
         {/* Benefits Cards */}
         <div className="my-6 grid grid-cols-1 gap-2.5 text-left">
           <div className="flex items-center gap-3 rounded-2xl border border-[#DCE8E4] bg-white p-3.5 shadow-xs">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-noury-mint/15 text-lg">
-              🍉
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-noury-mint/15 text-[#2A5E56]">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
             </div>
             <div>
               <h4 className="text-xs font-bold text-[#183331]">Kartu Stempel Sehat</h4>
@@ -162,8 +164,10 @@ export function CustomerPortal() {
           </div>
 
           <div className="flex items-center gap-3 rounded-2xl border border-[#DCE8E4] bg-white p-3.5 shadow-xs">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-noury-lime/20 text-lg">
-              🎟️
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-noury-lime/20 text-[#2A5E56]">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+              </svg>
             </div>
             <div>
               <h4 className="text-xs font-bold text-[#183331]">Voucher Reward Terkendali</h4>
@@ -174,8 +178,10 @@ export function CustomerPortal() {
           </div>
 
           <div className="flex items-center gap-3 rounded-2xl border border-[#DCE8E4] bg-white p-3.5 shadow-xs">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-noury-sky/30 text-lg">
-              📱
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-noury-sky/30 text-[#2A5E56]">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+              </svg>
             </div>
             <div>
               <h4 className="text-xs font-bold text-[#183331]">Tiket QR & Riwayat Aman</h4>
@@ -259,11 +265,11 @@ export function CustomerPortal() {
               <div className="mt-1 flex items-center gap-2">
                 {account?.phone ? (
                   <span className="text-[11px] text-noury-teal flex items-center gap-1 font-mono">
-                    <span>💬</span> WhatsApp: {account.phone}
+                    WhatsApp: {account.phone}
                   </span>
                 ) : (
                   <span className="text-[11px] text-amber-600 flex items-center gap-1 font-medium">
-                    <span>⚠️</span> WhatsApp belum terhubung
+                    WhatsApp belum terhubung
                   </span>
                 )}
                 <button
@@ -285,7 +291,7 @@ export function CustomerPortal() {
               href="/"
               className="rounded-xl bg-noury-mint hover:bg-noury-teal text-white text-xs font-bold px-3.5 py-2 shadow-xs transition-all cursor-pointer"
             >
-              🥗 Pesan Menu
+              Pesan Menu
             </Link>
             <button
               type="button"
@@ -302,7 +308,6 @@ export function CustomerPortal() {
       <div className="relative overflow-hidden rounded-3xl border border-[#CCE0DA] bg-gradient-to-br from-[#EBF5F1] via-[#F6FAF8] to-white p-5 sm:p-6 shadow-xs">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <span className="text-xl">🥑</span>
             <div>
               <h3 className="text-sm sm:text-base font-bold text-[#183331]">
                 Kartu Stempel Sehat Noury
@@ -322,8 +327,6 @@ export function CustomerPortal() {
           {Array.from({ length: stampsMax }).map((_, idx) => {
             const isStamped = idx < stampsCount;
             const isLast = idx === stampsMax - 1;
-            const icons = ["🍉", "🥑", "🥤", "🍓", "🥗", "🎁"];
-            const icon = isLast ? "🎁" : icons[idx % (icons.length - 1)];
 
             return (
               <div
@@ -334,16 +337,15 @@ export function CustomerPortal() {
                     : "border-[#DCE8E4] bg-white/50 opacity-60"
                 }`}
               >
-                <div className="relative flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-[#F0F7F4] text-lg sm:text-xl shadow-inner">
+                <div className="relative flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-[#F0F7F4] text-xs font-bold shadow-inner">
                   {isStamped ? (
-                    <>
-                      <span>{icon}</span>
-                      <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-noury-teal text-white text-[10px] font-black">
-                        ✓
-                      </span>
-                    </>
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-noury-teal text-white">
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
                   ) : (
-                    <span className="grayscale opacity-40">{icon}</span>
+                    <span className="text-[#8EA9A4] font-mono">{idx + 1}</span>
                   )}
                 </div>
                 <span
@@ -362,7 +364,6 @@ export function CustomerPortal() {
         {stampsCount >= stampsMax && (
           <div className="mt-3 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl bg-white border border-noury-mint/40 p-3.5 shadow-xs">
             <div className="flex items-center gap-2.5">
-              <span className="text-2xl animate-bounce">🎉</span>
               <div>
                 <p className="text-xs font-bold text-noury-teal">
                   Stempel Penuh! Anda berhak mendapatkan Diskon {formatRupiah(loyaltySettings.stampRewardDiscount)}!
@@ -388,7 +389,7 @@ export function CustomerPortal() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold uppercase tracking-wider text-[#183331] flex items-center gap-2">
-            <span>🎟️</span> Kupon & Voucher Saya ({coupons.length})
+            Kupon & Voucher Saya ({coupons.length})
           </h3>
           <span className="text-[11px] text-[#63847F]">
             Gunakan saat checkout pre-order / di kasir
@@ -466,7 +467,7 @@ export function CustomerPortal() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold uppercase tracking-wider text-[#183331] flex items-center gap-2">
-            <span>🎫</span> Tiket & Riwayat Pesanan Saya
+            Tiket & Riwayat Pesanan Saya
           </h3>
           <span className="text-[11px] text-[#63847F]">
             Tunjukkan tiket ke staf kami di stand
@@ -516,22 +517,22 @@ export function CustomerPortal() {
                           }`}
                         >
                           {order.status === "READY_FOR_REDEMPTION"
-                            ? "✅ Siap Diambil di Stand"
+                            ? "Siap Diambil di Stand"
                             : order.status === "WAITING_VERIFICATION"
-                            ? "⏳ Verifikasi Pembayaran"
+                            ? "Verifikasi Pembayaran"
                             : order.status === "PENDING_PAYMENT"
-                            ? "💳 Menunggu Pembayaran"
+                            ? "Menunggu Pembayaran"
                             : order.status === "COMPLETED"
-                            ? "🎉 Selesai"
+                            ? "Selesai"
                             : order.status}
                         </span>
                       </div>
                       <p className="text-[10px] text-[#63847F] mt-0.5">
                         {order.pickupMethod === "BATCH_PICKUP"
-                          ? `📦 Pre-Order: ${order.batchInfo || "Jadwal Batch"}`
+                          ? `Pre-Order: ${order.batchInfo || "Jadwal Batch"}`
                           : order.pickupMethod === "FLEXIBLE"
-                          ? "📦 Pengambilan Fleksibel"
-                          : "🎪 Stand Event Market Day"}
+                          ? "Pengambilan Fleksibel"
+                          : "Stand Event Market Day"}
                       </p>
                     </div>
 
@@ -565,7 +566,7 @@ export function CustomerPortal() {
                       href={`/order/${order.orderNumber}`}
                       className="px-3.5 py-1.5 rounded-xl bg-noury-mint hover:bg-noury-teal text-white text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
                     >
-                      <span>🎫</span> Buka Tiket QR Penukaran
+                      Buka Tiket QR Penukaran
                     </Link>
                   </div>
                 </div>

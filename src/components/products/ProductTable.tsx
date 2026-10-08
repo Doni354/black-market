@@ -233,8 +233,8 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                               />
                             </div>
                           ) : (
-                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-100 text-base font-bold text-zinc-400">
-                              🥗
+                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-[#E2ECE8] bg-[#F4F9F7] text-xs font-bold text-[#7A9C96]">
+                              <span className="font-mono text-[10px]">MENU</span>
                             </div>
                           )}
 

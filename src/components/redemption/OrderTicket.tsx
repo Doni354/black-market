@@ -319,10 +319,10 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
               <p className="text-[#7A9C96]">Pengambilan</p>
               <p className="font-medium text-[#4A6864] mt-0.5">
                 {order.pickupMethod === "BATCH_PICKUP"
-                  ? `📦 Pre-Order: ${order.batchInfo || "Jadwal Batch"}`
+                  ? `Pre-Order: ${order.batchInfo || "Jadwal Batch"}`
                   : order.pickupMethod === "FLEXIBLE"
-                  ? "📦 Ambil Fleksibel"
-                  : "🎪 Stand Market Day"}
+                  ? "Ambil Fleksibel"
+                  : "Stand Market Day"}
               </p>
             </div>
           </div>
@@ -380,7 +380,6 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
             href="/account"
             className="flex-1 py-2.5 px-3 rounded-xl bg-noury-mint hover:bg-noury-teal text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-xs"
           >
-            <span>👤</span>
             <span>Akun Saya</span>
           </Link>
 

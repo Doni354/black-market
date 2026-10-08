@@ -202,8 +202,10 @@ export function POSContainer({ products, cashierName }: POSContainerProps) {
               onClick={() => setIsMobileCartOpen(true)}
               className="flex items-center gap-2.5 text-left cursor-pointer"
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#EAF5F1] text-sm">
-                🛒
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#EAF5F1] text-[#2A5E56]">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
               </span>
               <div className="flex flex-col">
                 <span className="text-[11px] text-[#52706C]">

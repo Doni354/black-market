@@ -23,8 +23,8 @@ const variantClasses: Record<ToastVariant, string> = {
 const variantIcons: Record<ToastVariant, string> = {
   success: "✓",
   error: "✕",
-  warning: "⚠",
-  info: "ℹ",
+  warning: "!",
+  info: "i",
 };
 
 function Toast({ id, message, variant = "info", duration = 4000, onRemove }: ToastProps) {

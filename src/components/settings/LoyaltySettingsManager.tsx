@@ -52,7 +52,6 @@ export function LoyaltySettingsManager({ initialSettings }: LoyaltySettingsManag
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EEF5F2] pb-4">
         <div>
           <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#EAF5F1] text-[#3D8383] text-[11px] font-bold mb-1 border border-[#CDE5DC]">
-            <span>🥑</span>
             <span>PROGRAM LOYALITAS MAHASISWA KWH</span>
           </div>
           <h2 className="text-base sm:text-lg font-bold text-[#183331]">
@@ -158,7 +157,6 @@ export function LoyaltySettingsManager({ initialSettings }: LoyaltySettingsManag
         {/* Live Calculation Preview */}
         <div className="rounded-xl border border-[#D5E6E1] bg-[#F9FBFA] p-3.5 text-xs text-[#183331] space-y-1">
           <p className="font-bold text-[#183331] flex items-center gap-1.5">
-            <span>📊</span>
             <span>Simulasi Keuangan Loyalitas KWH:</span>
           </p>
           <p className="text-[#52706C] text-[11px]">

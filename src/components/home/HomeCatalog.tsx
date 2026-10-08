@@ -25,12 +25,12 @@ interface HomeCatalogProps {
 }
 
 const CATEGORIES: Array<{ key: string; label: string }> = [
-  { key: "ALL", label: "✨ Semua Menu" },
-  { key: "FRUIT_BOWL", label: "🍉 Fruit Bowls" },
-  { key: "SMOOTHIE_JUICE", label: "🥤 Smoothies & Juices" },
-  { key: "INFUSED_WATER", label: "💧 Infused Water" },
-  { key: "HEALTHY_FOOD", label: "🥗 Healthy Eats" },
-  { key: "BUNDLE", label: "🎁 Fresh Bundles" },
+  { key: "ALL", label: "Semua Menu" },
+  { key: "FRUIT_BOWL", label: "Fruit Bowls" },
+  { key: "SMOOTHIE_JUICE", label: "Smoothies & Juices" },
+  { key: "INFUSED_WATER", label: "Infused Water" },
+  { key: "HEALTHY_FOOD", label: "Healthy Eats" },
+  { key: "BUNDLE", label: "Fresh Bundles" },
 ];
 
 export function HomeCatalog({ products }: HomeCatalogProps) {
@@ -268,7 +268,7 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
       setSelectedCoupon(null);
       setIsCheckoutOpen(false);
       await refreshAccount();
-      toast("Pre-Order Noury Anda berhasil dibuat! 🎉", "success");
+      toast("Pre-Order Noury Anda berhasil dibuat!", "success");
     } catch (err) {
       toast(
         err instanceof Error ? err.message : "Terjadi kesalahan pemesanan.",
@@ -317,7 +317,6 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
             href="/account"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#D2E2DD] text-noury-teal hover:border-noury-mint hover:text-noury-mint shadow-xs transition"
           >
-            <span>🎁</span>
             <span>Kartu Stempel & Riwayat Pesanan Saya</span>
           </Link>
         </div>
@@ -368,7 +367,6 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
       <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
         {filteredProducts.length === 0 ? (
           <div className="col-span-full py-16 text-center text-[#688580]">
-            <span className="text-3xl block mb-2">🥗</span>
             <p className="text-base font-semibold text-[#183331]">Menu belum tersedia</p>
             <p className="text-xs mt-1 text-[#688580]">
               Silakan cek kembali nanti atau pilih kategori menu lainnya.
@@ -396,16 +394,14 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
                         sizes="(max-width: 640px) 50vw, 25vw"
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-3xl">
-                        {product.type === "FRUIT_BOWL"
-                          ? "🍉"
-                          : product.type === "SMOOTHIE_JUICE"
-                          ? "🥤"
-                          : product.type === "INFUSED_WATER"
-                          ? "💧"
-                          : product.type === "HEALTHY_FOOD"
-                          ? "🥗"
-                          : "✨"}
+                      <div className="flex h-full w-full items-center justify-center p-6 text-[#7A9C96]">
+                        <Image
+                          src="/icons/Logo.svg"
+                          alt="Noury"
+                          width={75}
+                          height={26}
+                          className="opacity-40 grayscale object-contain"
+                        />
                       </div>
                     )}
 
@@ -496,7 +492,9 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
           <div className="flex items-center justify-between rounded-2xl border border-[#CDE1DC] bg-white/95 p-3.5 shadow-2xl backdrop-blur-md">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-noury-mint text-white font-bold text-base shadow-sm">
-                🥗
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
               </div>
               <div>
                 <p className="text-xs text-[#52706C]">
@@ -608,10 +606,9 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
           {/* Member Authenticated Info */}
           {user && (
             <div className="rounded-xl border border-noury-mint/30 bg-[#F0F7F4] p-2.5 flex items-center gap-2">
-              <span className="text-base">👤</span>
               <div className="text-[11px]">
                 <p className="font-bold text-[#183331]">Akun: {user.displayName || user.email}</p>
-                <p className="text-noury-teal">Stempel saat ini: {account?.stampsCount || 0}★ (Pesanan yang memenuhi syarat akan menambah stempel)</p>
+                <p className="text-noury-teal">Stempel saat ini: {account?.stampsCount || 0} Stempel (Pesanan yang memenuhi syarat akan menambah stempel)</p>
               </div>
             </div>
           )}
@@ -652,7 +649,7 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
           {user && availableCoupons.length > 0 && (
             <div>
               <label className="text-[11px] font-semibold uppercase tracking-wider text-noury-teal mb-1.5 block">
-                🎟️ Gunakan Voucher Diskon
+                Gunakan Voucher Diskon
               </label>
               <div className="flex flex-col gap-1.5">
                 {availableCoupons.map((coupon) => {
@@ -732,7 +729,7 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
                     : "border-[#DCE8E4] bg-white text-[#4A6864]"
                 }`}
               >
-                <p className="text-xs font-bold">🎪 Stand Market Day</p>
+                <p className="text-xs font-bold">Stand Market Day</p>
                 <p className="text-[10px] text-[#63847F] font-normal">Ambil di stan saat hari H Market Day</p>
               </button>
 
@@ -745,14 +742,14 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
                     : "border-[#DCE8E4] bg-white text-[#4A6864]"
                 }`}
               >
-                <p className="text-xs font-bold">📦 {batchSettings.activeBatchName}</p>
+                <p className="text-xs font-bold">{batchSettings.activeBatchName}</p>
                 <p className="text-[10px] text-[#63847F] font-normal">{batchSettings.batchPickupSchedule}</p>
               </button>
             </div>
 
             {pickupMethod === "BATCH_PICKUP" && (
               <p className="mt-1.5 text-[10px] text-[#47957F] bg-[#EDF6F3] p-2 rounded-lg border border-[#D0E5DF]">
-                📍 <strong>Lokasi Pengambilan:</strong> {batchSettings.batchPickupLocation}
+                <strong>Lokasi Pengambilan:</strong> {batchSettings.batchPickupLocation}
               </p>
             )}
           </div>
@@ -772,7 +769,7 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
                     : "border-[#DCE8E4] bg-white text-[#4A6864]"
                 }`}
               >
-                📱 QRIS (E-Wallet / Bank)
+                QRIS (E-Wallet / Bank)
               </button>
               <button
                 type="button"
@@ -783,7 +780,7 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
                     : "border-[#DCE8E4] bg-white text-[#4A6864]"
                 }`}
               >
-                🏦 Transfer {paymentSettings.bankName || "Bank"}
+                Transfer {paymentSettings.bankName || "Bank"}
               </button>
             </div>
           </div>
@@ -792,7 +789,7 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
           {paymentMethod === "QRIS" ? (
             <div className="rounded-xl border border-[#DCE8E4] bg-[#F9FBFA] p-3 text-center space-y-2">
               <p className="font-bold text-xs text-[#183331]">
-                📱 Scan QRIS: {paymentSettings.qrisMerchantName}
+                Scan QRIS: {paymentSettings.qrisMerchantName}
               </p>
               {paymentSettings.qrisImageUrl ? (
                 <div className="relative h-44 w-44 mx-auto rounded-lg overflow-hidden border border-[#DCE8E4] bg-white shadow-xs">
@@ -854,7 +851,7 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
       <Modal
         isOpen={Boolean(successOrderNumber)}
         onClose={() => setSuccessOrderNumber(null)}
-        title="Pre-Order Berhasil Dibuat! 🎉"
+        title="Pre-Order Berhasil Dibuat!"
         description="Pesanan Anda telah tercatat di sistem Noury."
         size="sm"
         footer={
@@ -864,7 +861,7 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
                 href={`/order/${successOrderNumber}`}
                 className="w-full text-center py-2.5 rounded-xl bg-noury-mint hover:bg-noury-teal text-white font-bold text-xs shadow-md transition"
               >
-                🎫 Buka Tiket QR Penukaran
+                Buka Tiket QR Penukaran
               </Link>
             )}
             <Button

@@ -94,7 +94,6 @@ export function PaymentSettingsManager({ initialSettings }: PaymentSettingsManag
     <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 sm:p-6 shadow-xs">
       <div className="border-b border-[#EEF5F2] pb-4 mb-5">
         <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#EAF5F1] text-[#3D8383] text-[11px] font-bold mb-1 border border-[#CDE5DC]">
-          <span>💳</span>
           <span>METODE PEMBAYARAN NOURY</span>
         </div>
         <h2 className="text-base sm:text-lg font-bold text-[#183331]">
@@ -109,7 +108,7 @@ export function PaymentSettingsManager({ initialSettings }: PaymentSettingsManag
         {/* Section 1: QRIS Barcode */}
         <div className="rounded-xl border border-[#E2ECE8] bg-[#F9FBFA] p-4 space-y-3">
           <h3 className="text-xs font-bold uppercase tracking-wider text-[#3D8383] flex items-center gap-2">
-            <span>📱</span> 1. Barcode QRIS Resmi
+            1. Barcode QRIS Resmi
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start">
@@ -189,7 +188,7 @@ export function PaymentSettingsManager({ initialSettings }: PaymentSettingsManag
         {/* Section 2: Bank Transfer Details */}
         <div className="rounded-xl border border-[#E2ECE8] bg-[#F9FBFA] p-4 space-y-3">
           <h3 className="text-xs font-bold uppercase tracking-wider text-[#47957F] flex items-center gap-2">
-            <span>🏦</span> 2. Rekening Bank Transfer
+            2. Rekening Bank Transfer
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

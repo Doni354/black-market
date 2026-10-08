@@ -172,7 +172,6 @@ export function RedemptionReview({
           <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-base">🤝</span>
                 <div>
                   <p className="text-xs font-bold text-amber-900 uppercase tracking-wide">
                     Tagihan Belum Lunas — Pelunasan di Stan
@@ -189,7 +188,6 @@ export function RedemptionReview({
 
             {order.proofUrl && (
               <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-white border border-emerald-300">
-                <span className="text-sm">📷</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-[11px] font-semibold text-emerald-800">Pembeli Mengunggah Bukti Bayar:</p>
                   <a
@@ -219,7 +217,7 @@ export function RedemptionReview({
                       : "bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50"
                   }`}
                 >
-                  💵 Tunai (Cash)
+                  Tunai (Cash)
                 </button>
                 <button
                   type="button"
@@ -230,7 +228,7 @@ export function RedemptionReview({
                       : "bg-white border-zinc-200 text-zinc-600 hover:bg-zinc-50"
                   }`}
                 >
-                  📱 QRIS Stan
+                  QRIS Stan
                 </button>
               </div>
 

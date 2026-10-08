@@ -203,7 +203,7 @@ export function PaymentModal({
                   : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
               }`}
             >
-              💵 Tunai / Cash
+              Tunai / Cash
             </button>
 
             <button
@@ -215,7 +215,7 @@ export function PaymentModal({
                   : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
               }`}
             >
-              📱 QRIS
+              QRIS
             </button>
 
             <button
@@ -227,7 +227,7 @@ export function PaymentModal({
                   : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
               }`}
             >
-              🏦 Transfer Bank
+              Transfer Bank
             </button>
           </div>
         </div>

@@ -191,8 +191,8 @@ export function PaymentVerifyModal({
 
         {/* Important notice */}
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-[11px] text-amber-800">
-          <p className="font-bold flex items-center gap-1 mb-0.5">
-            ⚠️ Perhatian Penting
+          <p className="font-bold mb-0.5">
+            Perhatian Penting
           </p>
           <p>
             Setelah pembayaran disetujui, stok produk otomatis akan terpotong dari inventaris dan tiket QR redemption akan langsung aktif untuk penukaran.

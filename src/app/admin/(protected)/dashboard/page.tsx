@@ -162,7 +162,6 @@ export default async function DashboardPage() {
               className="flex-1 flex items-center justify-between rounded-2xl border border-emerald-300 bg-emerald-50/80 p-3.5 text-emerald-900 hover:bg-emerald-100/70 transition-colors shadow-xs"
             >
               <div className="flex items-center gap-2.5 text-xs font-medium">
-                <span>🎫</span>
                 <span><strong>{readyForRedemptionCount}</strong> Tiket siap diambil di stan</span>
               </div>
               <span className="text-xs font-bold underline">Scan QR →</span>
@@ -175,7 +174,6 @@ export default async function DashboardPage() {
               className="flex-1 flex items-center justify-between rounded-2xl border border-orange-300 bg-orange-50/80 p-3.5 text-orange-900 hover:bg-orange-100/70 transition-colors shadow-xs"
             >
               <div className="flex items-center gap-2.5 text-xs font-medium">
-                <span>⚠️</span>
                 <span><strong>{lowStockCount}</strong> Menu/Bahan stok menipis (&lt;10)</span>
               </div>
               <span className="text-xs font-bold underline">Restock →</span>
