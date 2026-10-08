@@ -25,7 +25,7 @@ export function POSContainer({ products, cashierName }: POSContainerProps) {
   const { toast } = useToast();
 
   const [cartItems, setCartItems] = useState<CartItemData[]>([]);
-  const [discount] = useState<number>(0);
+  const [discount, setDiscount] = useState<number>(0);
 
   // Modals state
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
@@ -97,6 +97,7 @@ export function POSContainer({ products, cashierName }: POSContainerProps) {
 
   function handleClearCart() {
     setCartItems([]);
+    setDiscount(0);
   }
 
   // Calculate totals
@@ -144,6 +145,7 @@ export function POSContainer({ products, cashierName }: POSContainerProps) {
     setIsMobileCartOpen(false);
     setCompletedResult(res.result);
     setCartItems([]);
+    setDiscount(0);
     toast(`Transaksi #${res.result.order.orderNumber} berhasil!`, "success");
   }
 
@@ -153,16 +155,16 @@ export function POSContainer({ products, cashierName }: POSContainerProps) {
       <div className="flex-1 lg:overflow-y-auto pr-1">
         <div className="mb-4 flex items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
+            <h1 className="text-2xl font-black tracking-tight text-[#183331]">
               POS / Kasir
             </h1>
-            <p className="text-xs text-zinc-400 mt-0.5">
-              Pencatatan transaksi penjualan langsung di tempat.
+            <p className="text-xs text-[#52706C] mt-0.5">
+              Pencatatan transaksi penjualan langsung di stand Noury KWH.
             </p>
           </div>
           <Link
             href="/admin/pos/redeem"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-600/10 hover:bg-red-600/20 text-red-400 text-xs font-semibold border border-red-500/30 transition shadow-sm"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#EAF5F1] hover:bg-[#D5EFE7] text-[#3D8383] text-xs font-bold border border-[#CDE5DC] transition shadow-xs"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
@@ -186,6 +188,7 @@ export function POSContainer({ products, cashierName }: POSContainerProps) {
           onUpdateQty={handleUpdateQty}
           onRemove={handleRemoveItem}
           onClearCart={handleClearCart}
+          onSetDiscount={setDiscount}
           onCheckout={() => setIsPaymentOpen(true)}
         />
       </div>
@@ -193,20 +196,20 @@ export function POSContainer({ products, cashierName }: POSContainerProps) {
       {/* Mobile Floating Cart Action Bar (Appears when cart has items) */}
       {cartItems.length > 0 && (
         <div className="fixed bottom-3 left-3 right-3 z-30 lg:hidden">
-          <div className="flex items-center justify-between gap-3 rounded-2xl border border-red-600/50 bg-zinc-950/95 p-3.5 shadow-2xl backdrop-blur-md">
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#47957F]/40 bg-white/95 p-3.5 shadow-xl backdrop-blur-md">
             <button
               type="button"
               onClick={() => setIsMobileCartOpen(true)}
               className="flex items-center gap-2.5 text-left cursor-pointer"
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-800 text-sm">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#EAF5F1] text-sm">
                 🛒
               </span>
               <div className="flex flex-col">
-                <span className="text-[11px] text-zinc-400">
+                <span className="text-[11px] text-[#52706C]">
                   {totalCartCount} item • Cek Keranjang
                 </span>
-                <span className="text-base font-black text-red-400">
+                <span className="text-base font-black text-[#183331]">
                   {formatRupiah(total)}
                 </span>
               </div>
@@ -215,7 +218,7 @@ export function POSContainer({ products, cashierName }: POSContainerProps) {
             <button
               type="button"
               onClick={() => setIsPaymentOpen(true)}
-              className="flex items-center gap-1.5 rounded-xl bg-red-600 px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-red-950/50 hover:bg-red-500 active:scale-95 transition-transform cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl bg-[#47957F] px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-[#47957F]/25 hover:bg-[#3D8383] active:scale-95 transition-transform cursor-pointer"
             >
               <span>Bayar</span>
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -238,7 +241,7 @@ export function POSContainer({ products, cashierName }: POSContainerProps) {
             <button
               type="button"
               onClick={handleClearCart}
-              className="text-xs text-zinc-500 hover:text-red-400 cursor-pointer"
+              className="text-xs text-[#7A9C96] hover:text-rose-600 cursor-pointer font-medium"
             >
               Kosongkan
             </button>

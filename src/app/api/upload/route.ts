@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     // 1. Read multipart form data (Public upload permitted for pre-order payment proofs and admin catalog)
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
-    const folder = (formData.get("folder") as string) || "black-market/products";
+    const folder = (formData.get("folder") as string) || "noury/products";
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });

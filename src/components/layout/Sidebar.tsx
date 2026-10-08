@@ -95,20 +95,11 @@ function LogoutIcon() {
   );
 }
 
-function CustomMerchIcon() {
-  return (
-    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-1.677c0-.28-.027-.552-.078-.816a1.5 1.5 0 01.358-1.385l5.24-5.24a3 3 0 00-4.24-4.24l-5.24 5.24a1.5 1.5 0 01-1.385.358A4.47 4.47 0 009.53 16.122z" />
-    </svg>
-  );
-}
-
 const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/admin/dashboard", icon: <DashboardIcon /> },
   { label: "POS / Kasir", href: "/admin/pos", icon: <PosIcon /> },
   { label: "Redeem Tiket", href: "/admin/pos/redeem", icon: <QrIcon /> },
   { label: "Orders", href: "/admin/orders", icon: <OrdersIcon /> },
-  { label: "Custom Merch", href: "/admin/custom-requests", icon: <CustomMerchIcon /> },
   { label: "Products", href: "/admin/products", icon: <ProductsIcon />, adminOnly: true },
   { label: "Inventory", href: "/admin/inventory", icon: <InventoryIcon />, adminOnly: true },
   { label: "Expenses", href: "/admin/expenses", icon: <ExpensesIcon />, adminOnly: true },
@@ -153,20 +144,19 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-0 z-30 flex h-full w-64 flex-col bg-zinc-950 border-r border-zinc-800",
-          "transition-transform duration-200 ease-in-out",
+          "fixed left-0 top-0 z-30 flex h-full w-64 flex-col bg-white border-r border-[#E2ECE8]",
+          "transition-transform duration-200 ease-in-out shadow-xs",
           "lg:translate-x-0 lg:static lg:z-auto",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {/* Logo */}
-        <div className="flex h-16 items-center gap-3 border-b border-zinc-800 px-5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600 shadow-md shadow-red-950/40">
-            <span className="text-sm font-black text-white">BM</span>
-          </div>
-          <div>
-            <h1 className="text-sm font-bold text-zinc-100">Black Market</h1>
-            <p className="text-xs text-zinc-500">Operations</p>
+        <div className="flex h-16 items-center gap-3 border-b border-[#E2ECE8] px-5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/icons/Logo.svg" alt="Noury" className="h-8 w-auto object-contain" />
+          <div className="border-l border-[#E2ECE8] pl-3">
+            <h1 className="text-xs font-black tracking-tight text-[#183331]">NOURY</h1>
+            <p className="text-[10px] text-[#47957F] font-bold">Staf & Operasional</p>
           </div>
         </div>
 
@@ -184,13 +174,13 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
                     href={item.href}
                     onClick={onClose}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                      "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-semibold transition-all",
                       isActive
-                        ? "bg-red-600/15 text-red-400 font-semibold"
-                        : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                        ? "bg-[#EAF5F1] text-[#3D8383] font-bold border border-[#CDE5DC] shadow-xs"
+                        : "text-[#52706C] hover:bg-[#F2F8F5] hover:text-[#183331]"
                     )}
                   >
-                    <span className={isActive ? "text-red-400" : "text-zinc-500"}>
+                    <span className={isActive ? "text-[#3D8383]" : "text-[#7A9C96]"}>
                       {item.icon}
                     </span>
                     {item.label}
@@ -202,22 +192,22 @@ export function Sidebar({ user, isOpen, onClose }: SidebarProps) {
         </nav>
 
         {/* User info + Logout */}
-        <div className="border-t border-zinc-800 p-4">
+        <div className="border-t border-[#E2ECE8] p-4 bg-[#F9FBFA]">
           <div className="mb-3 flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-800 text-sm font-bold text-zinc-300">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#EAF5F1] text-xs font-black text-[#3D8383] border border-[#CDE5DC]">
               {user.name.charAt(0).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-zinc-200">{user.name}</p>
-              <p className="text-xs text-zinc-500">{user.role}</p>
+              <p className="truncate text-xs font-bold text-[#183331]">{user.name}</p>
+              <p className="text-[11px] text-[#52706C]">{user.role}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-red-400"
+            className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold text-[#6B7280] transition-colors hover:bg-rose-50 hover:text-rose-600 cursor-pointer"
           >
             <LogoutIcon />
-            Logout
+            Keluar Sesi
           </button>
         </div>
       </aside>

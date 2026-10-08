@@ -11,21 +11,21 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses = {
   primary:
-    "bg-red-600 hover:bg-red-500 active:bg-red-700 text-white shadow-sm shadow-red-950/30",
+    "bg-[#47957F] hover:bg-[#3D8383] active:bg-[#326D5C] text-white shadow-md shadow-[#47957F]/20",
   secondary:
-    "bg-zinc-800 hover:bg-zinc-700 active:bg-zinc-600 text-zinc-100 shadow-sm",
+    "bg-[#EDF4F1] hover:bg-[#DFECE8] active:bg-[#D1E4DE] text-[#1E433E] border border-[#D5E5E0] shadow-xs",
   danger:
-    "bg-red-700 hover:bg-red-600 active:bg-red-800 text-white shadow-sm",
+    "bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white shadow-xs",
   ghost:
-    "bg-transparent hover:bg-zinc-800 active:bg-zinc-700 text-zinc-300",
+    "bg-transparent hover:bg-[#F0F7F4] active:bg-[#E3EFEA] text-[#244642]",
   outline:
-    "border border-zinc-700 bg-transparent hover:bg-zinc-800 active:bg-zinc-700 text-zinc-300",
+    "border border-[#CFE1DC] bg-white hover:bg-[#F4F9F7] active:bg-[#EBF3F0] text-[#244642] shadow-2xs",
 };
 
 const sizeClasses = {
-  sm: "px-3 py-1.5 text-sm rounded-md gap-1.5",
-  md: "px-4 py-2 text-sm rounded-lg gap-2",
-  lg: "px-6 py-3 text-base rounded-lg gap-2",
+  sm: "px-3 py-1.5 text-xs rounded-lg gap-1.5",
+  md: "px-4 py-2 text-xs font-bold rounded-xl gap-2",
+  lg: "px-6 py-3 text-sm font-bold rounded-xl gap-2",
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -47,7 +47,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || loading}
         className={cn(
           "inline-flex items-center justify-center font-medium transition-colors cursor-pointer",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#47957F] focus-visible:ring-offset-2 focus-visible:ring-offset-white",
           "disabled:pointer-events-none disabled:opacity-50",
           variantClasses[variant],
           sizeClasses[size],

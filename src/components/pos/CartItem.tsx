@@ -21,16 +21,16 @@ export function CartItem({ item, onUpdateQty, onRemove }: CartItemProps) {
     product.trackInventory && quantity >= product.stock;
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-900/60 p-3 transition-colors hover:border-zinc-700">
+    <div className="flex items-center justify-between gap-3 rounded-xl border border-zinc-200/80 bg-zinc-50/70 p-3 transition-colors hover:border-zinc-300">
       {/* Product Details */}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-zinc-100">
+        <p className="truncate text-sm font-semibold text-zinc-800">
           {product.name}
         </p>
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-zinc-500">
           {formatRupiah(product.price)}
           {product.trackInventory && (
-            <span className="text-zinc-500 ml-1.5">
+            <span className="text-zinc-400 ml-1.5">
               (stok: {product.stock})
             </span>
           )}
@@ -39,16 +39,16 @@ export function CartItem({ item, onUpdateQty, onRemove }: CartItemProps) {
 
       {/* Quantity Stepper */}
       <div className="flex items-center gap-2">
-        <div className="flex items-center rounded-lg border border-zinc-700 bg-zinc-950 p-0.5">
+        <div className="flex items-center rounded-lg border border-zinc-200 bg-white p-0.5 shadow-sm">
           <button
             type="button"
             onClick={() => onUpdateQty(product.id, -1)}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors cursor-pointer font-bold text-sm"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-colors cursor-pointer font-bold text-sm"
             aria-label="Kurangi jumlah"
           >
             -
           </button>
-          <span className="w-7 text-center text-xs font-bold text-zinc-100">
+          <span className="w-7 text-center text-xs font-bold text-zinc-800">
             {quantity}
           </span>
           <button
@@ -57,8 +57,8 @@ export function CartItem({ item, onUpdateQty, onRemove }: CartItemProps) {
             onClick={() => onUpdateQty(product.id, 1)}
             className={`flex h-7 w-7 items-center justify-center rounded-md transition-colors cursor-pointer font-bold text-sm ${
               isStockLimited
-                ? "text-zinc-600 cursor-not-allowed"
-                : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                ? "text-zinc-300 cursor-not-allowed"
+                : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
             }`}
             aria-label="Tambah jumlah"
           >
@@ -68,7 +68,7 @@ export function CartItem({ item, onUpdateQty, onRemove }: CartItemProps) {
 
         {/* Subtotal */}
         <div className="w-20 text-right">
-          <span className="text-xs font-bold text-red-400">
+          <span className="text-xs font-bold text-[#3D8383]">
             {formatRupiah(lineSubtotal)}
           </span>
         </div>
@@ -77,7 +77,7 @@ export function CartItem({ item, onUpdateQty, onRemove }: CartItemProps) {
         <button
           type="button"
           onClick={() => onRemove(product.id)}
-          className="p-1 text-zinc-500 hover:text-red-400 transition-colors cursor-pointer"
+          className="p-1 text-zinc-400 hover:text-red-500 transition-colors cursor-pointer"
           title="Hapus dari keranjang"
         >
           ✕

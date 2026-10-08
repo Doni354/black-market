@@ -1,10 +1,12 @@
-const CACHE_NAME = 'bm-cache-v1';
+const CACHE_NAME = 'noury-cache-v2';
 const PRECACHE_ASSETS = [
   '/',
   '/manifest.webmanifest',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
+  '/icons/icon-maskable.png',
   '/icons/icon.svg',
+  '/icons/Logo.svg',
 ];
 
 self.addEventListener('install', (event) => {

@@ -23,33 +23,33 @@ const TYPE_CONFIG: Record<
 export function MovementHistory({ movements }: MovementHistoryProps) {
   if (movements.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-900/30 p-12 text-center text-zinc-500">
-        <p className="text-sm font-semibold text-zinc-300">
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#C4D9D2] bg-white p-12 text-center text-[#7A9C96] shadow-xs">
+        <p className="text-sm font-bold text-[#183331]">
           Belum ada riwayat pergerakan stok
         </p>
-        <p className="mt-1 text-xs text-zinc-600">
-          Transaksi penjualan POS dan penyesuaian stok akan tercatat otomatis di sini.
+        <p className="mt-1 text-xs text-[#52706C]">
+          Transaksi penjualan POS dan penyesuaian porsi akan tercatat otomatis di sini.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 backdrop-blur-xs">
+    <div className="overflow-hidden rounded-2xl border border-[#E2ECE8] bg-white shadow-xs">
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-zinc-300">
-          <thead className="border-b border-zinc-800 bg-zinc-950/60 text-xs uppercase tracking-wider text-zinc-400">
+        <table className="w-full text-left text-xs text-[#183331]">
+          <thead className="border-b border-[#E2ECE8] bg-[#FAFCFB] text-[11px] uppercase tracking-wider text-[#52706C]">
             <tr>
-              <th className="px-4 py-3.5">Waktu</th>
-              <th className="px-4 py-3.5">Produk</th>
-              <th className="px-4 py-3.5">Jenis Pergerakan</th>
-              <th className="px-4 py-3.5 text-center">Perubahan (Delta)</th>
-              <th className="px-4 py-3.5">Referensi</th>
-              <th className="px-4 py-3.5">Catatan</th>
-              <th className="px-4 py-3.5">Oleh</th>
+              <th className="px-4 py-3.5 font-semibold">Waktu</th>
+              <th className="px-4 py-3.5 font-semibold">Menu / Produk</th>
+              <th className="px-4 py-3.5 font-semibold">Jenis Pergerakan</th>
+              <th className="px-4 py-3.5 text-center font-semibold">Perubahan (Delta)</th>
+              <th className="px-4 py-3.5 font-semibold">Referensi</th>
+              <th className="px-4 py-3.5 font-semibold">Catatan</th>
+              <th className="px-4 py-3.5 font-semibold">Oleh</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-800/80">
+          <tbody className="divide-y divide-[#F0F5F3]">
             {movements.map((m) => {
               const meta = TYPE_CONFIG[m.type] || {
                 label: m.type,
@@ -67,15 +67,15 @@ export function MovementHistory({ movements }: MovementHistoryProps) {
               return (
                 <tr
                   key={m.id}
-                  className="transition-colors hover:bg-zinc-800/30"
+                  className="transition-colors hover:bg-[#F8FAF9]"
                 >
                   {/* Timestamp */}
-                  <td className="px-4 py-3 text-xs text-zinc-400 whitespace-nowrap">
+                  <td className="px-4 py-3 text-xs text-[#52706C] whitespace-nowrap">
                     {dateStr}
                   </td>
 
                   {/* Product Name */}
-                  <td className="px-4 py-3 font-semibold text-zinc-100 whitespace-nowrap">
+                  <td className="px-4 py-3 font-semibold text-[#183331] whitespace-nowrap">
                     {m.productName}
                   </td>
 
@@ -88,7 +88,7 @@ export function MovementHistory({ movements }: MovementHistoryProps) {
                   <td className="px-4 py-3 text-center whitespace-nowrap">
                     <span
                       className={`inline-block font-mono font-bold text-sm ${
-                        isPositive ? "text-emerald-400" : "text-red-400"
+                        isPositive ? "text-[#47957F]" : "text-rose-600"
                       }`}
                     >
                       {isPositive ? `+${m.quantity}` : m.quantity}
@@ -96,17 +96,17 @@ export function MovementHistory({ movements }: MovementHistoryProps) {
                   </td>
 
                   {/* Reference */}
-                  <td className="px-4 py-3 text-xs font-mono text-zinc-400 whitespace-nowrap">
+                  <td className="px-4 py-3 text-xs font-mono text-[#52706C] whitespace-nowrap">
                     {m.referenceId || "—"}
                   </td>
 
                   {/* Notes */}
-                  <td className="px-4 py-3 text-xs text-zinc-300 max-w-xs truncate">
-                    {m.note || <span className="text-zinc-600 italic">—</span>}
+                  <td className="px-4 py-3 text-xs text-[#3A5E58] max-w-xs truncate">
+                    {m.note || <span className="text-[#A0BCB6] italic">—</span>}
                   </td>
 
                   {/* Created By */}
-                  <td className="px-4 py-3 text-xs text-zinc-400 whitespace-nowrap">
+                  <td className="px-4 py-3 text-xs text-[#52706C] whitespace-nowrap font-medium">
                     {m.createdBy}
                   </td>
                 </tr>

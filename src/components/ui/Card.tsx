@@ -29,7 +29,7 @@ export function Card({ children, className }: CardProps) {
   return (
     <div
       className={cn(
-        "rounded-xl border border-zinc-800 bg-zinc-900 shadow-sm",
+        "rounded-2xl border border-[#E2ECE8] bg-white shadow-xs",
         className
       )}
     >
@@ -48,7 +48,7 @@ export function CardHeader({ children, className }: CardHeaderProps) {
 
 export function CardTitle({ children, className }: CardTitleProps) {
   return (
-    <h3 className={cn("text-base font-semibold text-zinc-100", className)}>
+    <h3 className={cn("text-base font-bold text-[#183331]", className)}>
       {children}
     </h3>
   );
@@ -62,7 +62,7 @@ export function CardFooter({ children, className }: CardFooterProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-2 border-t border-zinc-800 p-5 pt-4",
+        "flex items-center gap-2 border-t border-[#EEF5F2] p-5 pt-4",
         className
       )}
     >

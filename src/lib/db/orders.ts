@@ -3,6 +3,11 @@ import { FieldValue } from "firebase-admin/firestore";
 import { generateOrderNumber } from "@/lib/utils/orderNumber";
 import { generateRedemptionCode } from "@/lib/utils/redemptionCode";
 import { findOrCreateCustomer } from "@/lib/db/customers";
+import {
+  markCustomerCouponUsed,
+  addCustomerStamp,
+  addCustomerStampByPhone,
+} from "@/lib/db/customer-portal";
 import { serializeFirestoreData } from "@/lib/utils/serialization";
 import type {
   Order,
@@ -66,7 +71,7 @@ export async function createDirectSale(
   }
 
   // Execute in a single atomic Firestore transaction
-  return await adminDb.runTransaction(async (transaction) => {
+  const result = await adminDb.runTransaction(async (transaction) => {
     // Collect all unique product IDs needed (both direct and bundle components)
     const directProductIds = cartItems.map((item) => item.productId);
     const directProductRefs = directProductIds.map((id) =>
@@ -281,6 +286,16 @@ export async function createDirectSale(
       }),
     };
   });
+
+  if (customerPhone?.trim()) {
+    try {
+      await addCustomerStampByPhone(customerPhone.trim(), result.order.total);
+    } catch (e) {
+      console.warn("Could not award loyalty stamp for POS sale:", e);
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -357,7 +372,7 @@ export async function getOrderById(orderId: string): Promise<Order | null> {
 }
 
 /**
- * Fetch a single order by human-readable Order Number (e.g. BM-000001).
+ * Fetch a single order by human-readable Order Number (e.g. NOURY-000001).
  */
 export async function getOrderByOrderNumber(
   orderNumber: string
@@ -422,10 +437,14 @@ export interface CreatePreOrderInput {
   customerEmail?: string;
   paymentMethod: PaymentMethod;
   notes?: string;
-  pickupMethod?: "MARKET_DAY" | "FLEXIBLE";
+  pickupMethod?: "MARKET_DAY" | "BATCH_PICKUP" | "FLEXIBLE";
+  batchInfo?: string;
   source: OrderSource;
   proofUrl?: string;
   createdBy: string;
+  couponCode?: string;
+  discount?: number;
+  customerId?: string;
 }
 
 export interface CreatePreOrderResult {
@@ -492,7 +511,8 @@ export async function createPreOrder(
     });
   }
 
-  const total = subtotal;
+  const discount = Math.max(0, input.discount || 0);
+  const total = Math.max(0, subtotal - discount);
   const orderNumber = generateOrderNumber();
   const isCod = input.paymentMethod === "COD";
   const redemptionCode = isCod ? generateRedemptionCode() : undefined;
@@ -514,9 +534,10 @@ export async function createPreOrder(
     paymentStatus,
     paymentMethod: input.paymentMethod,
     subtotal,
-    discount: 0,
+    discount,
     total,
     pickupMethod: input.pickupMethod || "MARKET_DAY",
+    batchInfo: input.batchInfo?.trim() || undefined,
     productionStatus: "IN_PRODUCTION",
     items: orderItemsSnapshot,
     createdBy: input.createdBy,
@@ -524,6 +545,12 @@ export async function createPreOrder(
     updatedAt: FieldValue.serverTimestamp(),
   };
 
+  if (input.couponCode?.trim()) {
+    orderData.couponCode = input.couponCode.trim();
+  }
+  if (input.customerId?.trim()) {
+    orderData.customerId = input.customerId.trim();
+  }
   if (redemptionCode) {
     orderData.redemptionCode = redemptionCode;
   }
@@ -569,7 +596,18 @@ export async function createPreOrder(
 
   await paymentRef.set(paymentData);
 
-  // 4. Update customer record if phone is provided
+  // 4. Update customer record and loyalty rewards
+  if (input.customerId?.trim()) {
+    try {
+      if (input.couponCode?.trim()) {
+        await markCustomerCouponUsed(input.customerId.trim(), input.couponCode.trim());
+      }
+      await addCustomerStamp(input.customerId.trim(), subtotal);
+    } catch (e) {
+      console.warn("Could not process customer coupon or stamp:", e);
+    }
+  }
+
   if (input.customerPhone?.trim()) {
     try {
       await findOrCreateCustomer({
@@ -613,7 +651,7 @@ export async function verifyOrderPayment(
   cashierId: string,
   proofUrl?: string
 ): Promise<{ order: Order; redemptionCode: string }> {
-  return await adminDb.runTransaction(async (transaction) => {
+  const result = await adminDb.runTransaction(async (transaction) => {
     const orderRef = adminDb.collection("orders").doc(orderId);
     const orderDoc = await transaction.get(orderRef);
 
@@ -789,6 +827,22 @@ export async function verifyOrderPayment(
       redemptionCode,
     };
   });
+
+  if (result.order.customerId) {
+    try {
+      await addCustomerStamp(result.order.customerId, result.order.subtotal);
+    } catch (e) {
+      console.warn("Could not award loyalty stamp for verified pre-order:", e);
+    }
+  } else if (result.order.customerPhone) {
+    try {
+      await addCustomerStampByPhone(result.order.customerPhone, result.order.subtotal);
+    } catch (e) {
+      console.warn("Could not award loyalty stamp by phone:", e);
+    }
+  }
+
+  return result;
 }
 
 /**

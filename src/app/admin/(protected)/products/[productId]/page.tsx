@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const product = await getProductById(productId);
 
   return {
-    title: product ? `Edit: ${product.name}` : "Produk Tidak Ditemukan",
+    title: product ? `Edit: ${product.name} | Noury` : "Produk Tidak Ditemukan",
   };
 }
 
@@ -34,24 +34,24 @@ export default async function EditProductPage({ params }: PageProps) {
   return (
     <div className="flex flex-col gap-6 max-w-4xl mx-auto">
       {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-xs text-zinc-500">
+      <nav className="flex items-center gap-2 text-xs text-[#52706C]">
         <Link
           href="/admin/products"
-          className="hover:text-zinc-300 transition-colors"
+          className="hover:text-[#183331] transition-colors"
         >
-          Produk
+          Katalog Menu
         </Link>
         <span>/</span>
-        <span className="text-zinc-300 font-medium">Edit: {product.name}</span>
+        <span className="text-[#183331] font-bold">Edit: {product.name}</span>
       </nav>
 
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
-          Edit Produk
+        <h1 className="text-2xl font-black tracking-tight text-[#183331]">
+          Edit Menu: {product.name}
         </h1>
-        <p className="mt-1 text-sm text-zinc-400">
-          Ubah informasi, harga, stok, atau status produk ini.
+        <p className="mt-1 text-sm text-[#52706C]">
+          Ubah informasi menu, harga, persediaan porsi, atau status penjualan di sistem.
         </p>
       </div>
 

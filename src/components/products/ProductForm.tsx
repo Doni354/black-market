@@ -17,11 +17,14 @@ interface ProductFormProps {
 }
 
 const PRODUCT_TYPES: { value: ProductType; label: string }[] = [
-  { value: "FOOD", label: "Makanan (Food)" },
-  { value: "DRINK", label: "Minuman (Drink)" },
-  { value: "MERCH", label: "Merchandise (Merch)" },
-  { value: "BUNDLE", label: "Paket Bundling (Bundle)" },
-  { value: "OTHER", label: "Lainnya (Other)" },
+  { value: "FRUIT_BOWL", label: "🍉 Fruit Bowl & Salad Buah" },
+  { value: "SMOOTHIE_JUICE", label: "🥤 Cold-Pressed Smoothie & Juice" },
+  { value: "INFUSED_WATER", label: "💧 Infused Water Segar" },
+  { value: "HEALTHY_FOOD", label: "🥗 Healthy Food & Wraps" },
+  { value: "BUNDLE", label: "🎁 Paket Bundling Hemat" },
+  { value: "FOOD", label: "Makanan Sehat Lainnya" },
+  { value: "DRINK", label: "Minuman Sehat Lainnya" },
+  { value: "OTHER", label: "Lainnya" },
 ];
 
 export function ProductForm({
@@ -37,7 +40,7 @@ export function ProductForm({
 
   // Form states
   const [name, setName] = useState(initialData?.name || "");
-  const [type, setType] = useState<ProductType>(initialData?.type || "FOOD");
+  const [type, setType] = useState<ProductType>(initialData?.type || "FRUIT_BOWL");
   const [category, setCategory] = useState(initialData?.category || "");
   const [description, setDescription] = useState(initialData?.description || "");
   const [priceInput, setPriceInput] = useState(
@@ -82,7 +85,7 @@ export function ProductForm({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", "black-market/products");
+      formData.append("folder", "noury/products");
 
       const response = await fetch("/api/upload", {
         method: "POST",
@@ -206,8 +209,8 @@ export function ProductForm({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       {/* Basic Information */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6 backdrop-blur-xs">
-        <h2 className="text-base font-semibold text-zinc-100 mb-4">
+      <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 sm:p-6 shadow-xs">
+        <h2 className="text-base font-bold text-[#183331] mb-4">
           Informasi Dasar Produk
         </h2>
 
@@ -216,7 +219,7 @@ export function ProductForm({
           <div className="sm:col-span-2">
             <Input
               label="Nama Produk *"
-              placeholder="Contoh: Paket Sosis Bakar / T-Shirt Black Market"
+              placeholder="Contoh: Fresh Fruit Bowl / Green Detox Smoothie / Infused Water"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -226,14 +229,14 @@ export function ProductForm({
 
           {/* Type */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-zinc-300">
+            <label className="text-sm font-semibold text-[#183331]">
               Tipe Produk *
             </label>
             <select
               value={type}
               onChange={(e) => setType(e.target.value as ProductType)}
               disabled={loading}
-              className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
+              className="w-full rounded-xl border border-[#D5E4DF] bg-[#FAFCFB] px-3.5 py-2.5 text-sm text-[#183331] transition-colors focus:outline-none focus:ring-2 focus:ring-[#47957F]"
             >
               {PRODUCT_TYPES.map((t) => (
                 <option key={t.value} value={t.value}>
@@ -247,7 +250,7 @@ export function ProductForm({
           <div>
             <Input
               label="Kategori (Opsional)"
-              placeholder="Contoh: Snack, Coffee, Sticker, Pin"
+              placeholder="Contoh: Fruit Bowls, Smoothies, Infused Water, Healthy Snack"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               disabled={loading}
@@ -256,24 +259,24 @@ export function ProductForm({
 
           {/* Description */}
           <div className="sm:col-span-2 flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-zinc-300">
+            <label className="text-sm font-semibold text-[#183331]">
               Deskripsi (Opsional)
             </label>
             <textarea
               rows={3}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Jelaskan detail produk, bahan, atau porsi..."
+              placeholder="Jelaskan detail menu, komposisi buah segar, rasa, atau manfaat sehatnya..."
               disabled={loading}
-              className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 transition-colors placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-zinc-950"
+              className="w-full rounded-xl border border-[#D5E4DF] bg-[#FAFCFB] px-3.5 py-2.5 text-sm text-[#183331] transition-colors placeholder:text-[#8AA59F] focus:outline-none focus:ring-2 focus:ring-[#47957F]"
             />
           </div>
         </div>
       </div>
 
       {/* Pricing & Stock */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6 backdrop-blur-xs">
-        <h2 className="text-base font-semibold text-zinc-100 mb-4">
+      <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 sm:p-6 shadow-xs">
+        <h2 className="text-base font-bold text-[#183331] mb-4">
           Harga & Inventaris
         </h2>
 
@@ -332,21 +335,21 @@ export function ProductForm({
         </div>
 
         {/* Inventory & Pre-order Toggles */}
-        <div className="mt-6 flex flex-col gap-3 border-t border-zinc-800/80 pt-4">
+        <div className="mt-6 flex flex-col gap-3.5 border-t border-[#EEF5F2] pt-4">
           <label className="flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"
               checked={trackInventory}
               onChange={(e) => setTrackInventory(e.target.checked)}
               disabled={loading}
-              className="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-red-600 focus:ring-red-500"
+              className="h-4 w-4 rounded border-[#C4D9D2] text-[#47957F] focus:ring-[#47957F]"
             />
             <div>
-              <span className="text-sm font-medium text-zinc-200">
+              <span className="text-sm font-semibold text-[#183331]">
                 Pantau Stok Otomatis
               </span>
-              <p className="text-xs text-zinc-500">
-                Stok akan otomatis berkurang saat pesanan POS atau Pre-Order selesai.
+              <p className="text-xs text-[#52706C]">
+                Stok akan otomatis berkurang saat pesanan POS kasir atau tiket Pre-Order berhasil.
               </p>
             </div>
           </label>
@@ -357,14 +360,14 @@ export function ProductForm({
               checked={isPreOrderAvailable}
               onChange={(e) => setIsPreOrderAvailable(e.target.checked)}
               disabled={loading}
-              className="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-red-600 focus:ring-red-500"
+              className="h-4 w-4 rounded border-[#C4D9D2] text-[#47957F] focus:ring-[#47957F]"
             />
             <div>
-              <span className="text-sm font-medium text-zinc-200">
+              <span className="text-sm font-semibold text-[#183331]">
                 Tersedia untuk Pre-Order
               </span>
-              <p className="text-xs text-zinc-500">
-                Produk ini akan tampil di katalog publik dan dapat dipesan sebelum Market Day.
+              <p className="text-xs text-[#52706C]">
+                Menu ini akan tampil di katalog publik dan dapat dipesan sebelum Market Day.
               </p>
             </div>
           </label>
@@ -375,14 +378,14 @@ export function ProductForm({
               checked={isActive}
               onChange={(e) => setIsActive(e.target.checked)}
               disabled={loading}
-              className="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-red-600 focus:ring-red-500"
+              className="h-4 w-4 rounded border-[#C4D9D2] text-[#47957F] focus:ring-[#47957F]"
             />
             <div>
-              <span className="text-sm font-medium text-zinc-200">
-                Status Produk Aktif
+              <span className="text-sm font-semibold text-[#183331]">
+                Status Menu Aktif
               </span>
-              <p className="text-xs text-zinc-500">
-                Jika dinonaktifkan, produk tidak akan muncul di POS kasir maupun katalog.
+              <p className="text-xs text-[#52706C]">
+                Jika dinonaktifkan, menu tidak akan muncul di POS kasir maupun katalog.
               </p>
             </div>
           </label>
@@ -390,17 +393,17 @@ export function ProductForm({
       </div>
 
       {/* Cloudinary Image Upload */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6 backdrop-blur-xs">
-        <h2 className="text-base font-semibold text-zinc-100 mb-1">
-          Foto Produk (Cloudinary)
+      <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 sm:p-6 shadow-xs">
+        <h2 className="text-base font-bold text-[#183331] mb-1">
+          Foto Menu / Produk
         </h2>
-        <p className="text-xs text-zinc-400 mb-4">
-          Upload foto merchandise atau makanan untuk ditampilkan di POS dan katalog publik.
+        <p className="text-xs text-[#52706C] mb-4">
+          Upload foto hidangan segar atau botol minuman untuk ditampilkan di kasir dan website pelanggan.
         </p>
 
         <div className="flex flex-col sm:flex-row items-start gap-4">
           {imageUrl ? (
-            <div className="relative h-32 w-32 rounded-xl overflow-hidden border border-zinc-700 bg-zinc-800">
+            <div className="relative h-32 w-32 rounded-2xl overflow-hidden border border-[#D5E4DF] bg-[#F4F9F7]">
               <Image
                 src={imageUrl}
                 alt="Product preview"
@@ -411,15 +414,15 @@ export function ProductForm({
               <button
                 type="button"
                 onClick={() => setImageUrl("")}
-                className="absolute top-1 right-1 rounded-full bg-red-600 p-1 text-white hover:bg-red-700 transition-colors"
+                className="absolute top-1.5 right-1.5 rounded-full bg-rose-600 p-1 text-white hover:bg-rose-700 transition-colors shadow-xs"
                 title="Hapus foto"
               >
                 ✕
               </button>
             </div>
           ) : (
-            <div className="flex h-32 w-32 items-center justify-center rounded-xl border border-dashed border-zinc-700 bg-zinc-800/40 text-zinc-500">
-              <span className="text-xs">Belum ada foto</span>
+            <div className="flex h-32 w-32 items-center justify-center rounded-2xl border border-dashed border-[#C4D9D2] bg-[#F7FAF9] text-[#7A9C96]">
+              <span className="text-xs font-medium">Belum ada foto</span>
             </div>
           )}
 
@@ -430,14 +433,14 @@ export function ProductForm({
               id="product-image-upload"
               onChange={handleImageUpload}
               disabled={uploadingImage || loading}
-              className="text-sm text-zinc-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700 cursor-pointer"
+              className="text-sm text-[#52706C] file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#EAF5F1] file:text-[#2A5E56] hover:file:bg-[#D8EDE5] cursor-pointer"
             />
             {uploadingImage && (
-              <p className="text-xs text-red-400 flex items-center gap-1.5">
+              <p className="text-xs text-[#47957F] font-semibold flex items-center gap-1.5">
                 Mengupload ke Cloudinary...
               </p>
             )}
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-[#7A9C96]">
               Format yang didukung: JPG, PNG, WebP. Maksimal 5MB.
             </p>
           </div>
@@ -446,14 +449,14 @@ export function ProductForm({
 
       {/* Bundling Section (Conditional) */}
       {type === "BUNDLE" && (
-        <div className="rounded-2xl border border-red-900/40 bg-red-950/10 p-6 backdrop-blur-xs">
+        <div className="rounded-2xl border border-[#D1E8DF] bg-[#F4FAF7] p-5 sm:p-6 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-base font-semibold text-zinc-100">
+              <h2 className="text-base font-bold text-[#183331]">
                 Komposisi Paket Bundling
               </h2>
-              <p className="text-xs text-zinc-400">
-                Pilih produk individual yang termasuk di dalam paket ini. Stok komponen akan otomatis terpotong saat bundle terjual.
+              <p className="text-xs text-[#52706C]">
+                Pilih menu individual yang termasuk di dalam paket ini. Stok komponen akan otomatis terpotong saat bundle terjual.
               </p>
             </div>
           </div>
@@ -462,7 +465,7 @@ export function ProductForm({
           <div className="flex items-center gap-2 mb-4">
             <select
               id="select-bundle-product"
-              className="flex-1 rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="flex-1 rounded-xl border border-[#D5E4DF] bg-white px-3.5 py-2.5 text-sm text-[#183331] focus:outline-none focus:ring-2 focus:ring-[#47957F]"
               defaultValue=""
               onChange={(e) => {
                 if (e.target.value) {
@@ -486,7 +489,7 @@ export function ProductForm({
 
           {/* Selected bundle items list */}
           {bundleItems.length === 0 ? (
-            <p className="text-xs text-zinc-500 italic py-2">
+            <p className="text-xs text-[#7A9C96] italic py-2">
               Belum ada komponen produk yang dipilih untuk paket ini.
             </p>
           ) : (
@@ -496,33 +499,33 @@ export function ProductForm({
                 return (
                   <div
                     key={item.productId}
-                    className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2.5"
+                    className="flex items-center justify-between rounded-xl border border-[#E2ECE8] bg-white px-4 py-2.5 shadow-xs"
                   >
                     <div>
-                      <p className="text-sm font-medium text-zinc-200">
+                      <p className="text-sm font-semibold text-[#183331]">
                         {prod ? prod.name : `Produk ID: ${item.productId}`}
                       </p>
-                      <p className="text-xs text-zinc-500">
+                      <p className="text-xs text-[#7A9C96]">
                         {prod ? formatRupiah(prod.price) : ""}
                       </p>
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2 border border-zinc-700 rounded-lg px-2 py-1 bg-zinc-950">
+                      <div className="flex items-center gap-2 border border-[#D5E4DF] rounded-xl px-2.5 py-1 bg-[#FAFCFB]">
                         <button
                           type="button"
                           onClick={() => updateBundleItemQty(item.productId, -1)}
-                          className="text-zinc-400 hover:text-white px-1 text-sm font-bold"
+                          className="text-[#52706C] hover:text-[#183331] px-1 text-sm font-bold"
                         >
                           -
                         </button>
-                        <span className="text-xs font-semibold text-zinc-200 min-w-[1.5rem] text-center">
+                        <span className="text-xs font-bold text-[#183331] min-w-[1.5rem] text-center">
                           {item.quantity}x
                         </span>
                         <button
                           type="button"
                           onClick={() => updateBundleItemQty(item.productId, 1)}
-                          className="text-zinc-400 hover:text-white px-1 text-sm font-bold"
+                          className="text-[#52706C] hover:text-[#183331] px-1 text-sm font-bold"
                         >
                           +
                         </button>
@@ -531,7 +534,7 @@ export function ProductForm({
                       <button
                         type="button"
                         onClick={() => removeBundleItem(item.productId)}
-                        className="text-xs text-red-400 hover:text-red-300 p-1"
+                        className="text-xs text-rose-600 hover:text-rose-700 p-1 font-bold"
                         title="Hapus dari bundle"
                       >
                         ✕

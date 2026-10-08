@@ -61,7 +61,7 @@ export function ReceiptModal({
             type="button"
             variant="primary"
             onClick={onClose}
-            className="font-bold px-5"
+            className="font-bold px-5 bg-[#47957F] hover:bg-[#3D8383] text-white shadow-md shadow-[#47957F]/20 cursor-pointer"
           >
             Transaksi Baru
           </Button>
@@ -69,32 +69,38 @@ export function ReceiptModal({
       }
     >
       {/* Printable Receipt Container */}
-      <div id="printable-receipt" className="rounded-xl border border-zinc-800 bg-zinc-950 p-5 font-mono text-xs text-zinc-300">
+      <div id="printable-receipt" className="rounded-xl border border-zinc-200 bg-white p-5 font-mono text-xs text-zinc-700 shadow-xs">
         {/* Receipt Header */}
-        <div className="border-b border-dashed border-zinc-800 pb-3 text-center">
-          <h4 className="text-base font-black tracking-wider text-zinc-100">
-            BLACK MARKET
+        <div className="border-b border-dashed border-zinc-300 pb-3 text-center">
+          <h4 className="text-base font-black tracking-wider text-zinc-900">
+            NOURY
           </h4>
-          <p className="text-[11px] text-zinc-500">Merchandise & F&B</p>
-          <div className="mt-2 text-[11px] text-zinc-400">
-            <p>No: <strong className="text-zinc-200">{order.orderNumber}</strong></p>
+          <p className="text-[11px] font-semibold text-[#47957F]">No Worries — Fresh & Healthy Living</p>
+          <p className="text-[10px] text-zinc-400">Fruit, Water & Healthy Bites</p>
+          <div className="mt-2 text-[11px] text-zinc-600">
+            <p>No: <strong className="text-zinc-900">{order.orderNumber}</strong></p>
             <p>{new Date().toLocaleString("id-ID")}</p>
             <p>Kasir: {cashierName}</p>
             {order.customerName && <p>Customer: {order.customerName}</p>}
+            {order.customerPhone && (
+              <p className="text-[10px] text-[#47957F] font-semibold">
+                WhatsApp: {order.customerPhone} (Stempel Bertambah ⭐)
+              </p>
+            )}
           </div>
         </div>
 
         {/* Receipt Items */}
-        <div className="border-b border-dashed border-zinc-800 py-3 flex flex-col gap-2">
+        <div className="border-b border-dashed border-zinc-300 py-3 flex flex-col gap-2">
           {items.map((item) => (
             <div key={item.id} className="flex items-start justify-between">
               <div className="flex-1 pr-2">
-                <p className="text-zinc-200 font-semibold">{item.productName}</p>
+                <p className="text-zinc-800 font-semibold">{item.productName}</p>
                 <p className="text-[11px] text-zinc-500">
                   {item.quantity} x {formatRupiah(item.unitPrice)}
                 </p>
               </div>
-              <span className="font-semibold text-zinc-200">
+              <span className="font-semibold text-zinc-800">
                 {formatRupiah(item.subtotal)}
               </span>
             </div>
@@ -103,30 +109,30 @@ export function ReceiptModal({
 
         {/* Receipt Totals */}
         <div className="pt-3 flex flex-col gap-1 text-[11px]">
-          <div className="flex items-center justify-between text-zinc-400">
+          <div className="flex items-center justify-between text-zinc-500">
             <span>Subtotal</span>
-            <span>{formatRupiah(order.subtotal)}</span>
+            <span className="text-zinc-800 font-medium">{formatRupiah(order.subtotal)}</span>
           </div>
 
           {order.discount > 0 && (
-            <div className="flex items-center justify-between text-emerald-400">
+            <div className="flex items-center justify-between text-[#3D8383] font-semibold">
               <span>Diskon</span>
               <span>-{formatRupiah(order.discount)}</span>
             </div>
           )}
 
-          <div className="flex items-center justify-between font-bold text-sm text-zinc-100 pt-1 border-t border-zinc-900">
+          <div className="flex items-center justify-between font-bold text-sm text-zinc-900 pt-1 border-t border-zinc-200">
             <span>TOTAL</span>
-            <span className="text-red-400">{formatRupiah(order.total)}</span>
+            <span className="text-[#3D8383] text-base">{formatRupiah(order.total)}</span>
           </div>
 
-          <div className="flex items-center justify-between text-zinc-400 pt-1">
+          <div className="flex items-center justify-between text-zinc-500 pt-1">
             <span>Metode: {order.paymentMethod}</span>
             <span>Bayar: {formatRupiah(order.amountPaid || order.total)}</span>
           </div>
 
           {order.paymentMethod === "CASH" && (
-            <div className="flex items-center justify-between text-emerald-300 font-semibold">
+            <div className="flex items-center justify-between text-emerald-700 font-semibold">
               <span>Kembalian</span>
               <span>{formatRupiah(order.change || 0)}</span>
             </div>
@@ -134,9 +140,9 @@ export function ReceiptModal({
         </div>
 
         {/* Footer */}
-        <div className="mt-4 pt-3 border-t border-dashed border-zinc-800 text-center text-[10px] text-zinc-600">
-          <p>Terima kasih telah berbelanja di Black Market!</p>
-          <p>Simpan struk ini sebagai bukti pembayaran yang sah.</p>
+        <div className="mt-4 pt-3 border-t border-dashed border-zinc-300 text-center text-[10px] text-zinc-400">
+          <p>Terima kasih telah berbelanja di Noury!</p>
+          <p>Stay fresh, stay healthy! Simpan struk ini sebagai bukti pembayaran.</p>
         </div>
       </div>
     </Modal>

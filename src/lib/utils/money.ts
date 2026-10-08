@@ -1,7 +1,7 @@
 /**
  * Money utilities — Integer Rupiah
  *
- * All prices in Black Market are stored as integer Rupiah.
+ * All prices in Noury are stored as integer Rupiah.
  * Never use floating point for monetary calculations.
  *
  * Example: Rp 15.000 is stored as 15000 (number), not 15000.00

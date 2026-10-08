@@ -17,12 +17,12 @@ interface ExpenseFormModalProps {
 }
 
 const CATEGORY_OPTIONS: Array<{ value: ExpenseCategory; label: string }> = [
-  { value: "FOOD_MATERIAL", label: "🍔 Bahan Baku Makanan & Minuman" },
-  { value: "MERCH_PRODUCTION", label: "👕 Produksi Merchandise" },
-  { value: "PACKAGING", label: "📦 Kemasan & Packaging" },
-  { value: "OPERATIONAL", label: "⛽ Operasional, Es & Transport" },
-  { value: "PROMOTION", label: "📢 Promosi & Publikasi" },
-  { value: "OTHER", label: "📎 Lain-lain" },
+  { value: "FOOD_MATERIAL", label: "🍉 Bahan Baku Buah, Sayur & Bahan Segar" },
+  { value: "MERCH_PRODUCTION", label: "🥣 Mangkok, Wadah & Botol Minuman" },
+  { value: "PACKAGING", label: "📦 Cup, Sendok, Sedotan & Kantong Segar" },
+  { value: "OPERATIONAL", label: "🧊 Es Batu Kristal, Air Galon & Operasional Stand" },
+  { value: "PROMOTION", label: "📢 Cetak Brosur, Banner & Promosi" },
+  { value: "OTHER", label: "📎 Kebutuhan Stand Lainnya" },
 ];
 
 export function ExpenseFormModal({
@@ -31,7 +31,7 @@ export function ExpenseFormModal({
   onSuccess,
 }: ExpenseFormModalProps) {
   const { toast } = useToast();
-  const [category, setCategory] = useState<ExpenseCategory>("OPERATIONAL");
+  const [category, setCategory] = useState<ExpenseCategory>("FOOD_MATERIAL");
   const [amountInput, setAmountInput] = useState("");
   const [description, setDescription] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CASH");
@@ -60,7 +60,7 @@ export function ExpenseFormModal({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", "black-market/expense-receipts");
+      formData.append("folder", "noury/expense-receipts");
 
       const res = await fetch("/api/upload", {
         method: "POST",
@@ -133,7 +133,7 @@ export function ExpenseFormModal({
       isOpen={isOpen}
       onClose={onClose}
       title="Catat Pengeluaran Baru"
-      description="Masukkan rincian pengeluaran operasional atau pembelian bahan baku."
+      description="Masukkan rincian biaya bahan baku buah segar, es kristal, atau kemasan."
       size="md"
       footer={
         <>
@@ -158,16 +158,16 @@ export function ExpenseFormModal({
         </>
       }
     >
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 text-xs text-zinc-300">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 text-xs text-[#183331]">
         {/* Category */}
         <div>
-          <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5 block">
+          <label className="text-[11px] font-bold uppercase tracking-wider text-[#52706C] mb-1.5 block">
             Kategori Pengeluaran
           </label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value as ExpenseCategory)}
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
+            className="w-full rounded-xl border border-[#D5E4DF] bg-white px-3 py-2 text-xs text-[#183331] focus:outline-none focus:ring-2 focus:ring-[#47957F] cursor-pointer"
           >
             {CATEGORY_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -194,7 +194,7 @@ export function ExpenseFormModal({
 
         {/* Payment Method */}
         <div>
-          <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5 block">
+          <label className="text-[11px] font-bold uppercase tracking-wider text-[#52706C] mb-1.5 block">
             Sumber Dana / Metode Bayar
           </label>
           <div className="grid grid-cols-4 gap-2">
@@ -204,10 +204,10 @@ export function ExpenseFormModal({
                   key={m}
                   type="button"
                   onClick={() => setPaymentMethod(m)}
-                  className={`rounded-lg border py-2 text-center text-xs font-semibold transition-all cursor-pointer ${
+                  className={`rounded-xl border py-2 text-center text-xs font-bold transition-all cursor-pointer ${
                     paymentMethod === m
-                      ? "border-red-600 bg-red-600/10 text-red-400"
-                      : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                      ? "border-[#47957F] bg-[#EAF5F1] text-[#2A5E56]"
+                      : "border-[#E2ECE8] bg-white text-[#52706C] hover:bg-[#F8FAF9] hover:text-[#183331]"
                   }`}
                 >
                   {m === "BANK_TRANSFER" ? "TRANSFER" : m}
@@ -221,7 +221,7 @@ export function ExpenseFormModal({
         <div>
           <Input
             label="Deskripsi / Keperluan"
-            placeholder="Contoh: Beli es kristal 2 karung & cup plastik"
+            placeholder="Contoh: Beli semangka, melon, es kristal 2 karung & cup"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
@@ -229,16 +229,16 @@ export function ExpenseFormModal({
         </div>
 
         {/* Proof of Expense (Nota / Struk / Struk Belanja) */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-3">
+        <div className="rounded-2xl border border-[#E2ECE8] bg-[#FAFCFB] p-3.5">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
-              Foto Nota / Bukti Pengeluaran (Opsional)
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#52706C]">
+              Foto Nota / Bukti Belanja (Opsional)
             </span>
             {proofUrl && (
               <button
                 type="button"
                 onClick={() => setProofUrl("")}
-                className="text-[11px] text-red-400 hover:text-red-300"
+                className="text-[11px] text-rose-600 hover:text-rose-700 font-bold"
               >
                 Hapus Foto
               </button>
@@ -246,7 +246,7 @@ export function ExpenseFormModal({
           </div>
 
           {proofUrl ? (
-            <div className="relative h-24 w-24 rounded-lg overflow-hidden border border-zinc-700">
+            <div className="relative h-24 w-24 rounded-xl overflow-hidden border border-[#D5E4DF]">
               <Image
                 src={proofUrl}
                 alt="Nota pengeluaran"
@@ -262,21 +262,21 @@ export function ExpenseFormModal({
                 accept="image/*"
                 onChange={handleFileUpload}
                 disabled={uploadingProof || submitting}
-                className="text-xs text-zinc-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700 cursor-pointer"
+                className="text-xs text-[#52706C] file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[11px] file:font-bold file:bg-[#EAF5F1] file:text-[#2A5E56] hover:file:bg-[#D8EDE5] cursor-pointer"
               />
               {uploadingProof && (
-                <span className="text-[11px] text-red-400">Mengupload...</span>
+                <span className="text-[11px] text-[#47957F] font-semibold">Mengupload...</span>
               )}
             </div>
           )}
-          <p className="text-[10px] text-zinc-500 mt-1">
-            Lampirkan struk belanja, nota warung, atau bukti transfer pengeluaran.
+          <p className="text-[10px] text-[#7A9C96] mt-1.5">
+            Lampirkan struk belanja pasar, nota toko kemasan, atau bukti transfer.
           </p>
         </div>
 
         {/* Error message */}
         {errorMsg && (
-          <div className="rounded-lg border border-red-800/80 bg-red-950/60 p-2.5 text-xs text-red-300">
+          <div className="rounded-xl border border-rose-200 bg-rose-50 p-2.5 text-xs text-rose-700 font-medium">
             {errorMsg}
           </div>
         )}

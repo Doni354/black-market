@@ -4,9 +4,9 @@ import { HomeClient } from "@/components/home/HomeClient";
 import type { Product } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Black Market — Merchandise & F&B Official Store",
+  title: "Noury — No Worries | Fresh & Healthy Living",
   description:
-    "Katalog resmi Black Market. Pre-order merchandise eksklusif, minuman, dan makanan favorit dengan tiket penukaran instan di Market Day.",
+    "Playful path toward freshness and healthy living: fruit bowls, cold-pressed smoothies & juices, fresh infused water, and healthy food. Noury — No Worries.",
 };
 
 export const dynamic = "force-dynamic";

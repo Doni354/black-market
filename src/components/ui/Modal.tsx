@@ -58,7 +58,7 @@ export function Modal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/80 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-[#0e1b1b]/40 backdrop-blur-xs transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -66,7 +66,7 @@ export function Modal({
       {/* Modal Dialog Box */}
       <div
         className={cn(
-          "relative flex max-h-[88vh] w-full flex-col rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:p-5 shadow-2xl transition-all",
+          "relative flex max-h-[88vh] w-full flex-col rounded-2xl border border-[#DCE8E4] bg-white p-4 sm:p-6 shadow-2xl transition-all text-[#183331]",
           sizeClasses[size]
         )}
         role="dialog"
@@ -74,18 +74,18 @@ export function Modal({
         aria-labelledby="modal-title"
       >
         {/* Header (Fixed) */}
-        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-zinc-800/80 pb-3">
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-[#EDF4F1] pb-3.5">
           <div>
-            <h3 id="modal-title" className="text-base sm:text-lg font-bold text-zinc-100">
+            <h3 id="modal-title" className="text-base sm:text-lg font-bold text-[#173333]">
               {title}
             </h3>
             {description && (
-              <p className="mt-0.5 text-xs text-zinc-400">{description}</p>
+              <p className="mt-0.5 text-xs text-[#5D7E78]">{description}</p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors cursor-pointer"
+            className="rounded-lg p-1 text-[#829E99] hover:bg-[#F0F7F5] hover:text-[#173333] transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <svg
@@ -102,14 +102,14 @@ export function Modal({
 
         {/* Body (Scrollable if needed) */}
         {children && (
-          <div className="flex-1 overflow-y-auto py-3 pr-1 text-xs sm:text-sm">
+          <div className="flex-1 overflow-y-auto py-3.5 pr-1 text-xs sm:text-sm text-[#2E4E4B]">
             {children}
           </div>
         )}
 
         {/* Footer (Fixed) */}
         {footer && (
-          <div className="flex shrink-0 items-center justify-end gap-2.5 border-t border-zinc-800/80 pt-3">
+          <div className="flex shrink-0 items-center justify-end gap-2.5 border-t border-[#EDF4F1] pt-3.5">
             {footer}
           </div>
         )}

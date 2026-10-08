@@ -19,10 +19,13 @@ interface ProductTableProps {
 }
 
 const TYPE_LABELS: Record<ProductType, { label: string; variant: "default" | "info" | "warning" | "success" }> = {
+  FRUIT_BOWL: { label: "Fruit Bowl", variant: "success" },
+  SMOOTHIE_JUICE: { label: "Smoothie / Juice", variant: "info" },
+  INFUSED_WATER: { label: "Infused Water", variant: "info" },
+  HEALTHY_FOOD: { label: "Healthy Food", variant: "warning" },
+  BUNDLE: { label: "Bundling", variant: "success" },
   FOOD: { label: "Food", variant: "warning" },
   DRINK: { label: "Drink", variant: "info" },
-  MERCH: { label: "Merch", variant: "default" },
-  BUNDLE: { label: "Bundle", variant: "success" },
   OTHER: { label: "Other", variant: "default" },
 };
 
@@ -128,10 +131,10 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
             placeholder="Cari nama atau kategori..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 pl-9 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#47957F] shadow-xs"
           />
           <svg
-            className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500"
+            className="absolute left-3 top-2.5 h-4 w-4 text-zinc-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -151,13 +154,16 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-xs font-medium text-zinc-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-[#47957F] shadow-xs cursor-pointer"
           >
             <option value="ALL">Semua Tipe</option>
-            <option value="FOOD">Makanan (Food)</option>
-            <option value="DRINK">Minuman (Drink)</option>
-            <option value="MERCH">Merchandise</option>
+            <option value="FRUIT_BOWL">Fruit Bowl</option>
+            <option value="SMOOTHIE_JUICE">Smoothie & Juice</option>
+            <option value="INFUSED_WATER">Infused Water</option>
+            <option value="HEALTHY_FOOD">Healthy Food</option>
             <option value="BUNDLE">Bundling</option>
+            <option value="FOOD">Food (Lainnya)</option>
+            <option value="DRINK">Drink (Lainnya)</option>
             <option value="OTHER">Lainnya</option>
           </select>
 
@@ -167,7 +173,7 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
             onChange={(e) =>
               setStatusFilter(e.target.value as "ALL" | "ACTIVE" | "INACTIVE")
             }
-            className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-xs font-medium text-zinc-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-[#47957F] shadow-xs cursor-pointer"
           >
             <option value="ALL">Semua Status</option>
             <option value="ACTIVE">Hanya Aktif</option>
@@ -177,10 +183,10 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
       </div>
 
       {/* Table Container */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 backdrop-blur-xs">
+      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xs">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-zinc-300">
-            <thead className="border-b border-zinc-800 bg-zinc-950/60 text-xs uppercase tracking-wider text-zinc-400">
+          <table className="w-full text-left text-sm text-zinc-700">
+            <thead className="border-b border-zinc-200 bg-zinc-50/80 text-xs uppercase tracking-wider text-zinc-500 font-semibold">
               <tr>
                 <th className="px-4 py-3.5">Produk</th>
                 <th className="px-4 py-3.5">Tipe & Kategori</th>
@@ -191,12 +197,12 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                 <th className="px-4 py-3.5 text-right">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/80">
+            <tbody className="divide-y divide-zinc-100">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-12 text-center text-zinc-500">
-                    <p className="text-base font-medium">Tidak ada produk ditemukan</p>
-                    <p className="mt-1 text-xs text-zinc-600">
+                  <td colSpan={7} className="px-4 py-12 text-center text-zinc-400">
+                    <p className="text-base font-semibold text-zinc-600">Tidak ada produk ditemukan</p>
+                    <p className="mt-1 text-xs text-zinc-400">
                       Coba ubah kata kunci pencarian atau filter yang dipilih.
                     </p>
                   </td>
@@ -211,13 +217,13 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                   return (
                     <tr
                       key={p.id}
-                      className="transition-colors hover:bg-zinc-800/30"
+                      className="transition-colors hover:bg-zinc-50/80"
                     >
                       {/* Product Image & Name */}
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           {p.imageUrl ? (
-                            <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800">
+                            <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100">
                               <Image
                                 src={p.imageUrl}
                                 alt={p.name}
@@ -227,20 +233,20 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                               />
                             </div>
                           ) : (
-                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-bold text-zinc-600">
-                              BM
+                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-100 text-base font-bold text-zinc-400">
+                              🥗
                             </div>
                           )}
 
                           <div className="min-w-0">
                             <Link
                               href={`/admin/products/${p.id}`}
-                              className="font-medium text-zinc-100 hover:text-red-400 transition-colors truncate block"
+                              className="font-semibold text-zinc-800 hover:text-[#47957F] transition-colors truncate block"
                             >
                               {p.name}
                             </Link>
                             {p.bundleItems && p.bundleItems.length > 0 && (
-                              <span className="text-[11px] text-zinc-500">
+                              <span className="text-[11px] text-zinc-400">
                                 {p.bundleItems.length} komponen dalam bundle
                               </span>
                             )}
@@ -255,7 +261,7 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                             {typeMeta.label}
                           </Badge>
                           {p.category && (
-                            <span className="text-xs text-zinc-400">
+                            <span className="text-xs text-zinc-500">
                               {p.category}
                             </span>
                           )}
@@ -264,11 +270,11 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
 
                       {/* Selling Price & Margin */}
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="font-semibold text-zinc-100">
+                        <span className="font-bold text-zinc-900">
                           {formatRupiah(p.price)}
                         </span>
                         {p.costPrice ? (
-                          <p className="text-[11px] text-zinc-500">
+                          <p className="text-[11px] text-zinc-400">
                             HPP: {formatRupiah(p.costPrice)}
                           </p>
                         ) : null}
@@ -283,24 +289,24 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                                 p.stock === 0
                                   ? "bg-red-500"
                                   : p.stock < 10
-                                  ? "bg-yellow-500"
+                                  ? "bg-amber-500"
                                   : "bg-emerald-500"
                               }`}
                             />
                             <span
-                              className={`font-medium ${
+                              className={`font-semibold ${
                                 p.stock === 0
-                                  ? "text-red-400 font-bold"
+                                  ? "text-red-600 font-bold"
                                   : p.stock < 10
-                                  ? "text-yellow-400"
-                                  : "text-zinc-200"
+                                  ? "text-amber-700"
+                                  : "text-zinc-700"
                               }`}
                             >
                               {p.stock}
                             </span>
                           </div>
                         ) : (
-                          <span className="text-xs text-zinc-500">
+                          <span className="text-xs text-zinc-400">
                             Tidak dipantau
                           </span>
                         )}
@@ -309,11 +315,11 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                       {/* Pre-Order Badge */}
                       <td className="px-4 py-3 whitespace-nowrap">
                         {p.isPreOrderAvailable ? (
-                          <span className="inline-flex items-center rounded-md bg-red-950/40 px-2 py-0.5 text-xs font-medium text-red-400 border border-red-800/40">
+                          <span className="inline-flex items-center rounded-md bg-[#47957F]/10 px-2 py-0.5 text-xs font-semibold text-[#3D8383] border border-[#47957F]/20">
                             PO Ready
                           </span>
                         ) : (
-                          <span className="text-xs text-zinc-600">—</span>
+                          <span className="text-xs text-zinc-400">—</span>
                         )}
                       </td>
 
@@ -325,13 +331,13 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                           onClick={() => handleToggleStatus(p)}
                           className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold cursor-pointer transition-colors ${
                             p.isActive
-                              ? "bg-emerald-950/60 text-emerald-400 border border-emerald-800/60 hover:bg-emerald-900/60"
-                              : "bg-zinc-800 text-zinc-400 border border-zinc-700 hover:bg-zinc-700"
+                              ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
+                              : "bg-zinc-100 text-zinc-500 border border-zinc-200 hover:bg-zinc-200"
                           }`}
                         >
                           <span
                             className={`h-1.5 w-1.5 rounded-full ${
-                              p.isActive ? "bg-emerald-400" : "bg-zinc-500"
+                              p.isActive ? "bg-emerald-500" : "bg-zinc-400"
                             }`}
                           />
                           {p.isActive ? "Aktif" : "Nonaktif"}
@@ -343,7 +349,7 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                         <div className="flex items-center justify-end gap-2">
                           <Link
                             href={`/admin/products/${p.id}`}
-                            className="rounded-lg p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100 transition-colors"
+                            className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 transition-colors"
                             title="Edit Produk"
                           >
                             <svg
@@ -364,7 +370,7 @@ export function ProductTable({ initialProducts }: ProductTableProps) {
                           <button
                             type="button"
                             onClick={() => setDeleteTarget(p)}
-                            className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-800 hover:text-red-400 transition-colors cursor-pointer"
+                            className="rounded-lg p-1.5 text-zinc-400 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer"
                             title="Hapus Produk"
                           >
                             <svg

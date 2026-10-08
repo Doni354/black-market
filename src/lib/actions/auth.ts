@@ -76,7 +76,7 @@ export async function loginAction(idToken: string): Promise<LoginActionResult> {
         return {
           success: false,
           isPending: true,
-          message: `Akun Google Anda (${userEmail}) telah didaftarkan namun belum disetujui. Hubungi Administrator Black Market untuk meng-ACC akun Anda.`,
+          message: `Akun Google Anda (${userEmail}) telah didaftarkan namun belum disetujui. Hubungi Administrator Noury untuk meng-ACC akun Anda.`,
         };
       }
     } else {
@@ -88,7 +88,7 @@ export async function loginAction(idToken: string): Promise<LoginActionResult> {
         return {
           success: false,
           isPending: true,
-          message: `Akun Anda (${userEmail}) masih berstatus MENUNGGU PERSETUJUAN (Pending). Silakan hubungi Administrator untuk menyetujui akun Anda.`,
+          message: `Akun Anda (${userEmail}) masih berstatus MENUNGGU PERSETUJUAN (Pending). Silakan hubungi Administrator Noury untuk menyetujui akun Anda.`,
         };
       }
 
@@ -96,7 +96,7 @@ export async function loginAction(idToken: string): Promise<LoginActionResult> {
         return {
           success: false,
           message:
-            "Akses akun Anda telah DITOLAK atau DINONAKTIFKAN oleh Administrator Black Market.",
+            "Akses akun Anda telah DITOLAK atau DINONAKTIFKAN oleh Administrator Noury.",
         };
       }
 

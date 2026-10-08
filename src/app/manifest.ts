@@ -2,15 +2,15 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Black Market - Event POS & Pre-Order',
-    short_name: 'Black Market',
-    description: 'Aplikasi Resmi POS Kasir, Katalog Produk, dan Pre-Order Stan Black Market',
+    name: 'Noury — No Worries',
+    short_name: 'Noury',
+    description: 'Playful path toward freshness and healthy living: fruit, water, food, refreshing lifestyle.',
     start_url: '/',
     id: '/',
     scope: '/',
     display: 'standalone',
-    background_color: '#09090b',
-    theme_color: '#09090b',
+    background_color: '#FAFCFB',
+    theme_color: '#47957F',
     orientation: 'any',
     icons: [
       {

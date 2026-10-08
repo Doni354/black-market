@@ -12,9 +12,10 @@ interface ProductGridProps {
 
 const CATEGORIES: { label: string; value: string }[] = [
   { label: "Semua", value: "ALL" },
-  { label: "Makanan", value: "FOOD" },
-  { label: "Minuman", value: "DRINK" },
-  { label: "Merch", value: "MERCH" },
+  { label: "Fruit Bowl", value: "FRUIT_BOWL" },
+  { label: "Smoothies & Juice", value: "SMOOTHIE_JUICE" },
+  { label: "Infused Water", value: "INFUSED_WATER" },
+  { label: "Healthy Food", value: "HEALTHY_FOOD" },
   { label: "Bundling", value: "BUNDLE" },
   { label: "Lainnya", value: "OTHER" },
 ];
@@ -53,13 +54,13 @@ export function ProductGrid({ products, cart, onAddToCart }: ProductGridProps) {
         <div className="relative">
           <input
             type="text"
-            placeholder="Cari menu, merchandise, atau paket..."
+            placeholder="Cari fruit bowl, smoothies, salad, infused water..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 px-4 py-2.5 pl-10 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full rounded-2xl border border-[#D5E6E1] bg-white px-4 py-2.5 pl-10 text-sm text-[#183331] placeholder:text-[#91A8A3] focus:outline-none focus:ring-2 focus:ring-[#47957F]/25 focus:border-[#47957F] shadow-xs"
           />
           <svg
-            className="absolute left-3.5 top-3 h-4 w-4 text-zinc-500"
+            className="absolute left-3.5 top-3 h-4 w-4 text-[#7A9C96]"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -74,7 +75,7 @@ export function ProductGrid({ products, cart, onAddToCart }: ProductGridProps) {
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="absolute right-3 top-2.5 text-xs text-zinc-500 hover:text-zinc-300 p-1"
+              className="absolute right-3 top-2.5 text-xs text-[#7A9C96] hover:text-[#183331] p-1"
             >
               ✕
             </button>
@@ -90,8 +91,8 @@ export function ProductGrid({ products, cart, onAddToCart }: ProductGridProps) {
               onClick={() => setSelectedCategory(cat.value)}
               className={`whitespace-nowrap rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
                 selectedCategory === cat.value
-                  ? "bg-red-600 text-white shadow-md shadow-red-950/40"
-                  : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                  ? "bg-[#47957F] text-white shadow-xs font-bold"
+                  : "bg-white border border-[#D5E6E1] text-[#52706C] hover:bg-[#F2F8F5] hover:text-[#183331]"
               }`}
             >
               {cat.label}
@@ -102,11 +103,11 @@ export function ProductGrid({ products, cart, onAddToCart }: ProductGridProps) {
 
       {/* Grid of Product Cards */}
       {filteredProducts.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-900/30 p-12 text-center">
-          <p className="text-sm font-semibold text-zinc-300">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[#D5E6E1] bg-white p-12 text-center shadow-xs">
+          <p className="text-sm font-bold text-[#183331]">
             Tidak ada produk yang sesuai
           </p>
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-xs text-[#7A9C96]">
             {search
               ? "Coba kata kunci pencarian lain"
               : "Belum ada produk aktif di kategori ini"}

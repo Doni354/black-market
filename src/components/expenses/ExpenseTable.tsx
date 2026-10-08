@@ -17,11 +17,11 @@ interface ExpenseTableProps {
 }
 
 const CATEGORY_LABELS: Record<ExpenseCategory, { label: string; variant: "default" | "success" | "warning" | "danger" | "info" }> = {
-  FOOD_MATERIAL: { label: "Bahan Baku", variant: "warning" },
-  MERCH_PRODUCTION: { label: "Produksi Merch", variant: "info" },
-  PACKAGING: { label: "Packaging", variant: "default" },
-  OPERATIONAL: { label: "Operasional", variant: "danger" },
-  PROMOTION: { label: "Promosi", variant: "success" },
+  FOOD_MATERIAL: { label: "Bahan Buah & Makanan", variant: "warning" },
+  MERCH_PRODUCTION: { label: "Kemasan & Wadah", variant: "info" },
+  PACKAGING: { label: "Packaging & Botol", variant: "default" },
+  OPERATIONAL: { label: "Operasional & Es Batu", variant: "danger" },
+  PROMOTION: { label: "Promosi & Publikasi", variant: "success" },
   OTHER: { label: "Lain-lain", variant: "default" },
 };
 
@@ -89,10 +89,10 @@ export function ExpenseTable({ initialExpenses, userRole }: ExpenseTableProps) {
               placeholder="Cari keperluan pengeluaran..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 pl-9 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full rounded-xl border border-[#D5E4DF] bg-white px-3 py-2 pl-9 text-sm text-[#183331] placeholder:text-[#8AA59F] focus:outline-none focus:ring-2 focus:ring-[#47957F]"
             />
             <svg
-              className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500"
+              className="absolute left-3 top-2.5 h-4 w-4 text-[#7A9C96]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -105,22 +105,22 @@ export function ExpenseTable({ initialExpenses, userRole }: ExpenseTableProps) {
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-xs font-medium text-zinc-300 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
+            className="rounded-xl border border-[#D5E4DF] bg-white px-3 py-2 text-xs font-semibold text-[#183331] focus:outline-none focus:ring-2 focus:ring-[#47957F] cursor-pointer"
           >
             <option value="ALL">Semua Kategori</option>
-            <option value="FOOD_MATERIAL">Bahan Baku</option>
-            <option value="MERCH_PRODUCTION">Produksi Merch</option>
-            <option value="PACKAGING">Packaging</option>
-            <option value="OPERATIONAL">Operasional</option>
-            <option value="PROMOTION">Promosi</option>
+            <option value="FOOD_MATERIAL">Bahan Buah & Makanan</option>
+            <option value="MERCH_PRODUCTION">Kemasan & Wadah</option>
+            <option value="PACKAGING">Packaging & Botol</option>
+            <option value="OPERATIONAL">Operasional & Es Batu</option>
+            <option value="PROMOTION">Promosi & Publikasi</option>
             <option value="OTHER">Lain-lain</option>
           </select>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
-            <span className="text-[11px] text-zinc-500 block">Total Ditampilkan</span>
-            <span className="text-sm font-bold text-red-400">{formatRupiah(totalFilteredAmount)}</span>
+            <span className="text-[11px] text-[#7A9C96] block">Total Ditampilkan</span>
+            <span className="text-sm font-bold text-rose-600">{formatRupiah(totalFilteredAmount)}</span>
           </div>
 
           <Button
@@ -138,29 +138,29 @@ export function ExpenseTable({ initialExpenses, userRole }: ExpenseTableProps) {
       </div>
 
       {/* Expenses Table */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 backdrop-blur-xs">
+      <div className="overflow-hidden rounded-2xl border border-[#E2ECE8] bg-white shadow-xs">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-zinc-300">
-            <thead className="border-b border-zinc-800 bg-zinc-950/60 text-xs uppercase tracking-wider text-zinc-400">
+          <table className="w-full text-left text-xs text-[#183331]">
+            <thead className="border-b border-[#E2ECE8] bg-[#FAFCFB] text-[11px] uppercase tracking-wider text-[#52706C]">
               <tr>
-                <th className="px-4 py-3.5">Tanggal</th>
-                <th className="px-4 py-3.5">Kategori</th>
-                <th className="px-4 py-3.5">Deskripsi / Keperluan</th>
-                <th className="px-4 py-3.5">Sumber Dana</th>
-                <th className="px-4 py-3.5">Jumlah</th>
-                <th className="px-4 py-3.5 text-center">Nota / Bukti</th>
+                <th className="px-4 py-3.5 font-semibold">Tanggal</th>
+                <th className="px-4 py-3.5 font-semibold">Kategori</th>
+                <th className="px-4 py-3.5 font-semibold">Deskripsi / Keperluan</th>
+                <th className="px-4 py-3.5 font-semibold">Sumber Dana</th>
+                <th className="px-4 py-3.5 font-semibold">Jumlah</th>
+                <th className="px-4 py-3.5 font-semibold text-center">Nota / Bukti</th>
                 {userRole === "ADMIN" && (
-                  <th className="px-4 py-3.5 text-right">Aksi</th>
+                  <th className="px-4 py-3.5 font-semibold text-right">Aksi</th>
                 )}
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/80">
+            <tbody className="divide-y divide-[#F0F5F3]">
               {filteredExpenses.length === 0 ? (
                 <tr>
-                  <td colSpan={userRole === "ADMIN" ? 7 : 6} className="px-4 py-12 text-center text-zinc-500">
-                    <p className="text-base font-medium">Belum ada catatan pengeluaran</p>
-                    <p className="mt-1 text-xs text-zinc-600">
-                      Klik tombol &ldquo;+ Catat Pengeluaran&rdquo; untuk mencatat biaya operasional atau bahan baku.
+                  <td colSpan={userRole === "ADMIN" ? 7 : 6} className="px-4 py-12 text-center text-[#7A9C96]">
+                    <p className="text-base font-bold text-[#183331]">Belum ada catatan pengeluaran</p>
+                    <p className="mt-1 text-xs text-[#52706C]">
+                      Klik tombol &ldquo;+ Catat Pengeluaran&rdquo; untuk mencatat biaya buah segar, es batu, atau kemasan.
                     </p>
                   </td>
                 </tr>
@@ -183,10 +183,10 @@ export function ExpenseTable({ initialExpenses, userRole }: ExpenseTableProps) {
                   return (
                     <tr
                       key={expense.id}
-                      className="transition-colors hover:bg-zinc-800/30"
+                      className="transition-colors hover:bg-[#F8FAF9]"
                     >
                       {/* Date */}
-                      <td className="px-4 py-3 text-xs text-zinc-400 whitespace-nowrap">
+                      <td className="px-4 py-3 text-xs text-[#52706C] whitespace-nowrap">
                         {dateStr}
                       </td>
 
@@ -196,19 +196,19 @@ export function ExpenseTable({ initialExpenses, userRole }: ExpenseTableProps) {
                       </td>
 
                       {/* Description */}
-                      <td className="px-4 py-3 font-medium text-zinc-200">
+                      <td className="px-4 py-3 font-semibold text-[#183331]">
                         {expense.description}
                       </td>
 
                       {/* Payment Method */}
-                      <td className="px-4 py-3 text-xs text-zinc-400 whitespace-nowrap">
-                        <span className="rounded-md border border-zinc-800 bg-zinc-950 px-2 py-0.5">
+                      <td className="px-4 py-3 text-xs text-[#52706C] whitespace-nowrap">
+                        <span className="rounded-lg border border-[#D5E4DF] bg-[#FAFCFB] px-2 py-0.5 font-medium text-[#254440]">
                           {expense.paymentMethod}
                         </span>
                       </td>
 
                       {/* Amount */}
-                      <td className="px-4 py-3 font-bold text-red-400 whitespace-nowrap">
+                      <td className="px-4 py-3 font-bold text-rose-600 whitespace-nowrap">
                         {formatRupiah(expense.amount)}
                       </td>
 
@@ -218,15 +218,15 @@ export function ExpenseTable({ initialExpenses, userRole }: ExpenseTableProps) {
                           <button
                             type="button"
                             onClick={() => setPreviewProofUrl(expense.proofUrl || null)}
-                            className="inline-flex items-center gap-1 rounded-md border border-zinc-700 bg-zinc-800 px-2 py-0.5 text-[11px] font-semibold text-zinc-300 hover:bg-zinc-700 transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1 rounded-lg border border-[#D5E4DF] bg-[#F4F9F7] px-2.5 py-1 text-[11px] font-bold text-[#2A5E56] hover:bg-[#EAF5F1] transition-colors cursor-pointer"
                           >
-                            <svg className="h-3 w-3 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <svg className="h-3.5 w-3.5 text-[#47957F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             Lihat Nota
                           </button>
                         ) : (
-                          <span className="text-xs text-zinc-600">—</span>
+                          <span className="text-xs text-[#A0BCB6]">—</span>
                         )}
                       </td>
 
@@ -236,7 +236,7 @@ export function ExpenseTable({ initialExpenses, userRole }: ExpenseTableProps) {
                           <button
                             type="button"
                             onClick={() => setDeletingId(expense.id)}
-                            className="text-xs text-red-400 hover:text-red-300 hover:underline cursor-pointer"
+                            className="text-xs text-rose-600 hover:text-rose-700 hover:underline font-bold cursor-pointer"
                           >
                             Hapus
                           </button>
@@ -274,7 +274,7 @@ export function ExpenseTable({ initialExpenses, userRole }: ExpenseTableProps) {
                 href={previewProofUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs text-red-400 hover:text-red-300 underline font-medium"
+                className="text-xs text-[#47957F] hover:text-[#3D8383] underline font-bold"
               >
                 Buka Gambar Asli ↗
               </a>

@@ -123,7 +123,7 @@ export function AdjustmentModal({
         </>
       }
     >
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-xs">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-xs text-[#183331]">
         {/* Mode selector */}
         <div className="grid grid-cols-3 gap-2">
           <button
@@ -132,10 +132,10 @@ export function AdjustmentModal({
               setActionType("ADD");
               setMovementType("PURCHASE");
             }}
-            className={`rounded-xl border py-2.5 px-2 text-center font-semibold transition-all cursor-pointer ${
+            className={`rounded-xl border py-2.5 px-2 text-center font-bold transition-all cursor-pointer ${
               actionType === "ADD"
-                ? "border-emerald-600 bg-emerald-950/40 text-emerald-400"
-                : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
+                ? "border-[#47957F] bg-[#EAF5F1] text-[#2A5E56] shadow-xs"
+                : "border-[#E2ECE8] bg-white text-[#52706C] hover:bg-[#F8FAF9]"
             }`}
           >
             + Tambah Stok
@@ -147,10 +147,10 @@ export function AdjustmentModal({
               setActionType("SUBTRACT");
               setMovementType("ADJUSTMENT");
             }}
-            className={`rounded-xl border py-2.5 px-2 text-center font-semibold transition-all cursor-pointer ${
+            className={`rounded-xl border py-2.5 px-2 text-center font-bold transition-all cursor-pointer ${
               actionType === "SUBTRACT"
-                ? "border-red-600 bg-red-950/40 text-red-400"
-                : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
+                ? "border-rose-300 bg-rose-50 text-rose-700 shadow-xs"
+                : "border-[#E2ECE8] bg-white text-[#52706C] hover:bg-[#F8FAF9]"
             }`}
           >
             - Kurangi Stok
@@ -163,10 +163,10 @@ export function AdjustmentModal({
               setMovementType("ADJUSTMENT");
               setQuantityInput(currentStock.toString());
             }}
-            className={`rounded-xl border py-2.5 px-2 text-center font-semibold transition-all cursor-pointer ${
+            className={`rounded-xl border py-2.5 px-2 text-center font-bold transition-all cursor-pointer ${
               actionType === "SET"
-                ? "border-yellow-600 bg-yellow-950/40 text-yellow-400"
-                : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
+                ? "border-amber-300 bg-amber-50 text-amber-800 shadow-xs"
+                : "border-[#E2ECE8] bg-white text-[#52706C] hover:bg-[#F8FAF9]"
             }`}
           >
             = Tetapkan Total
@@ -193,21 +193,21 @@ export function AdjustmentModal({
         </div>
 
         {/* Stock preview banner */}
-        <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 p-3">
+        <div className="flex items-center justify-between rounded-2xl border border-[#D5E4DF] bg-[#FAFCFB] p-3.5">
           <div>
-            <span className="text-zinc-500">Stok Saat Ini:</span>
-            <p className="text-sm font-bold text-zinc-300">{currentStock}</p>
+            <span className="text-[11px] font-semibold text-[#7A9C96]">Stok Saat Ini:</span>
+            <p className="text-sm font-bold text-[#183331]">{currentStock}</p>
           </div>
-          <span className="text-lg text-zinc-600">➔</span>
+          <span className="text-base text-[#7A9C96]">➔</span>
           <div className="text-right">
-            <span className="text-zinc-500">Stok Akhir Menjadi:</span>
+            <span className="text-[11px] font-semibold text-[#7A9C96]">Stok Akhir Menjadi:</span>
             <p
               className={`text-base font-black ${
                 resultingStock === 0
-                  ? "text-red-400"
+                  ? "text-rose-600"
                   : resultingStock < 10
-                  ? "text-yellow-400"
-                  : "text-emerald-400"
+                  ? "text-amber-500"
+                  : "text-[#47957F]"
               }`}
             >
               {resultingStock} ({delta >= 0 ? `+${delta}` : delta})
@@ -217,7 +217,7 @@ export function AdjustmentModal({
 
         {/* Reason / Movement Type */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+          <label className="text-[11px] font-bold uppercase tracking-wider text-[#52706C]">
             Kategori Alasan
           </label>
           <select
@@ -225,11 +225,11 @@ export function AdjustmentModal({
             onChange={(e) =>
               setMovementType(e.target.value as InventoryMovementType)
             }
-            className="rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="rounded-xl border border-[#D5E4DF] bg-white px-3 py-2 text-xs text-[#183331] focus:outline-none focus:ring-2 focus:ring-[#47957F] cursor-pointer"
           >
             {actionType === "ADD" && (
               <>
-                <option value="PURCHASE">Pembelian / Restock Baru</option>
+                <option value="PURCHASE">Pembelian Bahan / Restock Baru</option>
                 <option value="INITIAL">Stok Awal</option>
                 <option value="RETURN">Retur dari Pelanggan</option>
                 <option value="ADJUSTMENT">Koreksi Opname (+)</option>
@@ -237,8 +237,8 @@ export function AdjustmentModal({
             )}
             {actionType === "SUBTRACT" && (
               <>
-                <option value="ADJUSTMENT">Kerusakan / Rusak / Expired</option>
-                <option value="ADJUSTMENT">Barang Hilang / Selisih Opname</option>
+                <option value="ADJUSTMENT">Buah Rusak / Terbuang / Expired</option>
+                <option value="ADJUSTMENT">Barang Tumpah / Selisih Opname</option>
                 <option value="SALE">Koreksi Penjualan Manual</option>
               </>
             )}
@@ -252,7 +252,7 @@ export function AdjustmentModal({
         <div>
           <Input
             label="Catatan / Keterangan (Opsional)"
-            placeholder="Contoh: Belanja bahan di pasar, restock t-shirt 20 pcs"
+            placeholder="Contoh: Belanja buah di pasar, restock botol 30 pcs"
             value={note}
             onChange={(e) => setNote(e.target.value)}
             disabled={loading}
@@ -261,7 +261,7 @@ export function AdjustmentModal({
 
         {/* Error alert */}
         {error && (
-          <div className="rounded-lg border border-red-800/80 bg-red-950/60 p-3 text-xs text-red-300">
+          <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 font-medium">
             {error}
           </div>
         )}

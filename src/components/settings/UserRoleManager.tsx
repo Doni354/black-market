@@ -124,32 +124,32 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
   }
 
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 sm:p-5 backdrop-blur-xs space-y-4">
+    <div className="rounded-2xl border border-[#E2ECE8] bg-white p-4 sm:p-5 shadow-xs space-y-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-base font-bold text-zinc-100 flex items-center gap-2">
+          <h2 className="text-base font-bold text-[#183331] flex items-center gap-2">
             <span>Manajemen Hak Akses & Persetujuan Pengguna</span>
             {pendingCount > 0 && (
-              <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-semibold animate-pulse">
+              <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 text-xs font-semibold animate-pulse">
                 {pendingCount} Menunggu ACC
               </span>
             )}
           </h2>
-          <p className="text-xs text-zinc-400 mt-0.5">
-            Setujui (ACC), tolak, ubah role kasir/admin, atau kick pengguna dari sistem Black Market.
+          <p className="text-xs text-[#52706C] mt-0.5">
+            Setujui (ACC), tolak, ubah role kasir/admin, atau kick pengguna dari sistem Noury — No Worries.
           </p>
         </div>
 
         {/* Tab Filters */}
-        <div className="flex items-center gap-1 p-1 bg-zinc-950 rounded-xl border border-zinc-800 self-start sm:self-auto overflow-x-auto">
+        <div className="flex items-center gap-1 p-1 bg-[#F4F9F7] rounded-xl border border-[#D5E6E1] self-start sm:self-auto overflow-x-auto">
           <button
             type="button"
             onClick={() => setActiveTab("ALL")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
               activeTab === "ALL"
-                ? "bg-zinc-800 text-zinc-100"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-white text-[#183331] shadow-xs"
+                : "text-[#52706C] hover:text-[#183331]"
             }`}
           >
             Semua ({users.length})
@@ -159,13 +159,13 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
             onClick={() => setActiveTab("PENDING")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
               activeTab === "PENDING"
-                ? "bg-amber-600/30 text-amber-300 border border-amber-500/40"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-amber-100 text-amber-900 border border-amber-300 shadow-xs"
+                : "text-[#52706C] hover:text-[#183331]"
             }`}
           >
             <span>Pending</span>
             {pendingCount > 0 && (
-              <span className="px-1.5 py-0.2 rounded-full bg-amber-500 text-black font-mono text-[10px] font-bold">
+              <span className="px-1.5 py-0.2 rounded-full bg-amber-500 text-white font-mono text-[10px] font-bold">
                 {pendingCount}
               </span>
             )}
@@ -175,8 +175,8 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
             onClick={() => setActiveTab("ACTIVE")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
               activeTab === "ACTIVE"
-                ? "bg-zinc-800 text-zinc-100"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-white text-[#183331] shadow-xs"
+                : "text-[#52706C] hover:text-[#183331]"
             }`}
           >
             Aktif
@@ -186,8 +186,8 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
             onClick={() => setActiveTab("REJECTED")}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
               activeTab === "REJECTED"
-                ? "bg-zinc-800 text-zinc-100"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-white text-[#183331] shadow-xs"
+                : "text-[#52706C] hover:text-[#183331]"
             }`}
           >
             Ditolak
@@ -197,8 +197,8 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
 
       {/* Users Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs text-zinc-300">
-          <thead className="border-b border-zinc-800 bg-zinc-950/60 uppercase tracking-wider text-[10px] text-zinc-400">
+        <table className="w-full text-left text-xs text-[#183331]">
+          <thead className="border-b border-[#E2ECE8] bg-[#FAFCFB] uppercase tracking-wider text-[10px] text-[#52706C]">
             <tr>
               <th className="px-4 py-3">Pengguna</th>
               <th className="px-4 py-3">Status</th>
@@ -206,10 +206,10 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
               <th className="px-4 py-3 text-right">Aksi Kelola</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-800/80">
+          <tbody className="divide-y divide-[#F0F5F3]">
             {filteredUsers.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-zinc-500">
+                <td colSpan={4} className="px-4 py-8 text-center text-[#7A9C96]">
                   Tidak ada data pengguna pada kategori ini.
                 </td>
               </tr>
@@ -221,7 +221,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                 const isRejected = u.status === "REJECTED";
 
                 return (
-                  <tr key={u.id} className="hover:bg-zinc-800/20 transition-colors">
+                  <tr key={u.id} className="hover:bg-[#F8FAF9] transition-colors">
                     {/* User info */}
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2.5">
@@ -232,23 +232,23 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                             width={32}
                             height={32}
                             unoptimized
-                            className="w-8 h-8 rounded-full border border-zinc-700 object-cover flex-shrink-0"
+                            className="w-8 h-8 rounded-full border border-[#D5E6E1] object-cover flex-shrink-0"
                           />
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center font-bold text-xs text-zinc-300 flex-shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-[#EAF5F1] border border-[#CDE5DC] flex items-center justify-center font-bold text-xs text-[#3D8383] flex-shrink-0">
                             {u.name.charAt(0).toUpperCase()}
                           </div>
                         )}
                         <div>
-                          <div className="font-semibold text-zinc-100 flex items-center gap-1.5">
+                          <div className="font-semibold text-[#183331] flex items-center gap-1.5">
                             <span>{u.name}</span>
                             {isSelf && (
-                              <span className="rounded bg-red-950/80 text-red-400 border border-red-800/60 px-1.5 py-0.2 text-[10px] font-bold">
+                              <span className="rounded bg-[#EAF5F1] text-[#3D8383] border border-[#CDE5DC] px-1.5 py-0.2 text-[10px] font-bold">
                                 Anda (Owner)
                               </span>
                             )}
                           </div>
-                          <span className="text-[11px] text-zinc-500 font-mono">
+                          <span className="text-[11px] text-[#7A9C96] font-mono">
                             {u.email}
                           </span>
                         </div>
@@ -262,7 +262,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
 
                     {/* Role Badge */}
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <Badge variant={u.role === "ADMIN" ? "danger" : "default"}>
+                      <Badge variant={u.role === "ADMIN" ? "default" : "info"}>
                         {u.role}
                       </Badge>
                     </td>
@@ -270,7 +270,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                     {/* Action Buttons */}
                     <td className="px-4 py-3 text-right whitespace-nowrap">
                       {isSelf ? (
-                        <span className="text-[11px] text-zinc-500 italic">
+                        <span className="text-[11px] text-[#7A9C96] italic">
                           Akun Utama (Terkunci)
                         </span>
                       ) : (
@@ -282,7 +282,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                                 type="button"
                                 disabled={isProcessing}
                                 onClick={() => handleApprove(u.id, "CASHIER")}
-                                className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold transition disabled:opacity-50"
+                                className="px-2.5 py-1 rounded-lg bg-[#47957F] hover:bg-[#3D8383] text-white text-[11px] font-bold transition disabled:opacity-50"
                                 title="ACC sebagai Staf Kasir"
                               >
                                 ✓ ACC Kasir
@@ -291,7 +291,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                                 type="button"
                                 disabled={isProcessing}
                                 onClick={() => handleApprove(u.id, "ADMIN")}
-                                className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 text-[11px] font-semibold transition disabled:opacity-50"
+                                className="px-2.5 py-1 rounded-lg bg-white hover:bg-[#F2F8F5] text-[#3D8383] border border-[#CDE5DC] text-[11px] font-bold transition disabled:opacity-50"
                                 title="ACC sebagai Admin"
                               >
                                 ACC Admin
@@ -300,7 +300,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                                 type="button"
                                 disabled={isProcessing}
                                 onClick={() => handleReject(u.id)}
-                                className="px-2 py-1 rounded-lg bg-red-950/60 hover:bg-red-900/60 text-red-400 border border-red-800/60 text-[11px] font-semibold transition disabled:opacity-50"
+                                className="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-semibold transition disabled:opacity-50"
                                 title="Tolak Akses"
                               >
                                 Tolak
@@ -317,7 +317,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                                 onChange={(e) =>
                                   handleRoleChange(u.id, e.target.value as UserRole)
                                 }
-                                className="rounded-lg border border-zinc-700 bg-zinc-950 px-2 py-1 text-xs text-zinc-200 focus:outline-none focus:border-red-500 cursor-pointer disabled:opacity-50"
+                                className="rounded-lg border border-[#D5E6E1] bg-white px-2 py-1 text-xs text-[#183331] focus:outline-none focus:border-[#47957F] cursor-pointer disabled:opacity-50"
                               >
                                 <option value="CASHIER">Kasir (CASHIER)</option>
                                 <option value="ADMIN">Admin (ADMIN)</option>
@@ -326,7 +326,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                                 type="button"
                                 disabled={isProcessing}
                                 onClick={() => handleReject(u.id)}
-                                className="px-2 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] font-medium transition"
+                                className="px-2 py-1 rounded-lg bg-white border border-[#D5E6E1] hover:bg-[#F2F8F5] text-[#52706C] text-[11px] font-medium transition cursor-pointer"
                                 title="Tolak / Nonaktifkan Akses"
                               >
                                 Suspend
@@ -335,7 +335,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                                 type="button"
                                 disabled={isProcessing}
                                 onClick={() => setConfirmKickUser(u)}
-                                className="px-2 py-1 rounded-lg bg-red-950/60 hover:bg-red-900/60 text-red-400 border border-red-800/60 text-[11px] font-semibold transition"
+                                className="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-semibold transition cursor-pointer"
                                 title="Kick Pengguna"
                               >
                                 Kick
@@ -350,7 +350,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                                 type="button"
                                 disabled={isProcessing}
                                 onClick={() => handleApprove(u.id, u.role)}
-                                className="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold transition disabled:opacity-50"
+                                className="px-2.5 py-1 rounded-lg bg-[#47957F] hover:bg-[#3D8383] text-white text-[11px] font-bold transition disabled:opacity-50"
                               >
                                 Aktifkan Kembali
                               </button>
@@ -358,7 +358,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                                 type="button"
                                 disabled={isProcessing}
                                 onClick={() => setConfirmKickUser(u)}
-                                className="px-2 py-1 rounded-lg bg-red-950/60 hover:bg-red-900/60 text-red-400 border border-red-800/60 text-[11px] font-semibold transition"
+                                className="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-semibold transition cursor-pointer"
                               >
                                 Kick
                               </button>
@@ -377,33 +377,33 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
 
       {/* Confirmation Modal to Kick User */}
       {confirmKickUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs p-4">
-          <div className="w-full max-w-sm rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
+          <div className="w-full max-w-sm rounded-2xl border border-[#E2ECE8] bg-white p-6 shadow-2xl space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-red-600/20 text-red-500 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-sm font-bold text-zinc-100">
+                <h3 className="text-sm font-bold text-[#183331]">
                   Kick Pengguna Ini?
                 </h3>
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-[#52706C]">
                   {confirmKickUser.name} ({confirmKickUser.email})
                 </p>
               </div>
             </div>
 
-            <p className="text-xs text-zinc-300 leading-relaxed">
+            <p className="text-xs text-[#52706C] leading-relaxed">
               Pengguna ini akan dihapus dari database sistem dan sesi loginnya akan langsung diputus. Tindakan ini tidak dapat dibatalkan.
             </p>
 
-            <div className="flex justify-end gap-2 pt-2 border-t border-zinc-800">
+            <div className="flex justify-end gap-2 pt-2 border-t border-[#EEF5F2]">
               <button
                 type="button"
                 onClick={() => setConfirmKickUser(null)}
-                className="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold transition"
+                className="px-3 py-1.5 rounded-xl border border-[#D5E6E1] bg-white hover:bg-[#F2F8F5] text-[#52706C] text-xs font-semibold transition"
               >
                 Batal
               </button>
@@ -411,7 +411,7 @@ export function UserRoleManager({ initialUsers, currentUserId }: UserRoleManager
                 type="button"
                 disabled={processingId === confirmKickUser.id}
                 onClick={() => handleKick(confirmKickUser.id)}
-                className="px-4 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-red-600/20"
+                className="px-4 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
               >
                 {processingId === confirmKickUser.id ? "Memproses..." : "Ya, Kick Pengguna"}
               </button>

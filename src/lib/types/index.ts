@@ -1,5 +1,5 @@
 /**
- * Black Market — TypeScript Type Definitions
+ * Noury — No Worries — TypeScript Type Definitions
  *
  * Source of truth: BLACK_MARKET_APP_SPEC.md
  * All monetary values are integers (Rupiah), never floats.
@@ -37,7 +37,15 @@ export interface User {
 // PRODUCT
 // ============================================================
 
-export type ProductType = "FOOD" | "DRINK" | "MERCH" | "BUNDLE" | "OTHER";
+export type ProductType =
+  | "FRUIT_BOWL"
+  | "SMOOTHIE_JUICE"
+  | "INFUSED_WATER"
+  | "HEALTHY_FOOD"
+  | "BUNDLE"
+  | "FOOD"
+  | "DRINK"
+  | "OTHER";
 
 export interface BundleItem {
   productId: string;
@@ -89,7 +97,7 @@ export type PaymentMethod = "CASH" | "QRIS" | "BANK_TRANSFER" | "COD" | "OTHER";
 
 export interface Order {
   id: string;
-  /** Format: BM-000001 */
+  /** Format: NOURY-000001 */
   orderNumber: string;
   customerId?: string;
   customerName?: string;
@@ -109,12 +117,14 @@ export interface Order {
   amountPaid?: number;
   /** Integer Rupiah — change = amountPaid - total */
   change?: number;
-  pickupMethod?: "MARKET_DAY" | "FLEXIBLE";
+  pickupMethod?: "MARKET_DAY" | "BATCH_PICKUP" | "FLEXIBLE";
+  batchInfo?: string;
   productionStatus?: "NOT_STARTED" | "IN_PRODUCTION" | "READY";
   readyForPickupAt?: FirestoreTimestamp;
   /** Secure token for QR — not sequential */
   redemptionCode?: string;
   redemptionQrUrl?: string;
+  couponCode?: string;
   notes?: string;
   items?: OrderItem[];
   proofUrl?: string;
@@ -232,10 +242,37 @@ export interface Customer {
   name: string;
   phone?: string;
   email?: string;
+  photoURL?: string;
   notes?: string;
+  stampsCount?: number;
+  claimedCoupons?: CustomerCoupon[];
   totalOrders: number;
   /** Integer Rupiah */
   totalSpent: number;
+  createdAt: FirestoreTimestamp;
+  updatedAt: FirestoreTimestamp;
+}
+
+export interface CustomerCoupon {
+  id: string;
+  code: string;
+  title: string;
+  description: string;
+  discountAmount: number; // Integer Rupiah
+  minOrder?: number;
+  isUsed: boolean;
+  usedAt?: FirestoreTimestamp;
+  expiresAt?: FirestoreTimestamp;
+}
+
+export interface CustomerAccount {
+  id: string; // Firebase Auth UID
+  name: string;
+  email: string;
+  photoURL?: string;
+  phone?: string;
+  stampsCount: number; // 0 to 10
+  claimedCoupons: CustomerCoupon[];
   createdAt: FirestoreTimestamp;
   updatedAt: FirestoreTimestamp;
 }
@@ -267,40 +304,5 @@ export interface ActionState<T = null> {
   message?: string;
   data?: T;
   errors?: Record<string, string[]>;
-}
-
-// ============================================================
-// CUSTOM MERCH REQUEST (Pin, Sticker, Gantungan Kunci)
-// ============================================================
-
-export type CustomMerchType = "PIN" | "STICKER" | "KEYCHAIN";
-
-export type CustomRequestStatus =
-  | "PENDING"
-  | "CONTACTED"
-  | "APPROVED"
-  | "IN_PRODUCTION"
-  | "READY_FOR_PICKUP"
-  | "COMPLETED"
-  | "REJECTED";
-
-export interface CustomMerchRequest {
-  id: string;
-  requestNumber: string; // e.g. CMR-0001
-  customerName: string;
-  customerPhone: string;
-  customerEmail?: string;
-  merchType: CustomMerchType; // primary / backward compatibility
-  merchTypes?: CustomMerchType[]; // array of selected types (multi-select)
-  quantity: number;
-  designUrl?: string;
-  notes?: string;
-  estimatedPrice?: number;
-  status: CustomRequestStatus;
-  orderId?: string; // If converted into pre-order
-  orderNumber?: string;
-  adminNotes?: string;
-  createdAt: FirestoreTimestamp;
-  updatedAt: FirestoreTimestamp;
 }
 

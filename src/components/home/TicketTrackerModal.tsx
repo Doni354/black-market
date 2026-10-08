@@ -56,11 +56,11 @@ export function TicketTrackerModal({ isOpen, onClose }: TicketTrackerModalProps)
         </Button>
       }
     >
-      <div className="flex flex-col gap-4 text-xs text-zinc-300">
+      <div className="flex flex-col gap-4 text-xs text-[#183331]">
         <form onSubmit={handleSearch} className="flex gap-2">
           <div className="flex-1">
             <Input
-              placeholder="No. Order (BM-XXXXXX) atau WhatsApp"
+              placeholder="No. Order (NOURY-XXXXXX) atau WhatsApp"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               required
@@ -77,7 +77,7 @@ export function TicketTrackerModal({ isOpen, onClose }: TicketTrackerModalProps)
         </form>
 
         {errorMsg && (
-          <div className="rounded-xl border border-red-800/80 bg-red-950/40 p-3 text-xs text-red-300">
+          <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 font-medium">
             {errorMsg}
           </div>
         )}
@@ -85,16 +85,16 @@ export function TicketTrackerModal({ isOpen, onClose }: TicketTrackerModalProps)
         {/* Results */}
         {foundOrders && foundOrders.length > 0 && (
           <div className="flex flex-col gap-3">
-            <p className="font-semibold text-zinc-300">
+            <p className="font-bold text-[#183331]">
               Ditemukan {foundOrders.length} Pesanan:
             </p>
             {foundOrders.map((order) => (
               <div
                 key={order.id}
-                className="flex flex-col gap-2 rounded-xl border border-zinc-800 bg-zinc-950 p-3.5"
+                className="flex flex-col gap-2 rounded-2xl border border-[#E2ECE8] bg-[#FAFCFB] p-3.5 shadow-xs"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-sm text-zinc-100">
+                  <span className="font-mono font-bold text-sm text-[#183331]">
                     {order.orderNumber}
                   </span>
                   <Badge variant={getOrderStatusVariant(order.status)}>
@@ -102,34 +102,34 @@ export function TicketTrackerModal({ isOpen, onClose }: TicketTrackerModalProps)
                   </Badge>
                 </div>
 
-                <div className="text-zinc-400 text-[11px]">
-                  <span>Pemesan: <strong className="text-zinc-200">{order.customerName}</strong></span>
-                  <span className="ml-2">• {formatRupiah(order.total)}</span>
+                <div className="text-[#52706C] text-[11px]">
+                  <span>Pemesan: <strong className="text-[#183331]">{order.customerName}</strong></span>
+                  <span className="ml-2 font-semibold text-[#47957F]">• {formatRupiah(order.total)}</span>
                 </div>
 
                 {/* Redemption Ticket Badge */}
                 {order.redemptionCode ? (
-                  <div className="mt-1 flex flex-col items-center justify-center rounded-lg border border-emerald-800/80 bg-emerald-950/40 p-3 text-center">
-                    <span className="text-[10px] text-emerald-400 font-semibold uppercase tracking-wider">
-                      Tiket Penukaran Market Day
+                  <div className="mt-1 flex flex-col items-center justify-center rounded-xl border border-[#CDE5DD] bg-[#EAF5F1] p-3 text-center">
+                    <span className="text-[10px] text-[#2A5E56] font-extrabold uppercase tracking-wider">
+                      Tiket Penukaran Noury
                     </span>
-                    <span className="mt-0.5 font-mono text-base font-black text-emerald-300">
+                    <span className="mt-0.5 font-mono text-base font-black text-[#183331]">
                       🎫 {order.redemptionCode}
                     </span>
-                    <p className="mt-1 text-[10px] text-zinc-400">
-                      Tunjukkan kode ini kepada kasir saat pengambilan pesanan di stan Black Market.
+                    <p className="mt-1 text-[10px] text-[#52706C]">
+                      Tunjukkan kode ini kepada kasir saat pengambilan pesanan di stan Noury.
                     </p>
                     <Link
                       href={`/order/${order.orderNumber}`}
                       target="_blank"
-                      className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition"
+                      className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#47957F] hover:bg-[#3D8383] text-white font-bold text-xs transition shadow-xs"
                     >
                       <span>Buka E-Ticket QR Lengkap</span>
                       <span>↗</span>
                     </Link>
                   </div>
                 ) : (
-                  <div className="mt-1 rounded-lg border border-zinc-800 bg-zinc-900/60 p-2.5 text-[11px] text-zinc-400">
+                  <div className="mt-1 rounded-xl border border-[#E2ECE8] bg-white p-2.5 text-[11px] text-[#52706C]">
                     {order.status === "WAITING_VERIFICATION"
                       ? "⏳ Bukti pembayaran Anda sedang diverifikasi admin. Tiket QR akan segera diterbitkan."
                       : "⚠️ Pembayaran belum selesai atau belum diverifikasi."}

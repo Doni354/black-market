@@ -4,8 +4,8 @@ import { HomeClient } from "@/components/home/HomeClient";
 import type { Product } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Katalog Produk | Black Market",
-  description: "Katalog resmi makanan, minuman, merchandise, dan paket bundling Black Market.",
+  title: "Katalog Menu Segar | Noury — No Worries",
+  description: "Katalog resmi Fruit Bowls, Cold-Pressed Juices, Infused Water, dan Healthy Eats dari Noury.",
 };
 
 export const dynamic = "force-dynamic";

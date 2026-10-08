@@ -116,23 +116,23 @@ export function RedemptionContainer() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
               Penukaran Tiket (Redeem)
             </h1>
-            <span className="px-2 py-0.5 rounded-full bg-red-600/20 border border-red-500/30 text-red-400 text-xs font-semibold">
+            <span className="px-2 py-0.5 rounded-full bg-[#47957F]/10 border border-[#47957F]/30 text-[#3D8383] text-xs font-semibold">
               Live Scanner
             </span>
           </div>
-          <p className="text-xs text-zinc-400 mt-1">
-            Scan QR Code tiket pemesan pre-order untuk serah terima barang di stand.
+          <p className="text-xs text-zinc-500 mt-1">
+            Scan QR Code tiket pemesan pre-order untuk serah terima pesanan di stand Noury.
           </p>
         </div>
 
         <Link
           href="/admin/pos"
-          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium border border-zinc-700 transition self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-zinc-50 text-zinc-700 text-xs font-medium border border-zinc-200 shadow-xs transition self-start sm:self-auto cursor-pointer"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-4 h-4 text-zinc-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           Kembali ke POS Kasir
@@ -142,16 +142,16 @@ export function RedemptionContainer() {
       {/* Main Scanner & Input Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Left Column: Scanner & Input Tabs (8 cols) */}
-        <div className="md:col-span-7 bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
+        <div className="md:col-span-7 bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
           {/* Mode Switcher Tabs */}
-          <div className="flex p-1 bg-zinc-950 rounded-xl border border-zinc-800 mb-5">
+          <div className="flex p-1 bg-zinc-100 rounded-xl border border-zinc-200/80 mb-5">
             <button
               type="button"
               onClick={() => setActiveTab("camera")}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === "camera"
-                  ? "bg-red-600 text-white shadow-md shadow-red-600/20"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  ? "bg-[#47957F] text-white shadow-xs"
+                  : "text-zinc-600 hover:text-zinc-900"
               }`}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -163,10 +163,10 @@ export function RedemptionContainer() {
             <button
               type="button"
               onClick={() => setActiveTab("manual")}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === "manual"
-                  ? "bg-red-600 text-white shadow-md shadow-red-600/20"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  ? "bg-[#47957F] text-white shadow-xs"
+                  : "text-zinc-600 hover:text-zinc-900"
               }`}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -196,7 +196,7 @@ export function RedemptionContainer() {
               <div>
                 <label
                   htmlFor="manual-code-input"
-                  className="block text-xs font-semibold text-zinc-300 mb-1.5"
+                  className="block text-xs font-semibold text-zinc-700 mb-1.5"
                 >
                   Kode Tiket Redemption
                 </label>
@@ -207,7 +207,7 @@ export function RedemptionContainer() {
                     value={manualCode}
                     onChange={(e) => setManualCode(e.target.value.toUpperCase())}
                     placeholder="Contoh: RDM-A1B2-C3D4-E5F6"
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-100 placeholder-zinc-600 font-mono tracking-wider focus:outline-none focus:border-red-500"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 font-mono tracking-wider focus:outline-none focus:border-[#47957F] focus:bg-white"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         handleProcessCode(manualCode);
@@ -218,7 +218,7 @@ export function RedemptionContainer() {
                     <button
                       type="button"
                       onClick={() => setManualCode("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 cursor-pointer"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -226,8 +226,8 @@ export function RedemptionContainer() {
                     </button>
                   )}
                 </div>
-                <p className="text-[11px] text-zinc-500 mt-1.5">
-                  Masukkan 20 karakter kode token yang tertera di bawah QR tiket.
+                <p className="text-[11px] text-zinc-400 mt-1.5">
+                  Masukkan kode token yang tertera di bawah QR tiket.
                 </p>
               </div>
 
@@ -235,7 +235,7 @@ export function RedemptionContainer() {
                 type="button"
                 onClick={() => handleProcessCode(manualCode)}
                 disabled={!manualCode.trim() || isProcessing}
-                className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 disabled:bg-zinc-800 disabled:text-zinc-600 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg shadow-red-600/20"
+                className="w-full py-3 px-4 rounded-xl bg-[#47957F] hover:bg-[#3D8383] disabled:bg-zinc-100 disabled:text-zinc-400 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-md shadow-[#47957F]/20 cursor-pointer"
               >
                 {isProcessing ? (
                   <>
@@ -261,46 +261,46 @@ export function RedemptionContainer() {
         {/* Right Column: Instructions & Live Session History (5 cols) */}
         <div className="md:col-span-5 space-y-5">
           {/* Quick Guide */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
-            <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
+            <h3 className="text-xs font-bold text-zinc-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+              <svg className="w-4 h-4 text-[#47957F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Alur Serah Terima Stand
             </h3>
-            <ol className="space-y-2.5 text-xs text-zinc-400">
+            <ol className="space-y-2.5 text-xs text-zinc-600">
               <li className="flex items-start gap-2">
-                <span className="w-5 h-5 rounded-full bg-zinc-800 text-zinc-300 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-[#47957F]/10 text-[#3D8383] font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
                   1
                 </span>
-                <span>Minta pelanggan menunjukkan e-ticket QR di ponsel.</span>
+                <span>Minta pelanggan menunjukkan e-ticket QR di akun mereka.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-5 h-5 rounded-full bg-zinc-800 text-zinc-300 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-[#47957F]/10 text-[#3D8383] font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
                   2
                 </span>
                 <span>Arahkan kamera ke QR atau ketik kode jika kamera buram.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-5 h-5 rounded-full bg-zinc-800 text-zinc-300 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-[#47957F]/10 text-[#3D8383] font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
                   3
                 </span>
-                <span>Cocokkan daftar barang fisik dengan checklist pesanan.</span>
+                <span>Cocokkan item pesanan fisik dengan checklist pesanan.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-5 h-5 rounded-full bg-zinc-800 text-zinc-300 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-[#47957F]/10 text-[#3D8383] font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
                   4
                 </span>
-                <span>Klik <strong>Konfirmasi Serah Terima</strong> untuk menutup tiket secara permanen.</span>
+                <span>Klik <strong>Konfirmasi Serah Terima</strong> untuk menandai pesanan selesai.</span>
               </li>
             </ol>
           </div>
 
           {/* Session Redemption History */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 shadow-xl">
+          <div className="bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-2">
-                <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <h3 className="text-xs font-bold text-zinc-800 uppercase tracking-wider flex items-center gap-2">
+                <svg className="w-4 h-4 text-[#47957F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Riwayat Sesi Ini ({sessionHistory.length})
@@ -308,7 +308,7 @@ export function RedemptionContainer() {
             </div>
 
             {sessionHistory.length === 0 ? (
-              <p className="text-xs text-zinc-500 py-4 text-center">
+              <p className="text-xs text-zinc-400 py-4 text-center">
                 Belum ada tiket yang ditukarkan pada sesi ini.
               </p>
             ) : (
@@ -316,17 +316,17 @@ export function RedemptionContainer() {
                 {sessionHistory.map((item, idx) => (
                   <div
                     key={idx}
-                    className="p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-between text-xs"
+                    className="p-2.5 rounded-xl bg-zinc-50 border border-zinc-200 flex items-center justify-between text-xs"
                   >
                     <div>
-                      <p className="font-mono font-bold text-zinc-200">
+                      <p className="font-mono font-bold text-zinc-850">
                         #{item.orderNumber}
                       </p>
-                      <p className="text-zinc-400 text-[11px] truncate max-w-[140px]">
+                      <p className="text-zinc-500 text-[11px] truncate max-w-[140px]">
                         {item.customerName}
                       </p>
                     </div>
-                    <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                    <span className="text-[11px] font-mono text-[#3D8383] bg-[#47957F]/10 px-2 py-0.5 rounded border border-[#47957F]/20 font-semibold">
                       {item.redeemedAt}
                     </span>
                   </div>

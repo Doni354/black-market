@@ -5,8 +5,8 @@ import { ProductTable } from "@/components/products/ProductTable";
 import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
-  title: "Produk & Katalog",
-  description: "Kelola daftar produk, harga, stok, dan paket bundling Black Market.",
+  title: "Produk & Menu Fresh | Noury",
+  description: "Kelola daftar menu fresh, buah, smoothies, dan healthy bites Noury.",
 };
 
 export const dynamic = "force-dynamic";
@@ -19,16 +19,16 @@ export default async function ProductsPage() {
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-100">
-            Produk & Katalog
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+            Produk & Menu Fresh
           </h1>
-          <p className="mt-1 text-sm text-zinc-400">
-            Kelola menu makanan, minuman, merchandise, dan paket bundling.
+          <p className="mt-1 text-sm text-zinc-500">
+            Kelola menu fresh fruit bowls, smoothies, infused water, dan healthy meals Noury.
           </p>
         </div>
 
         <Link href="/admin/products/new">
-          <Button variant="primary" size="md" className="gap-2">
+          <Button variant="primary" size="md" className="gap-2 bg-[#47957F] hover:bg-[#3D8383] text-white shadow-md shadow-[#47957F]/20 cursor-pointer">
             <svg
               className="h-4 w-4"
               fill="none"

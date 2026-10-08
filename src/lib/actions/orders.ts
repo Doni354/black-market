@@ -21,8 +21,12 @@ export interface CreatePreOrderPayload {
   customerEmail?: string;
   paymentMethod: PaymentMethod;
   notes?: string;
-  pickupMethod?: "MARKET_DAY" | "FLEXIBLE";
+  pickupMethod?: "MARKET_DAY" | "BATCH_PICKUP" | "FLEXIBLE";
+  batchInfo?: string;
   proofUrl?: string;
+  couponCode?: string;
+  discount?: number;
+  customerId?: string;
 }
 
 /**

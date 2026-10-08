@@ -93,10 +93,10 @@ export function LoginForm() {
     <div className="flex flex-col gap-5">
       {/* Pending approval notice */}
       {pendingNotice && (
-        <div className="rounded-xl border border-amber-500/40 bg-amber-950/40 p-4 text-xs text-amber-300 space-y-2 animate-in fade-in zoom-in-95 duration-200">
+        <div className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-xs text-amber-900 space-y-2 animate-in fade-in zoom-in-95 duration-200">
           <div className="flex items-center gap-2">
             <svg
-              className="h-5 w-5 shrink-0 text-amber-400"
+              className="h-5 w-5 shrink-0 text-amber-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -108,21 +108,21 @@ export function LoginForm() {
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
               />
             </svg>
-            <span className="font-bold text-sm text-amber-200">Menunggu Persetujuan Admin</span>
+            <span className="font-bold text-sm text-amber-900">Menunggu Persetujuan Admin</span>
           </div>
-          <p className="leading-relaxed text-amber-300/90">{pendingNotice}</p>
-          <p className="text-[11px] text-amber-400/80 pt-2 border-t border-amber-900/50">
-            Hubungi Administrator Black Market untuk meng-ACC akun Anda melalui menu <strong>Pengaturan</strong>.
+          <p className="leading-relaxed text-amber-800">{pendingNotice}</p>
+          <p className="text-[11px] text-amber-700 pt-2 border-t border-amber-200">
+            Hubungi Administrator Noury KWH untuk meng-ACC akun Anda melalui menu <strong>Pengaturan</strong>.
           </p>
         </div>
       )}
 
       {/* Error alert */}
       {error && !pendingNotice && (
-        <div className="rounded-xl border border-red-800/80 bg-red-950/60 p-3.5 text-xs text-red-300">
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-3.5 text-xs text-red-700">
           <div className="flex items-center gap-2">
             <svg
-              className="h-4 w-4 shrink-0 text-red-400"
+              className="h-4 w-4 shrink-0 text-red-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -136,7 +136,7 @@ export function LoginForm() {
             </svg>
             <span className="font-semibold">Login Gagal</span>
           </div>
-          <p className="mt-1 text-red-400/90 leading-relaxed">{error}</p>
+          <p className="mt-1 text-red-600 leading-relaxed">{error}</p>
         </div>
       )}
 
@@ -145,10 +145,10 @@ export function LoginForm() {
         type="button"
         onClick={handleGoogleLogin}
         disabled={loading}
-        className="group relative flex w-full items-center justify-center gap-3 rounded-xl border border-zinc-700 bg-zinc-850 px-4 py-3.5 text-sm font-bold text-zinc-100 shadow-lg shadow-black/40 transition-all hover:border-red-500/80 hover:bg-zinc-800 hover:text-white disabled:opacity-60 cursor-pointer"
+        className="group relative flex w-full items-center justify-center gap-3 rounded-2xl border border-[#CCE0DA] bg-white px-4 py-3.5 text-sm font-bold text-[#183331] shadow-xs transition-all hover:bg-[#F2F8F6] hover:border-noury-mint disabled:opacity-60 cursor-pointer"
       >
         {loading ? (
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-red-500 border-t-transparent" />
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-noury-mint border-t-transparent" />
         ) : (
           <GoogleIcon />
         )}
@@ -156,36 +156,36 @@ export function LoginForm() {
       </button>
 
       {/* Role-Based Explanation Card */}
-      <div className="rounded-xl border border-zinc-800/90 bg-zinc-950/60 p-4 text-xs text-zinc-400 flex flex-col gap-2.5">
-        <div className="flex items-center gap-1.5 text-zinc-300 font-semibold uppercase tracking-wider text-[10px]">
-          <svg className="h-3.5 w-3.5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <div className="rounded-2xl border border-[#DCE8E4] bg-[#F9FBFA] p-4 text-xs text-[#52706C] flex flex-col gap-2.5">
+        <div className="flex items-center gap-1.5 text-[#183331] font-semibold uppercase tracking-wider text-[10px]">
+          <svg className="h-3.5 w-3.5 text-noury-mint" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
           </svg>
-          Sistem Akses Berbasis Peran (RBAC)
+          Sistem Akses Peran Staf & Admin (RBAC)
         </div>
 
-        <div className="grid grid-cols-2 gap-2 pt-1 border-t border-zinc-850">
-          <div className="rounded-lg bg-zinc-900/80 p-2.5 border border-zinc-800">
-            <span className="inline-block rounded bg-red-950/80 text-red-400 border border-red-800/60 px-1.5 py-0.5 text-[10px] font-bold mb-1">
+        <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#EDF4F1]">
+          <div className="rounded-xl bg-white p-2.5 border border-[#DCE8E4]">
+            <span className="inline-block rounded bg-[#3D8383]/15 text-[#3D8383] border border-[#3D8383]/30 px-1.5 py-0.5 text-[10px] font-bold mb-1">
               ADMIN
             </span>
-            <p className="text-[11px] text-zinc-300 leading-snug">
+            <p className="text-[11px] text-[#4A6864] leading-snug">
               Hak akses penuh: Katalog, Inventaris, Pengeluaran, Laporan Keuangan, & Manajemen User.
             </p>
           </div>
 
-          <div className="rounded-lg bg-zinc-900/80 p-2.5 border border-zinc-800">
-            <span className="inline-block rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 px-1.5 py-0.5 text-[10px] font-bold mb-1">
+          <div className="rounded-xl bg-white p-2.5 border border-[#DCE8E4]">
+            <span className="inline-block rounded bg-[#47957F]/15 text-[#47957F] border border-[#47957F]/30 px-1.5 py-0.5 text-[10px] font-bold mb-1">
               CASHIER
             </span>
-            <p className="text-[11px] text-zinc-300 leading-snug">
-              Hak akses operasional: Transaksi POS kasir, Riwayat pesanan, & Scan tiket QR.
+            <p className="text-[11px] text-[#4A6864] leading-snug">
+              Hak akses kasir: Transaksi POS, Riwayat pesanan, & Scan tiket QR penukaran.
             </p>
           </div>
         </div>
 
-        <p className="text-[10px] text-zinc-500 italic text-center pt-1">
-          Role akun otomatis ditentukan oleh sistem saat pertama login dan dapat disesuaikan oleh Admin.
+        <p className="text-[10px] text-[#7A9C96] italic text-center pt-1">
+          Role akun ditentukan oleh sistem saat pertama kali login dan dapat disesuaikan oleh Koordinator KWH.
         </p>
       </div>
     </div>

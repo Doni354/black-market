@@ -4,8 +4,8 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { POSContainer } from "@/components/pos/POSContainer";
 
 export const metadata: Metadata = {
-  title: "POS / Kasir",
-  description: "Terminal Point of Sale Black Market untuk transaksi langsung di tempat.",
+  title: "POS / Kasir | Noury — No Worries",
+  description: "Terminal Point of Sale Noury untuk transaksi langsung di stand bazar KWH.",
 };
 
 export const dynamic = "force-dynamic";

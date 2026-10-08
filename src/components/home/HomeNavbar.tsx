@@ -1,61 +1,69 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { useCustomerAuth } from "@/lib/auth/customer-context";
 
-interface HomeNavbarProps {
-  onOpenTracker: () => void;
-}
+export function HomeNavbar() {
+  const { user, account } = useCustomerAuth();
 
-export function HomeNavbar({ onOpenTracker }: HomeNavbarProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md">
+    <header className="sticky top-0 z-30 border-b border-[#E4EFEB] bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
-        {/* Brand & Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-red-600 to-red-800 shadow-md shadow-red-950/40 transition-transform group-hover:scale-105">
-            <span className="text-sm font-black text-white tracking-wider">BM</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-black tracking-tight text-zinc-100 group-hover:text-red-400 transition-colors">
-              BLACK MARKET
-            </span>
-            <span className="text-[10px] text-zinc-400 leading-none">
-              Merchandise & F&B
-            </span>
-          </div>
+        {/* Direct Brand Logo (Without background container/frame) */}
+        <Link href="/" className="flex items-center group">
+          <Image
+            src="/icons/Logo.svg"
+            alt="Noury — No Worries"
+            width={125}
+            height={44}
+            className="h-10 w-auto object-contain transition-transform group-hover:scale-102"
+            priority
+          />
         </Link>
 
         {/* Navigation links & Actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3.5">
           <Link
             href="/products"
-            className="hidden sm:inline-block text-xs font-semibold text-zinc-400 hover:text-zinc-200 transition-colors px-2 py-1"
+            className="text-xs font-semibold text-[#3A5E58] hover:text-[#47957F] transition-colors px-2.5 py-1"
           >
-            Katalog
+            Katalog Menu
           </Link>
 
+          {/* Customer Portal Link */}
           <Link
-            href="/order"
-            className="hidden sm:inline-block text-xs font-semibold text-red-400 hover:text-red-300 transition-colors px-2 py-1"
+            href="/account"
+            className="flex items-center gap-1.5 rounded-xl border border-[#D5E6E1] bg-[#F2F8F6] hover:bg-[#E4F2ED] px-3 py-1.5 text-xs font-bold text-[#2A5E56] transition-all shadow-xs"
           >
-            Pre-Order
-          </Link>
-
-          <button
-            type="button"
-            onClick={onOpenTracker}
-            className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900/90 px-3 py-1.5 text-xs font-semibold text-zinc-300 hover:border-zinc-700 hover:text-white transition-colors cursor-pointer"
-          >
-            <span>🎫</span>
-            <span className="hidden sm:inline">Cek Tiket / Pesanan</span>
-            <span className="sm:hidden">Cek Tiket</span>
-          </button>
-
-          <Link
-            href="/admin/login"
-            className="rounded-xl border border-red-900/50 bg-red-950/30 px-3 py-1.5 text-xs font-semibold text-red-400 hover:bg-red-900/40 transition-colors"
-          >
-            Kasir
+            {user ? (
+              <>
+                {user.photoURL ? (
+                  <Image
+                    src={user.photoURL}
+                    alt="User"
+                    width={18}
+                    height={18}
+                    className="rounded-full object-cover"
+                  />
+                ) : (
+                  <span>👤</span>
+                )}
+                <span className="max-w-[80px] truncate sm:max-w-none">
+                  {user.displayName?.split(" ")[0] || "Akun Saya"}
+                </span>
+                {account?.stampsCount ? (
+                  <span className="ml-0.5 rounded-full bg-[#CDD272] text-[#223908] px-1.5 py-0.2 text-[9px] font-black">
+                    {account.stampsCount}★
+                  </span>
+                ) : null}
+              </>
+            ) : (
+              <>
+                <span>🎁</span>
+                <span>Kupon & Akun</span>
+              </>
+            )}
           </Link>
         </div>
       </div>

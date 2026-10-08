@@ -14,10 +14,10 @@ interface ToastProps {
 }
 
 const variantClasses: Record<ToastVariant, string> = {
-  success: "border-emerald-700 bg-emerald-950 text-emerald-300",
-  error: "border-red-700 bg-red-950 text-red-300",
-  warning: "border-yellow-700/80 bg-yellow-950/80 text-yellow-300",
-  info: "border-blue-700 bg-blue-950 text-blue-300",
+  success: "border-emerald-200 bg-white text-emerald-900 shadow-xl",
+  error: "border-rose-200 bg-white text-rose-900 shadow-xl",
+  warning: "border-amber-200 bg-white text-amber-900 shadow-xl",
+  info: "border-[#CEE4EC] bg-white text-[#1D4A47] shadow-xl",
 };
 
 const variantIcons: Record<ToastVariant, string> = {

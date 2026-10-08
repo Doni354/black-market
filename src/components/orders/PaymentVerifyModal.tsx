@@ -45,7 +45,7 @@ export function PaymentVerifyModal({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", "black-market/payment-proofs");
+      formData.append("folder", "noury/payment-proofs");
 
       const res = await fetch("/api/upload", {
         method: "POST",
@@ -118,41 +118,41 @@ export function PaymentVerifyModal({
             loading={submitting}
             disabled={uploading}
             onClick={handleConfirmVerification}
-            className="font-bold px-5 bg-emerald-600 hover:bg-emerald-500 border-emerald-500"
+            className="font-bold px-5 bg-[#47957F] hover:bg-[#3D8383] text-white shadow-md shadow-[#47957F]/20 cursor-pointer"
           >
             ✓ Setujui Pembayaran & Buat QR
           </Button>
         </>
       }
     >
-      <div className="flex flex-col gap-3.5 text-xs text-zinc-300">
+      <div className="flex flex-col gap-3.5 text-xs text-zinc-700">
         {/* Order Brief Box */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3 flex flex-col gap-1.5">
-          <div className="flex justify-between items-center text-zinc-400">
+        <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-3 flex flex-col gap-1.5">
+          <div className="flex justify-between items-center text-zinc-500">
             <span>Pemesan:</span>
-            <span className="font-semibold text-zinc-200">
+            <span className="font-semibold text-zinc-800">
               {order.customerName || "—"} ({order.customerPhone || "No HP —"})
             </span>
           </div>
-          <div className="flex justify-between items-center text-zinc-400">
+          <div className="flex justify-between items-center text-zinc-500">
             <span>Metode Bayar:</span>
-            <span className="font-semibold text-zinc-200">{order.paymentMethod}</span>
+            <span className="font-semibold text-zinc-800">{order.paymentMethod}</span>
           </div>
-          <div className="flex justify-between items-center pt-1 border-t border-zinc-900 font-bold text-sm">
+          <div className="flex justify-between items-center pt-1 border-t border-zinc-200 font-bold text-sm">
             <span>Total Tagihan:</span>
-            <span className="text-red-400">{formatRupiah(order.total)}</span>
+            <span className="text-[#3D8383]">{formatRupiah(order.total)}</span>
           </div>
         </div>
 
         {/* Proof of Payment View / Upload */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-3 flex flex-col gap-2">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+        <div className="rounded-xl border border-zinc-200 bg-zinc-50/60 p-3 flex flex-col gap-2">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
             Bukti Pembayaran / Screenshot Transfer
           </span>
 
           {currentProof ? (
             <div className="flex flex-col items-center gap-2">
-              <div className="relative w-full h-52 rounded-lg overflow-hidden border border-zinc-700 bg-black">
+              <div className="relative w-full h-52 rounded-lg overflow-hidden border border-zinc-200 bg-zinc-100">
                 <Image
                   src={currentProof}
                   alt="Bukti pembayaran"
@@ -165,17 +165,17 @@ export function PaymentVerifyModal({
                 href={currentProof}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[11px] text-red-400 hover:underline"
+                className="text-[11px] text-[#47957F] font-semibold hover:underline"
               >
                 Buka Bukti Ukuran Penuh ↗
               </a>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center p-4 border border-dashed border-zinc-750 rounded-lg text-center gap-2">
+            <div className="flex flex-col items-center justify-center p-4 border border-dashed border-zinc-300 rounded-lg text-center gap-2 bg-white">
               <p className="text-zinc-500 text-[11px]">
                 Customer belum melampirkan foto bukti pembayaran.
               </p>
-              <label className="cursor-pointer rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:bg-zinc-700 transition-colors">
+              <label className="cursor-pointer rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-semibold text-zinc-700 hover:bg-zinc-100 transition-colors">
                 {uploading ? "Mengupload..." : "+ Unggah Bukti Manual"}
                 <input
                   type="file"
@@ -190,18 +190,18 @@ export function PaymentVerifyModal({
         </div>
 
         {/* Important notice */}
-        <div className="rounded-xl border border-amber-900/60 bg-amber-950/20 p-3 text-[11px] text-amber-300">
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-[11px] text-amber-800">
           <p className="font-bold flex items-center gap-1 mb-0.5">
             ⚠️ Perhatian Penting
           </p>
           <p>
-            Setelah pembayaran disetujui, stok produk otomatis akan terpotong dari inventaris dan kode QR redemption akan langsung dibuat untuk penukaran di Market Day.
+            Setelah pembayaran disetujui, stok produk otomatis akan terpotong dari inventaris dan tiket QR redemption akan langsung aktif untuk penukaran.
           </p>
         </div>
 
         {/* Error message */}
         {errorMsg && (
-          <div className="rounded-lg border border-red-800/80 bg-red-950/60 p-2.5 text-xs text-red-300">
+          <div className="rounded-lg border border-red-200 bg-red-50 p-2.5 text-xs text-red-700">
             {errorMsg}
           </div>
         )}

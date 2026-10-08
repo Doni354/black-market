@@ -58,13 +58,13 @@ export function StockTable({ initialProducts }: StockTableProps) {
         <div className="relative w-full sm:max-w-xs">
           <input
             type="text"
-            placeholder="Cari produk atau kategori..."
+            placeholder="Cari menu atau kategori..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 pl-9 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full rounded-xl border border-[#D5E4DF] bg-white px-3 py-2 pl-9 text-sm text-[#183331] placeholder:text-[#8AA59F] focus:outline-none focus:ring-2 focus:ring-[#47957F]"
           />
           <svg
-            className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500"
+            className="absolute left-3 top-2.5 h-4 w-4 text-[#7A9C96]"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -83,10 +83,10 @@ export function StockTable({ initialProducts }: StockTableProps) {
           <button
             type="button"
             onClick={() => setStatusFilter("ALL")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
+            className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-colors cursor-pointer ${
               statusFilter === "ALL"
-                ? "bg-red-600 text-white"
-                : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800"
+                ? "bg-[#47957F] text-white shadow-xs"
+                : "bg-white border border-[#D5E4DF] text-[#52706C] hover:bg-[#F8FAF9]"
             }`}
           >
             Semua ({products.length})
@@ -95,10 +95,10 @@ export function StockTable({ initialProducts }: StockTableProps) {
           <button
             type="button"
             onClick={() => setStatusFilter("SAFE")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
+            className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-colors cursor-pointer ${
               statusFilter === "SAFE"
-                ? "bg-emerald-600 text-white"
-                : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800"
+                ? "bg-emerald-600 text-white shadow-xs"
+                : "bg-white border border-[#D5E4DF] text-[#52706C] hover:bg-[#F8FAF9]"
             }`}
           >
             Aman (≥10)
@@ -107,10 +107,10 @@ export function StockTable({ initialProducts }: StockTableProps) {
           <button
             type="button"
             onClick={() => setStatusFilter("LOW")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
+            className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-colors cursor-pointer ${
               statusFilter === "LOW"
-                ? "bg-yellow-600 text-white"
-                : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800"
+                ? "bg-amber-500 text-white shadow-xs"
+                : "bg-white border border-[#D5E4DF] text-[#52706C] hover:bg-[#F8FAF9]"
             }`}
           >
             Menipis (&lt;10)
@@ -119,10 +119,10 @@ export function StockTable({ initialProducts }: StockTableProps) {
           <button
             type="button"
             onClick={() => setStatusFilter("OUT")}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
+            className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-colors cursor-pointer ${
               statusFilter === "OUT"
-                ? "bg-red-700 text-white"
-                : "bg-zinc-900 border border-zinc-800 text-zinc-400 hover:bg-zinc-800"
+                ? "bg-rose-600 text-white shadow-xs"
+                : "bg-white border border-[#D5E4DF] text-[#52706C] hover:bg-[#F8FAF9]"
             }`}
           >
             Habis (0)
@@ -131,25 +131,25 @@ export function StockTable({ initialProducts }: StockTableProps) {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 backdrop-blur-xs">
+      <div className="overflow-hidden rounded-2xl border border-[#E2ECE8] bg-white shadow-xs">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-zinc-300">
-            <thead className="border-b border-zinc-800 bg-zinc-950/60 text-xs uppercase tracking-wider text-zinc-400">
+          <table className="w-full text-left text-xs text-[#183331]">
+            <thead className="border-b border-[#E2ECE8] bg-[#FAFCFB] text-[11px] uppercase tracking-wider text-[#52706C]">
               <tr>
-                <th className="px-4 py-3.5">Produk</th>
-                <th className="px-4 py-3.5">Tipe</th>
-                <th className="px-4 py-3.5">Pantau Stok</th>
-                <th className="px-4 py-3.5 text-center">Stok Fisik</th>
-                <th className="px-4 py-3.5">Status</th>
-                <th className="px-4 py-3.5 text-right">Tindakan</th>
+                <th className="px-4 py-3.5 font-semibold">Menu / Produk</th>
+                <th className="px-4 py-3.5 font-semibold">Tipe</th>
+                <th className="px-4 py-3.5 font-semibold">Pantau Stok</th>
+                <th className="px-4 py-3.5 text-center font-semibold">Stok Fisik</th>
+                <th className="px-4 py-3.5 font-semibold">Status</th>
+                <th className="px-4 py-3.5 text-right font-semibold">Tindakan</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/80">
+            <tbody className="divide-y divide-[#F0F5F3]">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-12 text-center text-zinc-500">
-                    <p className="text-base font-medium">Tidak ada produk ditemukan</p>
-                    <p className="mt-1 text-xs text-zinc-600">
+                  <td colSpan={6} className="px-4 py-12 text-center text-[#7A9C96]">
+                    <p className="text-base font-bold text-[#183331]">Tidak ada produk ditemukan</p>
+                    <p className="mt-1 text-xs text-[#52706C]">
                       Coba ubah kata kunci pencarian atau filter status stok.
                     </p>
                   </td>
@@ -163,13 +163,13 @@ export function StockTable({ initialProducts }: StockTableProps) {
                   return (
                     <tr
                       key={p.id}
-                      className="transition-colors hover:bg-zinc-800/30"
+                      className="transition-colors hover:bg-[#F8FAF9]"
                     >
                       {/* Product Thumbnail & Name */}
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           {p.imageUrl ? (
-                            <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800">
+                            <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-xl border border-[#D5E4DF] bg-[#F4F9F7]">
                               <Image
                                 src={p.imageUrl}
                                 alt={p.name}
@@ -179,17 +179,17 @@ export function StockTable({ initialProducts }: StockTableProps) {
                               />
                             </div>
                           ) : (
-                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-bold text-zinc-600">
-                              BM
+                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-[#D5E4DF] bg-[#EAF5F1] text-base">
+                              🥗
                             </div>
                           )}
 
                           <div className="min-w-0">
-                            <span className="font-semibold text-zinc-100 truncate block">
+                            <span className="font-semibold text-[#183331] truncate block">
                               {p.name}
                             </span>
                             {p.category && (
-                              <span className="text-[11px] text-zinc-500">
+                              <span className="text-[11px] text-[#7A9C96]">
                                 {p.category}
                               </span>
                             )}
@@ -199,7 +199,7 @@ export function StockTable({ initialProducts }: StockTableProps) {
 
                       {/* Type */}
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="rounded-md bg-zinc-800/80 px-2 py-0.5 text-xs text-zinc-300 border border-zinc-700">
+                        <span className="rounded-lg bg-[#FAFCFB] px-2 py-0.5 text-[11px] font-semibold text-[#254440] border border-[#D5E4DF]">
                           {p.type}
                         </span>
                       </td>
@@ -207,11 +207,11 @@ export function StockTable({ initialProducts }: StockTableProps) {
                       {/* Track Inventory */}
                       <td className="px-4 py-3 whitespace-nowrap">
                         {isTracked ? (
-                          <span className="text-xs text-emerald-400 font-medium">
+                          <span className="text-xs text-[#47957F] font-bold">
                             ✓ Dipantau
                           </span>
                         ) : (
-                          <span className="text-xs text-zinc-500">
+                          <span className="text-xs text-[#7A9C96]">
                             Tanpa Batas
                           </span>
                         )}
@@ -223,16 +223,16 @@ export function StockTable({ initialProducts }: StockTableProps) {
                           <span
                             className={`text-base ${
                               isOut
-                                ? "text-red-400"
+                                ? "text-rose-600"
                                 : isLow
-                                ? "text-yellow-400"
-                                : "text-emerald-400"
+                                ? "text-amber-500"
+                                : "text-[#47957F]"
                             }`}
                           >
                             {p.stock}
                           </span>
                         ) : (
-                          <span className="text-xs text-zinc-500">∞</span>
+                          <span className="text-xs text-[#7A9C96]">∞</span>
                         )}
                       </td>
 
@@ -255,14 +255,14 @@ export function StockTable({ initialProducts }: StockTableProps) {
                           <button
                             type="button"
                             onClick={() => setSelectedProduct(p)}
-                            className="rounded-lg bg-red-600/10 px-2.5 py-1 text-xs font-semibold text-red-400 border border-red-800/40 hover:bg-red-600/20 transition-colors cursor-pointer"
+                            className="rounded-xl bg-[#EAF5F1] px-3 py-1 text-xs font-bold text-[#2A5E56] border border-[#CDE5DD] hover:bg-[#DDF0E8] transition-colors cursor-pointer"
                           >
                             Adjust Stok
                           </button>
 
                           <Link
                             href={`/admin/inventory/${p.id}`}
-                            className="rounded-lg bg-zinc-800 px-2.5 py-1 text-xs font-semibold text-zinc-300 hover:bg-zinc-700 transition-colors"
+                            className="rounded-xl bg-[#FAFCFB] px-3 py-1 text-xs font-semibold text-[#52706C] border border-[#E2ECE8] hover:bg-[#F0F5F3] hover:text-[#183331] transition-colors"
                           >
                             Riwayat
                           </Link>

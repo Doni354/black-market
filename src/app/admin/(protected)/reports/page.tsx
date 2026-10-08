@@ -3,8 +3,8 @@ import { getReportData } from "@/lib/db/reports";
 import { ReportsContainer } from "@/components/reports/ReportsContainer";
 
 export const metadata: Metadata = {
-  title: "Laporan Bisnis & Keuangan | Black Market",
-  description: "Laporan penjualan, pengeluaran stand, laba rugi, dan inventaris Black Market.",
+  title: "Laporan Bisnis & Keuangan | Noury",
+  description: "Laporan penjualan, pengeluaran stand, laba rugi, dan inventaris Noury.",
 };
 
 export const dynamic = "force-dynamic";

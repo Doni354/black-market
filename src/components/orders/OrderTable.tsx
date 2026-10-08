@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
 import { formatRupiah } from "@/lib/utils/money";
 import { attachOrderProofAction } from "@/lib/actions/pos";
+import { updateProductionStatusAction } from "@/lib/actions/orders";
 import { PaymentVerifyModal } from "./PaymentVerifyModal";
 import { CancelOrderModal } from "./CancelOrderModal";
 import { CreatePreOrderModal } from "./CreatePreOrderModal";
@@ -25,6 +26,8 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [sourceFilter, setSourceFilter] = useState("ALL");
+  const [pickupFilter, setPickupFilter] = useState("ALL");
+  const [updatingProduction, setUpdatingProduction] = useState(false);
 
   // Selected order for detailed modal view
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -49,6 +52,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
     return orders.filter((order) => {
       if (statusFilter !== "ALL" && order.status !== statusFilter) return false;
       if (sourceFilter !== "ALL" && order.source !== sourceFilter) return false;
+      if (pickupFilter !== "ALL" && (order.pickupMethod || "MARKET_DAY") !== pickupFilter) return false;
 
       if (search.trim()) {
         const query = search.toLowerCase();
@@ -61,7 +65,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
 
       return true;
     });
-  }, [orders, search, statusFilter, sourceFilter]);
+  }, [orders, search, statusFilter, sourceFilter, pickupFilter]);
 
   // Handle uploading or updating payment proof
   async function handleProofUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -82,7 +86,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", "black-market/payment-proofs");
+      formData.append("folder", "noury/payment-proofs");
 
       const response = await fetch("/api/upload", {
         method: "POST",
@@ -170,10 +174,10 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
             placeholder="Cari no. order, customer, tiket..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 pl-9 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 pl-9 text-sm text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#47957F] shadow-xs"
           />
           <svg
-            className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500"
+            className="absolute left-3 top-2.5 h-4 w-4 text-zinc-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -192,7 +196,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-xs font-medium text-zinc-300 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-[#47957F] cursor-pointer shadow-xs"
           >
             <option value="ALL">Semua Status Order</option>
             <option value="COMPLETED">Completed</option>
@@ -207,16 +211,26 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
           <select
             value={sourceFilter}
             onChange={(e) => setSourceFilter(e.target.value)}
-            className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-xs font-medium text-zinc-300 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-[#47957F] cursor-pointer shadow-xs"
           >
             <option value="ALL">Semua Sumber</option>
             <option value="POS">POS (Langsung)</option>
             <option value="ONLINE">Online (Pre-Order)</option>
           </select>
 
+          <select
+            value={pickupFilter}
+            onChange={(e) => setPickupFilter(e.target.value)}
+            className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-[#47957F] cursor-pointer shadow-xs"
+          >
+            <option value="ALL">Semua Pengambilan</option>
+            <option value="BATCH_PICKUP">Batch Pre-Order</option>
+            <option value="MARKET_DAY">Stand Market Day</option>
+          </select>
+
           <Link
             href="/admin/reports"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 text-xs font-semibold whitespace-nowrap transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 text-xs font-semibold whitespace-nowrap transition cursor-pointer shadow-xs"
           >
             <span>📑</span>
             <span>Buku Audit & Bukti</span>
@@ -226,7 +240,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
             type="button"
             variant="primary"
             onClick={() => setIsCreatePreOrderOpen(true)}
-            className="gap-1 text-xs font-bold whitespace-nowrap ml-1"
+            className="gap-1 text-xs font-bold whitespace-nowrap ml-1 bg-[#47957F] hover:bg-[#3D8383] text-white shadow-md shadow-[#47957F]/20 cursor-pointer"
           >
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -237,14 +251,14 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
       </div>
 
       {/* Orders Table */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60 backdrop-blur-xs">
+      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xs">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-zinc-300">
-            <thead className="border-b border-zinc-800 bg-zinc-950/60 text-xs uppercase tracking-wider text-zinc-400">
+          <table className="w-full text-left text-sm text-zinc-700">
+            <thead className="border-b border-zinc-200 bg-zinc-50/80 text-xs uppercase tracking-wider text-zinc-500 font-semibold">
               <tr>
                 <th className="px-4 py-3.5">No. Order</th>
                 <th className="px-4 py-3.5">Tanggal</th>
-                <th className="px-4 py-3.5">Sumber / Tipe</th>
+                <th className="px-4 py-3.5">Sumber & Pengambilan</th>
                 <th className="px-4 py-3.5">Customer</th>
                 <th className="px-4 py-3.5">Total Tagihan</th>
                 <th className="px-4 py-3.5">Metode Bayar</th>
@@ -253,12 +267,12 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                 <th className="px-4 py-3.5 text-right">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/80">
+            <tbody className="divide-y divide-zinc-100">
               {filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center text-zinc-500">
-                    <p className="text-base font-medium">Belum ada transaksi</p>
-                    <p className="mt-1 text-xs text-zinc-600">
+                  <td colSpan={9} className="px-4 py-12 text-center text-zinc-400">
+                    <p className="text-base font-semibold text-zinc-600">Belum ada transaksi</p>
+                    <p className="mt-1 text-xs text-zinc-400">
                       Transaksi yang dibuat dari POS atau Pre-Order akan muncul di sini.
                     </p>
                   </td>
@@ -280,49 +294,65 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                   return (
                     <tr
                       key={order.id}
-                      className="transition-colors hover:bg-zinc-800/30"
+                      className="transition-colors hover:bg-zinc-50/80"
                     >
                       {/* Order Number & Ticket Badge */}
-                      <td className="px-4 py-3 font-mono font-bold text-zinc-100 whitespace-nowrap">
+                      <td className="px-4 py-3 font-mono font-bold text-zinc-900 whitespace-nowrap">
                         <div>{order.orderNumber}</div>
                         {order.redemptionCode && (
-                          <div className="mt-0.5 inline-flex items-center gap-1 rounded bg-zinc-800 px-1.5 py-0.2 text-[10px] text-emerald-400">
+                          <div className="mt-0.5 inline-flex items-center gap-1 rounded bg-[#47957F]/10 border border-[#47957F]/20 px-1.5 py-0.2 text-[10px] text-[#3D8383] font-semibold">
                             🎫 {order.redemptionCode}
                           </div>
                         )}
                       </td>
 
                       {/* Date */}
-                      <td className="px-4 py-3 text-xs text-zinc-400 whitespace-nowrap">
+                      <td className="px-4 py-3 text-xs text-zinc-500 whitespace-nowrap">
                         {dateStr}
                       </td>
 
-                      {/* Source & Type */}
+                      {/* Source & Type & Pickup */}
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="text-xs font-semibold text-zinc-200">
+                        <span className="text-xs font-semibold text-zinc-700 block">
                           {order.source} • {order.orderType}
                         </span>
+                        {order.pickupMethod === "BATCH_PICKUP" ? (
+                          <span
+                            className="mt-1 inline-flex items-center gap-1 rounded-md bg-[#CDD272]/25 border border-[#CDD272]/60 px-1.5 py-0.5 text-[10px] font-bold text-[#565C17]"
+                            title={order.batchInfo || "Batch Pre-Order"}
+                          >
+                            📦 Batch
+                          </span>
+                        ) : order.source === "POS" ? (
+                          <span className="mt-0.5 inline-block text-[10px] text-zinc-400">
+                            ⚡ Kasir Stand
+                          </span>
+                        ) : (
+                          <span className="mt-0.5 inline-flex items-center gap-1 text-[10px] font-medium text-[#47957F]">
+                            🎪 Market Day
+                          </span>
+                        )}
                       </td>
 
                       {/* Customer */}
-                      <td className="px-4 py-3 text-xs text-zinc-300">
+                      <td className="px-4 py-3 text-xs text-zinc-800">
                         {order.customerName || (
-                          <span className="text-zinc-500 italic">Umum / Walk-in</span>
+                          <span className="text-zinc-400 italic">Umum / Walk-in</span>
                         )}
                         {order.customerPhone && (
-                          <span className="block text-[11px] text-zinc-500 font-mono">
+                          <span className="block text-[11px] text-zinc-400 font-mono">
                             {order.customerPhone}
                           </span>
                         )}
                       </td>
 
                       {/* Total */}
-                      <td className="px-4 py-3 font-bold text-red-400 whitespace-nowrap">
+                      <td className="px-4 py-3 font-bold text-[#3D8383] whitespace-nowrap">
                         {formatRupiah(order.total)}
                       </td>
 
                       {/* Payment Method */}
-                      <td className="px-4 py-3 text-xs font-medium text-zinc-300 whitespace-nowrap">
+                      <td className="px-4 py-3 text-xs font-medium text-zinc-700 whitespace-nowrap">
                         <Badge variant={getPaymentStatusVariant(order.paymentStatus)}>
                           {order.paymentMethod || "CASH"}
                         </Badge>
@@ -341,7 +371,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                           <button
                             type="button"
                             onClick={() => setPreviewProofUrl(order.proofUrl || null)}
-                            className="inline-flex items-center gap-1 rounded-md border border-emerald-800/80 bg-emerald-950/40 px-2 py-0.5 text-[11px] font-semibold text-emerald-400 hover:bg-emerald-900/40 transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1 rounded-md border border-[#47957F]/30 bg-[#47957F]/10 px-2 py-0.5 text-[11px] font-semibold text-[#3D8383] hover:bg-[#47957F]/20 transition-colors cursor-pointer"
                             title="Klik untuk melihat bukti pembayaran"
                           >
                             <svg
@@ -360,7 +390,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                             Bukti
                           </button>
                         ) : (
-                          <span className="text-xs text-zinc-600">—</span>
+                          <span className="text-xs text-zinc-400">—</span>
                         )}
                       </td>
 
@@ -371,7 +401,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                             <button
                               type="button"
                               onClick={() => setVerifyingOrder(order)}
-                              className="rounded-lg bg-emerald-600/20 border border-emerald-600/40 px-2 py-1 text-xs font-semibold text-emerald-300 hover:bg-emerald-600/30 transition-colors cursor-pointer"
+                              className="rounded-lg bg-emerald-50 border border-emerald-300 px-2 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition-colors cursor-pointer"
                             >
                               Verifikasi
                             </button>
@@ -379,7 +409,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                           <button
                             type="button"
                             onClick={() => setSelectedOrder(order)}
-                            className="rounded-lg bg-zinc-800 px-2.5 py-1 text-xs font-semibold text-zinc-200 hover:bg-zinc-700 transition-colors cursor-pointer"
+                            className="rounded-lg bg-zinc-100 px-2.5 py-1 text-xs font-semibold text-zinc-700 hover:bg-zinc-200 transition-colors cursor-pointer"
                           >
                             Lihat
                           </button>
@@ -467,9 +497,9 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
         }
       >
         {selectedOrder && (
-          <div className="flex flex-col gap-4 text-xs text-zinc-300">
+          <div className="flex flex-col gap-4 text-xs text-zinc-700">
             {/* Meta info */}
-            <div className="grid grid-cols-2 gap-2 rounded-xl border border-zinc-800 bg-zinc-950 p-3">
+            <div className="grid grid-cols-2 gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3">
               <div>
                 <span className="text-zinc-500">Status Order:</span>
                 <div className="mt-1">
@@ -488,34 +518,34 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
               </div>
               <div>
                 <span className="text-zinc-500">Pelanggan:</span>
-                <p className="mt-0.5 font-semibold text-zinc-200">
+                <p className="mt-0.5 font-semibold text-zinc-800">
                   {selectedOrder.customerName || "Umum / Walk-in"}
                 </p>
                 {selectedOrder.customerPhone && (
-                  <p className="text-[11px] text-zinc-400 font-mono">
+                  <p className="text-[11px] text-zinc-500 font-mono">
                     {selectedOrder.customerPhone}
                   </p>
                 )}
               </div>
               <div>
                 <span className="text-zinc-500">Sumber:</span>
-                <p className="mt-0.5 font-semibold text-zinc-200">
+                <p className="mt-0.5 font-semibold text-zinc-800">
                   {selectedOrder.source} ({selectedOrder.orderType})
                 </p>
               </div>
 
               {selectedOrder.redemptionCode && (
-                <div className="col-span-2 pt-2 border-t border-zinc-900 flex items-center justify-between">
-                  <span className="text-zinc-400 font-semibold">Tiket Redemption QR:</span>
+                <div className="col-span-2 pt-2 border-t border-zinc-200 flex items-center justify-between">
+                  <span className="text-zinc-600 font-semibold">Tiket Redemption QR:</span>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-800/80 px-2.5 py-1 rounded-md">
+                    <span className="font-mono font-bold text-xs text-[#3D8383] bg-[#47957F]/10 border border-[#47957F]/30 px-2.5 py-1 rounded-md">
                       🎫 {selectedOrder.redemptionCode}
                     </span>
                     <a
                       href={`/order/${selectedOrder.orderNumber}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-red-400 hover:text-red-300 font-medium underline flex items-center gap-0.5"
+                      className="text-xs text-[#47957F] hover:text-[#3D8383] font-semibold underline flex items-center gap-0.5"
                     >
                       <span>Lihat Tiket</span>
                       <span>↗</span>
@@ -525,19 +555,81 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
               )}
 
               {selectedOrder.notes && (
-                <div className="col-span-2 pt-1 border-t border-zinc-900">
+                <div className="col-span-2 pt-1 border-t border-zinc-200">
                   <span className="text-zinc-500">Catatan:</span>
-                  <p className="text-zinc-300 mt-0.5">{selectedOrder.notes}</p>
+                  <p className="text-zinc-700 mt-0.5">{selectedOrder.notes}</p>
+                </div>
+              )}
+
+              {/* Pickup Method and Batch details */}
+              <div className="col-span-2 pt-2 border-t border-zinc-200">
+                <span className="text-zinc-500 block mb-1">Metode & Jadwal Pengambilan:</span>
+                {selectedOrder.pickupMethod === "BATCH_PICKUP" ? (
+                  <div className="rounded-xl bg-[#EAF5F1] border border-[#CDE5DD] p-2.5 text-xs text-[#1E4B43]">
+                    <div className="flex items-center gap-1.5 font-bold text-[#2A5E56]">
+                      <span>📦</span>
+                      <span>Ambil Sesuai Batch Pre-Order</span>
+                    </div>
+                    {selectedOrder.batchInfo && (
+                      <p className="mt-1 font-semibold text-[#183331]">{selectedOrder.batchInfo}</p>
+                    )}
+                  </div>
+                ) : selectedOrder.source === "POS" ? (
+                  <div className="rounded-xl bg-zinc-100 border border-zinc-200 p-2 text-xs text-zinc-700">
+                    ⚡ Transaksi Langsung di Stand POS (Takeaway)
+                  </div>
+                ) : (
+                  <div className="rounded-xl bg-[#EAF5F1]/60 border border-[#D0E7E0] p-2 text-xs text-[#2A5E56] font-medium">
+                    🎪 Diambil Langsung di Stand Hari Market Day
+                  </div>
+                )}
+              </div>
+
+              {/* Production Status Toggle for Pre-Orders */}
+              {selectedOrder.orderType === "PRE_ORDER" && (
+                <div className="col-span-2 pt-2 border-t border-zinc-200 flex items-center justify-between">
+                  <div>
+                    <span className="text-zinc-500 block">Status Pengerjaan:</span>
+                    <span className="font-semibold text-xs text-zinc-800">
+                      {selectedOrder.productionStatus === "READY"
+                        ? "✅ Siap Diambil Pelanggan"
+                        : "⏳ Sedang Disiapkan"}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={updatingProduction}
+                    onClick={async () => {
+                      const nextStatus = selectedOrder.productionStatus === "READY" ? "IN_PRODUCTION" : "READY";
+                      setUpdatingProduction(true);
+                      const res = await updateProductionStatusAction(selectedOrder.id, nextStatus);
+                      setUpdatingProduction(false);
+                      if (res.success) {
+                        toast(res.message || "Status pengerjaan diperbarui", "success");
+                        setSelectedOrder((prev) => (prev ? { ...prev, productionStatus: nextStatus } : null));
+                        setOrders((prev) =>
+                          prev.map((o) => (o.id === selectedOrder.id ? { ...o, productionStatus: nextStatus } : o))
+                        );
+                      } else {
+                        toast(res.message || "Gagal mengubah status", "error");
+                      }
+                    }}
+                    className="px-2.5 py-1 text-xs font-bold rounded-lg border border-[#47957F] text-[#47957F] hover:bg-[#EAF5F1] transition cursor-pointer"
+                  >
+                    {selectedOrder.productionStatus === "READY"
+                      ? "Ubah ke: Sedang Disiapkan"
+                      : "Tandai: Siap Diambil"}
+                  </button>
                 </div>
               )}
             </div>
 
             {/* Items Table */}
             <div>
-              <p className="font-semibold text-zinc-200 mb-2">Item Pembelian</p>
-              <div className="rounded-xl border border-zinc-800 overflow-hidden">
+              <p className="font-semibold text-zinc-800 mb-2">Item Pembelian</p>
+              <div className="rounded-xl border border-zinc-200 overflow-hidden shadow-xs">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-zinc-950 border-b border-zinc-800 text-zinc-400">
+                  <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 font-semibold">
                     <tr>
                       <th className="px-3 py-2">Item</th>
                       <th className="px-3 py-2 text-center">Qty</th>
@@ -545,27 +637,27 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                       <th className="px-3 py-2 text-right">Subtotal</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/80 bg-zinc-900/40">
+                  <tbody className="divide-y divide-zinc-100 bg-white">
                     {selectedOrder.items && (selectedOrder.items as unknown as OrderItem[]).length > 0 ? (
                       (selectedOrder.items as unknown as OrderItem[]).map((item) => (
                         <tr key={item.id}>
-                          <td className="px-3 py-2 font-medium text-zinc-200">
+                          <td className="px-3 py-2 font-medium text-zinc-800">
                             {item.productName}
                           </td>
-                          <td className="px-3 py-2 text-center text-zinc-400">
+                          <td className="px-3 py-2 text-center text-zinc-500">
                             {item.quantity}
                           </td>
-                          <td className="px-3 py-2 text-right text-zinc-400">
+                          <td className="px-3 py-2 text-right text-zinc-500">
                             {formatRupiah(item.unitPrice)}
                           </td>
-                          <td className="px-3 py-2 text-right font-semibold text-zinc-200">
+                          <td className="px-3 py-2 text-right font-semibold text-zinc-800">
                             {formatRupiah(item.subtotal)}
                           </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={4} className="px-3 py-4 text-center text-zinc-500">
+                        <td colSpan={4} className="px-3 py-4 text-center text-zinc-400">
                           Tidak ada data rincian item
                         </td>
                       </tr>
@@ -576,20 +668,22 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
             </div>
 
             {/* Financial summary */}
-            <div className="flex flex-col gap-1 rounded-xl border border-zinc-800 bg-zinc-950 p-3">
-              <div className="flex justify-between text-zinc-400">
+            <div className="flex flex-col gap-1 rounded-xl border border-zinc-200 bg-zinc-50 p-3">
+              <div className="flex justify-between text-zinc-500">
                 <span>Subtotal</span>
                 <span>{formatRupiah(selectedOrder.subtotal)}</span>
               </div>
               {selectedOrder.discount > 0 && (
-                <div className="flex justify-between text-emerald-400">
-                  <span>Diskon</span>
+                <div className="flex justify-between text-[#3D8383] font-semibold">
+                  <span>
+                    Diskon {selectedOrder.couponCode ? `(Kupon ${selectedOrder.couponCode})` : ""}
+                  </span>
                   <span>-{formatRupiah(selectedOrder.discount)}</span>
                 </div>
               )}
-              <div className="flex justify-between font-bold text-sm text-zinc-100 pt-1 border-t border-zinc-900">
+              <div className="flex justify-between font-bold text-sm text-zinc-900 pt-1 border-t border-zinc-200">
                 <span>Total</span>
-                <span className="text-red-400">{formatRupiah(selectedOrder.total)}</span>
+                <span className="text-[#3D8383] text-base">{formatRupiah(selectedOrder.total)}</span>
               </div>
               {selectedOrder.paymentMethod === "CASH" && (
                 <>
@@ -597,7 +691,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                     <span>Uang Diterima</span>
                     <span>{formatRupiah(selectedOrder.amountPaid || selectedOrder.total)}</span>
                   </div>
-                  <div className="flex justify-between text-emerald-400 font-semibold">
+                  <div className="flex justify-between text-emerald-700 font-semibold">
                     <span>Kembalian</span>
                     <span>{formatRupiah(selectedOrder.change || 0)}</span>
                   </div>
@@ -606,9 +700,9 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
             </div>
 
             {/* Bukti Pembayaran / Attachment Section */}
-            <div className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-3">
+            <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-3">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
                   Bukti Pembayaran / Attachment
                 </span>
                 <input
@@ -622,7 +716,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                 />
                 <label
                   htmlFor="proof-upload-input"
-                  className={`cursor-pointer rounded-lg border border-zinc-700 bg-zinc-800 px-2.5 py-1 text-[11px] font-semibold text-zinc-200 hover:bg-zinc-700 transition-colors ${
+                  className={`cursor-pointer rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-zinc-700 hover:bg-zinc-100 transition-colors shadow-xs ${
                     uploadingProof ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
@@ -638,7 +732,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                 <div className="flex items-center gap-3 pt-1">
                   <div
                     onClick={() => setPreviewProofUrl(selectedOrder.proofUrl || null)}
-                    className="relative h-24 w-24 rounded-lg overflow-hidden border border-zinc-700 cursor-pointer group"
+                    className="relative h-24 w-24 rounded-lg overflow-hidden border border-zinc-200 cursor-pointer group bg-white shadow-xs"
                     title="Klik untuk memperbesar"
                   >
                     <Image
@@ -652,15 +746,15 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                       <span className="text-[10px] text-white font-semibold">Lihat</span>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-1 text-[11px] text-zinc-400">
-                    <p className="font-semibold text-zinc-200">Lampiran tersedia</p>
+                  <div className="flex flex-col gap-1 text-[11px] text-zinc-500">
+                    <p className="font-semibold text-zinc-800">Lampiran tersedia</p>
                     <p className="text-zinc-500">
                       Klik thumbnail di samping untuk melihat bukti transfer / pembayaran ukuran penuh.
                     </p>
                   </div>
                 </div>
               ) : (
-                <p className="text-[11px] text-zinc-500 italic py-1">
+                <p className="text-[11px] text-zinc-400 italic py-1">
                   Belum ada bukti pembayaran dilampirkan. Anda dapat mengunggah screenshot transaksi DANA, QRIS, atau mutasi bank sekarang.
                 </p>
               )}
@@ -671,9 +765,10 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
               {/* Receipt Header */}
               <div className="border-b border-dashed border-zinc-600 pb-3 text-center">
                 <h4 className="text-base font-black tracking-wider text-black">
-                  BLACK MARKET
+                  NOURY
                 </h4>
-                <p className="text-[11px] text-zinc-600">Merchandise & F&B</p>
+                <p className="text-[11px] font-semibold text-zinc-800">No Worries — Fresh & Healthy Living</p>
+                <p className="text-[10px] text-zinc-600">Fruit, Water & Healthy Bites</p>
                 <div className="mt-2 text-[11px] text-zinc-700">
                   <p>No: <strong className="text-black">{selectedOrder.orderNumber}</strong></p>
                   <p>
@@ -743,8 +838,8 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
 
               {/* Footer */}
               <div className="mt-4 pt-3 border-t border-dashed border-zinc-600 text-center text-[10px] text-zinc-600">
-                <p>Terima kasih telah berbelanja di Black Market!</p>
-                <p>Simpan struk ini sebagai bukti pembayaran yang sah.</p>
+                <p>Terima kasih telah berbelanja di Noury!</p>
+                <p>Stay fresh, stay healthy! Simpan struk ini sebagai bukti pembayaran yang sah.</p>
               </div>
             </div>
           </div>

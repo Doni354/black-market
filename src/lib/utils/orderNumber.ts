@@ -1,12 +1,11 @@
 /**
- * Order number generator for Black Market
+ * Order number generator for Noury — No Worries
  *
  * Generates readable, unique order numbers like:
- * BM-260928-AB12
- * Or BM-XXXXXX
+ * NOURY-261008-AB12
  */
 
-export function generateOrderNumber(prefix = "BM"): string {
+export function generateOrderNumber(prefix = "NOURY"): string {
   const now = new Date();
   const year = now.getFullYear().toString().slice(-2);
   const month = (now.getMonth() + 1).toString().padStart(2, "0");

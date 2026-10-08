@@ -75,52 +75,63 @@ for (let n = 0; n < 256; n++) {
   crcTable[n] = c;
 }
 
-// BM Brand Logo Drawer (Red & Dark Zinc)
-function drawBMLogo(x, y, w, h) {
+// Noury Brand Logo Drawer (Mint, Teal & Fresh Citrus)
+function drawNouryLogo(x, y, w, h) {
   const cx = w / 2;
   const cy = h / 2;
   const radius = w * 0.42;
 
-  // Background: dark zinc (#09090b)
-  let r = 9, g = 9, b = 11, a = 255;
+  // Background: clean light mint tint (#FAFCFB)
+  let r = 250, g = 252, b = 251, a = 255;
 
-  const dx = Math.abs(x - cx);
-  const dy = Math.abs(y - cy);
+  const dx = x - cx;
+  const dy = y - cy;
   const dist = Math.sqrt(dx * dx + dy * dy);
 
-  // Outer red glow / accent ring
+  // Mint/Teal circular base emblem (#47957F to #3D8383)
   if (dist <= radius) {
-    // Red badge background: #dc2626
-    r = 220; g = 38; b = 38; a = 255;
-
-    // Inner dark circle for contrast
-    if (dist <= radius * 0.90) {
-      r = 18; g = 18; b = 22; a = 255;
-    }
+    // Subtle vertical gradient
+    const t = (y - (cy - radius)) / (2 * radius);
+    r = Math.round(71 + (61 - 71) * t);
+    g = Math.round(149 + (131 - 149) * t);
+    b = Math.round(127 + (131 - 127) * t);
+    a = 255;
   }
 
-  // Draw stylized letter shapes: "B" (left) and "M" (right) in White (#ffffff)
+  // Normalized coordinates: -50 to +50 from center
   const scale = w / 100;
-  const nx = (x - cx) / scale; // normalized -50 to 50
-  const ny = (y - cy) / scale; // normalized -50 to 50
+  const nx = dx / scale;
+  const ny = dy / scale;
 
-  // "B" on left (x from -28 to -6, y from -20 to 20)
-  const inBSpine = nx >= -26 && nx <= -20 && ny >= -18 && ny <= 18;
-  const inBTopBar = nx >= -20 && nx <= -8 && ny >= -18 && ny <= -13;
-  const inBMidBar = nx >= -20 && nx <= -9 && ny >= -3 && ny <= 2;
-  const inBBotBar = nx >= -20 && nx <= -8 && ny >= 13 && ny <= 18;
-  const inBTopLoop = nx >= -10 && nx <= -6 && ny >= -18 && ny <= -2;
-  const inBBotLoop = nx >= -10 && nx <= -5 && ny >= -2 && ny <= 18;
+  // Fresh Citrus Leaf on top-right: (nx: 12 to 32, ny: -35 to -15)
+  // Leaf shape: distance to (22, -25) with tapered curve
+  const leafDx = nx - 22;
+  const leafDy = ny - (-25);
+  if (leafDx * leafDx + leafDy * leafDy <= 36 && nx + ny <= 2) {
+    r = 205; g = 210; b = 114; a = 255; // #CDD272
+  }
 
-  // "M" on right (x from 4 to 28, y from -18 to 18)
-  const inMLeft = nx >= 4 && nx <= 9 && ny >= -18 && ny <= 18;
-  const inMRight = nx >= 23 && nx <= 28 && ny >= -18 && ny <= 18;
-  // Diagonals of M
-  const inMDiag1 = nx >= 9 && nx <= 16 && Math.abs((ny - (-18)) - (nx - 9) * 2) <= 3 && ny <= 0;
-  const inMDiag2 = nx >= 16 && nx <= 23 && Math.abs((ny - 0) - (23 - nx) * -2) <= 3 && ny <= 0;
+  // Stylized Bold 'N' in white
+  // Left vertical bar: nx in [-20, -12], ny in [-20, 20]
+  const inLeftBar = nx >= -20 && nx <= -12 && ny >= -20 && ny <= 20;
 
-  if (inBSpine || inBTopBar || inBMidBar || inBBotBar || inBTopLoop || inBBotLoop || inMLeft || inMRight || inMDiag1 || inMDiag2) {
+  // Right vertical bar: nx in [12, 20], ny in [-20, 20]
+  const inRightBar = nx >= 12 && nx <= 20 && ny >= -20 && ny <= 20;
+
+  // Diagonal connecting bar: nx in [-18, 18], line from (-14, -18) to (14, 18)
+  // Distance from point (nx, ny) to diagonal line y = (18/14)*x => 9x - 7y = 0
+  const diagDist = Math.abs((18 * nx) - (14 * ny)) / Math.sqrt(18 * 18 + 14 * 14);
+  const inDiag = diagDist <= 4.2 && nx >= -18 && nx <= 18 && ny >= -20 && ny <= 20;
+
+  if (inLeftBar || inRightBar || inDiag) {
     r = 255; g = 255; b = 255; a = 255;
+  }
+
+  // Playful fresh droplet accent near bottom-right (nx: 24, ny: 18)
+  const dropDx = nx - 22;
+  const dropDy = ny - 18;
+  if (dropDx * dropDx + dropDy * dropDy <= 12) {
+    r = 205; g = 210; b = 114; a = 255; // #CDD272
   }
 
   return [r, g, b, a];
@@ -131,8 +142,8 @@ if (!fs.existsSync(iconsDir)) {
   fs.mkdirSync(iconsDir, { recursive: true });
 }
 
-fs.writeFileSync(path.join(iconsDir, 'icon-192.png'), createPng(192, 192, drawBMLogo));
-fs.writeFileSync(path.join(iconsDir, 'icon-512.png'), createPng(512, 512, drawBMLogo));
-fs.writeFileSync(path.join(iconsDir, 'icon-maskable.png'), createPng(512, 512, drawBMLogo));
+fs.writeFileSync(path.join(iconsDir, 'icon-192.png'), createPng(192, 192, drawNouryLogo));
+fs.writeFileSync(path.join(iconsDir, 'icon-512.png'), createPng(512, 512, drawNouryLogo));
+fs.writeFileSync(path.join(iconsDir, 'icon-maskable.png'), createPng(512, 512, drawNouryLogo));
 
-console.log('Successfully generated icon-192.png, icon-512.png, icon-maskable.png');
+console.log('Successfully generated Noury PWA icons: icon-192.png, icon-512.png, icon-maskable.png');

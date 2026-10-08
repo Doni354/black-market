@@ -5,13 +5,12 @@ import { getCashFlowSummary } from "@/lib/db/expenses";
 import { getOrders } from "@/lib/db/orders";
 import { getProducts } from "@/lib/db/products";
 import { formatRupiah } from "@/lib/utils/money";
-import { Card, CardContent } from "@/components/ui/Card";
 import { Badge, getOrderStatusVariant } from "@/components/ui/Badge";
 import type { Order } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Dashboard Operasional | Black Market",
-  description: "Ringkasan operasional penjualan, pre-order, dan arus kas Black Market.",
+  title: "Dashboard Operasional | Noury — No Worries",
+  description: "Ringkasan operasional penjualan, pre-order, dan arus kas Noury.",
 };
 
 export const dynamic = "force-dynamic";
@@ -26,27 +25,29 @@ interface StatCardProps {
 
 function StatCard({ label, value, description, href, color = "default" }: StatCardProps) {
   const content = (
-    <Card className={href ? "transition-colors hover:border-zinc-700 group" : ""}>
-      <CardContent className="p-4 sm:p-5">
-        <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-zinc-300">
-          {label}
-        </p>
-        <p
-          className={`mt-2 text-xl sm:text-2xl font-black ${
-            color === "success"
-              ? "text-emerald-400"
-              : color === "danger"
-              ? "text-red-400"
-              : "text-zinc-100"
-          }`}
-        >
-          {value}
-        </p>
-        {description && (
-          <p className="mt-1 text-xs text-zinc-500">{description}</p>
-        )}
-      </CardContent>
-    </Card>
+    <div
+      className={`rounded-2xl border border-[#E2ECE8] bg-white p-4 sm:p-5 shadow-xs transition-all ${
+        href ? "hover:border-[#47957F]/60 hover:shadow-sm group cursor-pointer" : ""
+      }`}
+    >
+      <p className="text-[11px] font-bold uppercase tracking-wider text-[#52706C] group-hover:text-[#3D8383] transition-colors">
+        {label}
+      </p>
+      <p
+        className={`mt-2 text-xl sm:text-2xl font-black ${
+          color === "success"
+            ? "text-[#47957F]"
+            : color === "danger"
+            ? "text-rose-600"
+            : "text-[#183331]"
+        }`}
+      >
+        {value}
+      </p>
+      {description && (
+        <p className="mt-1 text-xs text-[#7A9C96]">{description}</p>
+      )}
+    </div>
   );
 
   if (href) {
@@ -72,23 +73,31 @@ function QuickAction({ label, description, href, icon, badge }: QuickActionProps
   return (
     <Link
       href={href}
-      className="flex items-center gap-3.5 rounded-xl border border-zinc-800/90 bg-zinc-900/70 p-3.5 sm:p-4 transition-all hover:border-zinc-700 hover:bg-zinc-800/60 group"
+      className="flex items-center gap-3.5 rounded-2xl border border-[#E2ECE8] bg-white p-3.5 sm:p-4 transition-all hover:border-[#47957F]/60 hover:bg-[#F6FAF8] group shadow-xs"
     >
-      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-red-600/10 text-red-400 group-hover:bg-red-600/20 group-hover:scale-105 transition-all">
+      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#EAF5F1] text-[#3D8383] group-hover:bg-[#47957F] group-hover:text-white group-hover:scale-105 transition-all">
         {icon}
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-semibold text-zinc-200 group-hover:text-white truncate">{label}</p>
+          <p className="text-sm font-bold text-[#183331] group-hover:text-[#3D8383] truncate transition-colors">
+            {label}
+          </p>
           {badge && (
-            <span className="rounded-full bg-red-600/20 px-1.5 py-0.5 text-[10px] font-bold text-red-400 border border-red-500/30">
+            <span className="rounded-full bg-[#CDD272]/30 px-2 py-0.5 text-[10px] font-extrabold text-[#384a14] border border-[#CDD272]">
               {badge}
             </span>
           )}
         </div>
-        <p className="text-xs text-zinc-500 truncate">{description}</p>
+        <p className="text-xs text-[#52706C] truncate mt-0.5">{description}</p>
       </div>
-      <svg className="h-4 w-4 flex-shrink-0 text-zinc-600 group-hover:text-zinc-400 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <svg
+        className="h-4 w-4 flex-shrink-0 text-[#A0BCB6] group-hover:text-[#3D8383] group-hover:translate-x-0.5 transition-all"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+      >
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
       </svg>
     </Link>
@@ -113,15 +122,15 @@ export default async function DashboardPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-100">Dashboard Operasional</h1>
-          <p className="mt-1 text-sm text-zinc-400">
-            Selamat datang, <strong className="text-zinc-200">{user?.name}</strong> ({user?.role}). Berikut ringkasan aktivitas stand Black Market.
+          <h1 className="text-2xl font-black tracking-tight text-[#183331]">Dashboard Operasional</h1>
+          <p className="mt-1 text-sm text-[#52706C]">
+            Selamat datang, <strong className="text-[#183331]">{user?.name}</strong> ({user?.role}). Berikut ringkasan aktivitas booth Noury — No Worries.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Link
             href="/admin/pos"
-            className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-red-950/40 hover:bg-red-500 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#47957F] px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-[#3D8383] transition-colors"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -137,10 +146,10 @@ export default async function DashboardPage() {
           {pendingVerificationCount > 0 && (
             <Link
               href="/admin/orders"
-              className="flex-1 flex items-center justify-between rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-amber-200 hover:bg-amber-500/15 transition-colors"
+              className="flex-1 flex items-center justify-between rounded-2xl border border-amber-300 bg-amber-50/80 p-3.5 text-amber-900 hover:bg-amber-100/70 transition-colors shadow-xs"
             >
               <div className="flex items-center gap-2.5 text-xs font-medium">
-                <span className="flex h-2 w-2 rounded-full bg-amber-400 animate-ping" />
+                <span className="flex h-2 w-2 rounded-full bg-amber-500 animate-ping" />
                 <span><strong>{pendingVerificationCount}</strong> Pesanan perlu verifikasi bukti bayar</span>
               </div>
               <span className="text-xs font-bold underline">Periksa →</span>
@@ -150,11 +159,11 @@ export default async function DashboardPage() {
           {readyForRedemptionCount > 0 && (
             <Link
               href="/admin/pos/redeem"
-              className="flex-1 flex items-center justify-between rounded-xl border border-blue-500/30 bg-blue-500/10 p-3 text-blue-200 hover:bg-blue-500/15 transition-colors"
+              className="flex-1 flex items-center justify-between rounded-2xl border border-emerald-300 bg-emerald-50/80 p-3.5 text-emerald-900 hover:bg-emerald-100/70 transition-colors shadow-xs"
             >
               <div className="flex items-center gap-2.5 text-xs font-medium">
                 <span>🎫</span>
-                <span><strong>{readyForRedemptionCount}</strong> Tiket siap diambil di stand</span>
+                <span><strong>{readyForRedemptionCount}</strong> Tiket siap diambil di stan</span>
               </div>
               <span className="text-xs font-bold underline">Scan QR →</span>
             </Link>
@@ -163,11 +172,11 @@ export default async function DashboardPage() {
           {lowStockCount > 0 && (
             <Link
               href="/admin/inventory"
-              className="flex-1 flex items-center justify-between rounded-xl border border-orange-500/30 bg-orange-500/10 p-3 text-orange-200 hover:bg-orange-500/15 transition-colors"
+              className="flex-1 flex items-center justify-between rounded-2xl border border-orange-300 bg-orange-50/80 p-3.5 text-orange-900 hover:bg-orange-100/70 transition-colors shadow-xs"
             >
               <div className="flex items-center gap-2.5 text-xs font-medium">
                 <span>⚠️</span>
-                <span><strong>{lowStockCount}</strong> Produk stok menipis (&lt;10)</span>
+                <span><strong>{lowStockCount}</strong> Menu/Bahan stok menipis (&lt;10)</span>
               </div>
               <span className="text-xs font-bold underline">Restock →</span>
             </Link>
@@ -193,7 +202,7 @@ export default async function DashboardPage() {
         <StatCard
           label="Total Pengeluaran"
           value={formatRupiah(summary.totalExpenses)}
-          description={`${summary.totalExpensesCount} catatan biaya operasional`}
+          description={`${summary.totalExpensesCount} belanja bahan & operasional`}
           href="/admin/expenses"
           color="danger"
         />
@@ -208,14 +217,14 @@ export default async function DashboardPage() {
 
       {/* Action Hub */}
       <div>
-        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+        <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-[#52706C]">
           Aksi Cepat & Navigasi Operasional
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <QuickAction
             href="/admin/pos"
             label="Buka Kasir POS"
-            description="Penjualan langsung makanan, minuman & merch"
+            description="Penjualan langsung fruit bowls, juices & salad"
             icon={
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
@@ -258,7 +267,7 @@ export default async function DashboardPage() {
           <QuickAction
             href="/admin/expenses"
             label="Catat Pengeluaran"
-            description="Bahan baku, es batu, parkir & operasional"
+            description="Buah segar, es batu, cup, kemasan & operasional"
             icon={
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -268,7 +277,7 @@ export default async function DashboardPage() {
           <QuickAction
             href="/admin/inventory"
             label="Cek Stok & Mutasi"
-            description="Penyesuaian stok, restock & audit barang"
+            description="Penyesuaian stok buah & audit porsi"
             badge={lowStockCount > 0 ? `${lowStockCount} Menipis` : undefined}
             icon={
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -280,58 +289,58 @@ export default async function DashboardPage() {
       </div>
 
       {/* Recent 5 Transactions */}
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 sm:p-5 backdrop-blur-xs">
+      <div className="rounded-2xl border border-[#E2ECE8] bg-white p-4 sm:p-5 shadow-xs">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-sm sm:text-base font-bold text-zinc-100">5 Transaksi Terbaru</h2>
-            <p className="text-xs text-zinc-500">Aktivitas pesanan terkini yang masuk ke sistem.</p>
+            <h2 className="text-sm sm:text-base font-bold text-[#183331]">5 Transaksi Terbaru</h2>
+            <p className="text-xs text-[#52706C]">Aktivitas pesanan terkini yang masuk ke sistem.</p>
           </div>
           <Link
             href="/admin/orders"
-            className="text-xs font-semibold text-red-400 hover:text-red-300 transition-colors"
+            className="text-xs font-bold text-[#47957F] hover:text-[#3D8383] transition-colors"
           >
             Lihat Semua Pesanan →
           </Link>
         </div>
 
         {recentOrders.length === 0 ? (
-          <p className="text-center py-8 text-xs text-zinc-500">Belum ada transaksi tercatat.</p>
+          <p className="text-center py-8 text-xs text-[#7A9C96]">Belum ada transaksi tercatat.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-zinc-300">
-              <thead className="border-b border-zinc-800 text-[11px] uppercase tracking-wider text-zinc-500">
+            <table className="w-full text-left text-xs text-[#183331]">
+              <thead className="border-b border-[#E2ECE8] text-[11px] uppercase tracking-wider text-[#52706C] bg-[#FAFCFB]">
                 <tr>
-                  <th className="pb-2.5 font-semibold">No. Order</th>
-                  <th className="pb-2.5 font-semibold">Customer</th>
-                  <th className="pb-2.5 font-semibold">Tipe / Sumber</th>
-                  <th className="pb-2.5 font-semibold">Total</th>
-                  <th className="pb-2.5 font-semibold">Metode</th>
-                  <th className="pb-2.5 font-semibold text-right">Status</th>
+                  <th className="py-2.5 px-3 font-semibold">No. Order</th>
+                  <th className="py-2.5 px-3 font-semibold">Customer</th>
+                  <th className="py-2.5 px-3 font-semibold">Tipe / Sumber</th>
+                  <th className="py-2.5 px-3 font-semibold">Total</th>
+                  <th className="py-2.5 px-3 font-semibold">Metode</th>
+                  <th className="py-2.5 px-3 font-semibold text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-800/60">
+              <tbody className="divide-y divide-[#F0F5F3]">
                 {recentOrders.map((order: Order) => (
-                  <tr key={order.id} className="hover:bg-zinc-800/30 transition-colors">
-                    <td className="py-3 font-mono font-bold text-zinc-200">
-                      <Link href={`/admin/orders`} className="hover:underline hover:text-red-400">
+                  <tr key={order.id} className="hover:bg-[#F8FAF9] transition-colors">
+                    <td className="py-3 px-3 font-mono font-bold text-[#183331]">
+                      <Link href={`/admin/orders`} className="hover:underline hover:text-[#47957F]">
                         {order.orderNumber}
                       </Link>
                     </td>
-                    <td className="py-3 text-zinc-300">
+                    <td className="py-3 px-3 text-[#33504C] font-medium">
                       {order.customerName || "Pelanggan Langsung"}
                     </td>
-                    <td className="py-3">
-                      <span className="rounded-md bg-zinc-800 px-2 py-0.5 text-[10px] font-medium text-zinc-400">
+                    <td className="py-3 px-3">
+                      <span className="rounded-lg bg-[#F0F7F5] border border-[#D1E2DD] px-2 py-0.5 text-[10px] font-semibold text-[#244642]">
                         {order.source} • {order.orderType}
                       </span>
                     </td>
-                    <td className="py-3 font-semibold text-zinc-100">
+                    <td className="py-3 px-3 font-bold text-[#244642]">
                       {formatRupiah(order.total)}
                     </td>
-                    <td className="py-3 text-zinc-400">
+                    <td className="py-3 px-3 text-[#52706C]">
                       {order.paymentMethod}
                     </td>
-                    <td className="py-3 text-right">
+                    <td className="py-3 px-3 text-right">
                       <Badge variant={getOrderStatusVariant(order.status)}>
                         {order.status}
                       </Badge>

@@ -9,10 +9,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Black Market Admin",
-    default: "Black Market Admin",
+    template: "%s | Noury Admin",
+    default: "Noury Admin",
   },
-  description: "Black Market Operations System",
+  description: "Noury Operations System — No Worries",
   robots: "noindex, nofollow",
 };
 

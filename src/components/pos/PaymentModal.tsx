@@ -33,12 +33,15 @@ export function PaymentModal({
   isOpen,
   onClose,
   total,
+  subtotal = total,
+  discount = 0,
   onConfirmPayment,
 }: PaymentModalProps) {
   const { toast } = useToast();
   const [method, setMethod] = useState<PaymentMethod>("CASH");
   const [cashInput, setCashInput] = useState<string>(total.toString());
   const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [qrisConfirmed, setQrisConfirmed] = useState(false);
   const [proofUrl, setProofUrl] = useState("");
@@ -76,7 +79,7 @@ export function PaymentModal({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", "black-market/payment-proofs");
+      formData.append("folder", "noury/payment-proofs");
 
       const response = await fetch("/api/upload", {
         method: "POST",
@@ -119,6 +122,7 @@ export function PaymentModal({
         paymentMethod: method,
         amountPaid,
         customerName: customerName.trim() || undefined,
+        customerPhone: customerPhone.trim() || undefined,
         notes: notes.trim() || undefined,
         proofUrl: proofUrl || undefined,
       });
@@ -158,7 +162,7 @@ export function PaymentModal({
               uploadingProof
             }
             onClick={handleConfirm}
-            className="font-bold px-5"
+            className="font-bold px-5 bg-[#47957F] hover:bg-[#3D8383] text-white shadow-md shadow-[#47957F]/20 cursor-pointer"
           >
             Selesaikan Transaksi
           </Button>
@@ -167,18 +171,23 @@ export function PaymentModal({
     >
       <div className="flex flex-col gap-4">
         {/* Total Tagihan Banner */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-center">
-          <span className="text-[11px] uppercase tracking-wider text-zinc-400">
+        <div className="rounded-xl border border-[#47957F]/20 bg-[#47957F]/5 p-3.5 text-center">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#3D8383]">
             Total Tagihan
           </span>
-          <p className="text-2xl font-black text-red-500">
+          <p className="text-2xl font-black text-zinc-900 mt-0.5">
             {formatRupiah(total)}
           </p>
+          {discount > 0 && (
+            <p className="text-xs text-[#2A5E56] font-semibold mt-1">
+              (Subtotal: {formatRupiah(subtotal)} • Diskon Kupon: -{formatRupiah(discount)})
+            </p>
+          )}
         </div>
 
         {/* Payment Method Selector Tabs */}
         <div>
-          <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-1.5 block">
+          <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-1.5 block">
             Metode Pembayaran
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -190,8 +199,8 @@ export function PaymentModal({
               }}
               className={`rounded-xl border py-2.5 px-2 text-center text-xs font-semibold transition-all cursor-pointer ${
                 method === "CASH"
-                  ? "border-red-600 bg-red-600/10 text-red-400 shadow-sm shadow-red-950/20"
-                  : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                  ? "border-[#47957F] bg-[#47957F]/10 text-[#3D8383] shadow-sm font-bold"
+                  : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
               }`}
             >
               💵 Tunai / Cash
@@ -202,8 +211,8 @@ export function PaymentModal({
               onClick={() => setMethod("QRIS")}
               className={`rounded-xl border py-2.5 px-2 text-center text-xs font-semibold transition-all cursor-pointer ${
                 method === "QRIS"
-                  ? "border-red-600 bg-red-600/10 text-red-400 shadow-sm shadow-red-950/20"
-                  : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                  ? "border-[#47957F] bg-[#47957F]/10 text-[#3D8383] shadow-sm font-bold"
+                  : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
               }`}
             >
               📱 QRIS
@@ -214,8 +223,8 @@ export function PaymentModal({
               onClick={() => setMethod("BANK_TRANSFER")}
               className={`rounded-xl border py-2.5 px-2 text-center text-xs font-semibold transition-all cursor-pointer ${
                 method === "BANK_TRANSFER"
-                  ? "border-red-600 bg-red-600/10 text-red-400 shadow-sm shadow-red-950/20"
-                  : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                  ? "border-[#47957F] bg-[#47957F]/10 text-[#3D8383] shadow-sm font-bold"
+                  : "border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
               }`}
             >
               🏦 Transfer Bank
@@ -225,7 +234,7 @@ export function PaymentModal({
 
         {/* CASH Fast Keypad & Change */}
         {method === "CASH" && (
-          <div className="flex flex-col gap-2.5 rounded-xl border border-zinc-800 bg-zinc-950/50 p-3">
+          <div className="flex flex-col gap-2.5 rounded-xl border border-zinc-200 bg-zinc-50/70 p-3">
             <Input
               label="Uang Diterima (Rp)"
               type="number"
@@ -244,7 +253,7 @@ export function PaymentModal({
                 <button
                   type="button"
                   onClick={() => setCashInput(total.toString())}
-                  className="rounded-lg border border-red-800/60 bg-red-950/40 px-2.5 py-1 text-xs font-bold text-red-300 hover:bg-red-900/40 transition-colors cursor-pointer"
+                  className="rounded-lg border border-[#47957F]/40 bg-[#47957F]/10 px-2.5 py-1 text-xs font-bold text-[#3D8383] hover:bg-[#47957F]/20 transition-colors cursor-pointer"
                 >
                   Uang Pas
                 </button>
@@ -253,7 +262,7 @@ export function PaymentModal({
                     key={amt}
                     type="button"
                     onClick={() => setCashInput(amt.toString())}
-                    className="rounded-lg border border-zinc-700 bg-zinc-850 px-2.5 py-1 text-xs font-semibold text-zinc-200 hover:border-red-500 hover:text-white transition-colors cursor-pointer"
+                    className="rounded-lg border border-zinc-200 bg-white px-2.5 py-1 text-xs font-semibold text-zinc-700 hover:border-[#47957F] hover:text-[#3D8383] transition-colors cursor-pointer shadow-xs"
                   >
                     {amt / 1000}k
                   </button>
@@ -268,7 +277,7 @@ export function PaymentModal({
                     key={addAmt}
                     type="button"
                     onClick={() => handleAddCash(addAmt)}
-                    className="rounded-lg border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-[11px] font-semibold text-emerald-400 hover:border-emerald-600 hover:bg-emerald-950/30 transition-colors cursor-pointer"
+                    className="rounded-lg border border-zinc-200 bg-white px-2 py-0.5 text-[11px] font-semibold text-[#47957F] hover:border-[#47957F] hover:bg-[#47957F]/5 transition-colors cursor-pointer shadow-xs"
                   >
                     +{addAmt >= 1000 ? `${addAmt / 1000}k` : addAmt}
                   </button>
@@ -276,7 +285,7 @@ export function PaymentModal({
                 <button
                   type="button"
                   onClick={() => setCashInput("0")}
-                  className="rounded-lg border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-[11px] font-semibold text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+                  className="rounded-lg border border-zinc-200 bg-white px-2 py-0.5 text-[11px] font-semibold text-zinc-400 hover:text-zinc-600 transition-colors cursor-pointer"
                 >
                   Clear
                 </button>
@@ -287,8 +296,8 @@ export function PaymentModal({
             <div
               className={`mt-1.5 flex items-center justify-between rounded-lg border px-3 py-2 ${
                 isCashInsufficient
-                  ? "border-red-800/80 bg-red-950/40 text-red-400"
-                  : "border-emerald-800/80 bg-emerald-950/40 text-emerald-300"
+                  ? "border-amber-200 bg-amber-50 text-amber-800"
+                  : "border-emerald-200 bg-emerald-50 text-emerald-800"
               }`}
             >
               <span className="text-xs font-semibold">
@@ -305,28 +314,28 @@ export function PaymentModal({
 
         {/* QRIS Details */}
         {method === "QRIS" && (
-          <div className="flex flex-col items-center gap-2.5 rounded-xl border border-zinc-800 bg-zinc-950/50 p-4 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800 text-xl font-bold text-zinc-200">
+          <div className="flex flex-col items-center gap-2.5 rounded-xl border border-zinc-200 bg-zinc-50/70 p-4 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white border border-zinc-200 text-lg font-bold text-[#3D8383] shadow-xs">
               QR
             </div>
             <div>
-              <p className="text-xs font-semibold text-zinc-200">
-                Arahkan customer untuk scan QRIS kasir / EDC
+              <p className="text-xs font-semibold text-zinc-800">
+                Arahkan customer untuk scan QRIS Noury
               </p>
-              <p className="text-[11px] text-zinc-400 mt-0.5">
+              <p className="text-[11px] text-zinc-500 mt-0.5">
                 Pastikan nominal yang ditransfer:{" "}
-                <strong className="text-red-400 font-bold">
+                <strong className="text-[#3D8383] font-bold">
                   {formatRupiah(total)}
                 </strong>
               </p>
             </div>
 
-            <label className="mt-1 flex items-center gap-2 text-xs text-zinc-300 cursor-pointer">
+            <label className="mt-1 flex items-center gap-2 text-xs text-zinc-700 cursor-pointer">
               <input
                 type="checkbox"
                 checked={qrisConfirmed}
                 onChange={(e) => setQrisConfirmed(e.target.checked)}
-                className="h-4 w-4 rounded border-zinc-700 bg-zinc-900 text-red-600 focus:ring-red-500"
+                className="h-4 w-4 rounded border-zinc-300 text-[#47957F] focus:ring-[#47957F]"
               />
               <span>Saya telah memverifikasi pembayaran QRIS berhasil</span>
             </label>
@@ -335,28 +344,28 @@ export function PaymentModal({
 
         {/* Bank Transfer Details */}
         {method === "BANK_TRANSFER" && (
-          <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-3 text-xs text-zinc-400">
-            <p className="font-semibold text-zinc-200 mb-0.5">
-              Transfer ke Rekening Black Market
+          <div className="rounded-xl border border-zinc-200 bg-zinc-50/70 p-3 text-xs text-zinc-600">
+            <p className="font-semibold text-zinc-800 mb-0.5">
+              Transfer ke Rekening Noury
             </p>
             <p>
               Kasir mengonfirmasi bahwa mutasi rekening telah diterima senilai{" "}
-              <strong className="text-red-400">{formatRupiah(total)}</strong>.
+              <strong className="text-[#3D8383]">{formatRupiah(total)}</strong>.
             </p>
           </div>
         )}
 
         {/* Bukti Pembayaran / Attachment (Opsional) */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-3">
+        <div className="rounded-xl border border-zinc-200 bg-zinc-50/50 p-3">
           <div className="flex items-center justify-between mb-2">
-            <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+            <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
               Bukti Pembayaran / Attachment (Opsional)
             </label>
             {proofUrl && (
               <button
                 type="button"
                 onClick={() => setProofUrl("")}
-                className="text-[11px] text-red-400 hover:text-red-300"
+                className="text-[11px] text-red-500 hover:text-red-700 font-medium"
               >
                 Hapus Foto
               </button>
@@ -364,7 +373,7 @@ export function PaymentModal({
           </div>
 
           {proofUrl ? (
-            <div className="relative h-24 w-24 rounded-lg overflow-hidden border border-zinc-700">
+            <div className="relative h-24 w-24 rounded-lg overflow-hidden border border-zinc-200">
               <Image
                 src={proofUrl}
                 alt="Bukti pembayaran"
@@ -380,19 +389,19 @@ export function PaymentModal({
                 accept="image/*"
                 onChange={handleProofUpload}
                 disabled={uploadingProof || loading}
-                className="text-xs text-zinc-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700 cursor-pointer"
+                className="text-xs text-zinc-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[11px] file:font-semibold file:bg-zinc-100 file:text-zinc-700 hover:file:bg-zinc-200 cursor-pointer"
               />
               {uploadingProof && (
-                <span className="text-[11px] text-red-400">Mengupload...</span>
+                <span className="text-[11px] text-[#47957F]">Mengupload...</span>
               )}
             </div>
           )}
-          <p className="text-[10px] text-zinc-500 mt-1">
-            Screenshot transfer DANA, QRIS, atau mutasi bank bisa dilampirkan.
+          <p className="text-[10px] text-zinc-400 mt-1">
+            Screenshot transfer atau bukti QRIS/bank bisa dilampirkan.
           </p>
         </div>
 
-        {/* Customer Name & Notes (Compact) */}
+        {/* Customer Name, WhatsApp & Notes (Compact) */}
         <div className="grid gap-2.5 sm:grid-cols-2">
           <Input
             label="Nama Pelanggan (Opsional)"
@@ -402,16 +411,23 @@ export function PaymentModal({
           />
 
           <Input
-            label="Catatan (Opsional)"
-            placeholder="Contoh: Bungkus, tanpa es"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            label="No. WhatsApp (Stempel Loyalitas)"
+            placeholder="Contoh: 081234567890"
+            value={customerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
           />
         </div>
 
+        <Input
+          label="Catatan (Opsional)"
+          placeholder="Contoh: Bungkus, tanpa es"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+        />
+
         {/* Error message */}
         {errorMessage && (
-          <div className="rounded-lg border border-red-800/80 bg-red-950/60 p-2.5 text-xs text-red-300">
+          <div className="rounded-lg border border-red-200 bg-red-50 p-2.5 text-xs text-red-700">
             {errorMessage}
           </div>
         )}

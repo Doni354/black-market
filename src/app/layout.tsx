@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import { ToastProvider } from "@/components/ui/Toast";
+import { CustomerAuthProvider } from "@/lib/auth/customer-context";
 import { PwaRegister } from "@/components/pwa/PwaRegister";
 import "./globals.css";
 
@@ -10,7 +11,7 @@ const geist = Geist({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#09090b",
+  themeColor: "#3D8383",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -19,19 +20,25 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Black Market",
-    default: "Black Market",
+    template: "%s | Noury - No Worries",
+    default: "Noury — No Worries",
   },
-  description: "Black Market — Merchandise & F&B POS and Pre-Order System",
+  description:
+    "Noury — No Worries. Playful path toward freshness and healthy living: fruit, water, food, refreshing lifestyle.",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
-    title: "Black Market",
+    statusBarStyle: "default",
+    title: "Noury",
   },
   icons: {
-    icon: "/icons/icon.svg",
-    apple: "/icons/icon-192.png",
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
   },
 };
 
@@ -42,11 +49,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={`${geist.variable} h-full antialiased`}>
-      <body className="h-full bg-zinc-950 text-zinc-100">
-        <ToastProvider>
-          {children}
-          <PwaRegister />
-        </ToastProvider>
+      <body className="h-full bg-[#FAFCFA] text-[#183331] selection:bg-[#47957F] selection:text-white">
+        <CustomerAuthProvider>
+          <ToastProvider>
+            {children}
+            <PwaRegister />
+          </ToastProvider>
+        </CustomerAuthProvider>
       </body>
     </html>
   );

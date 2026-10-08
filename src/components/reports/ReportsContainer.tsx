@@ -119,15 +119,15 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
         {/* Top Header & Actions */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 flex items-center gap-2">
               <span>Laporan & Audit Bisnis</span>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-red-600/20 border border-red-500/30 text-red-300 font-mono font-bold">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#47957F]/10 border border-[#47957F]/30 text-[#3D8383] font-mono font-bold">
                 Anti-Kecurangan
               </span>
             </h1>
-            <p className="text-xs text-zinc-400 mt-1 max-w-xl">
-              Pantau arus kas, laba rugi, performa produk, serta cetak bukti transaksi otentik
-              beserta foto bukti transfer/QRIS untuk bahan penilaian stand.
+            <p className="text-xs text-zinc-500 mt-1 max-w-xl">
+              Pantau arus kas, laba rugi, performa menu, serta cetak bukti transaksi otentik
+              beserta foto bukti transfer/QRIS untuk bahan penilaian stand Noury.
             </p>
           </div>
 
@@ -136,7 +136,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
             <button
               type="button"
               onClick={() => handleTriggerPrint("FINANCIAL")}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 text-xs font-semibold transition shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-zinc-50 text-zinc-700 border border-zinc-200 text-xs font-semibold transition shadow-xs cursor-pointer"
             >
               <svg className="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -148,7 +148,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
             <button
               type="button"
               onClick={() => handleTriggerPrint("AUDIT")}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs transition shadow-lg shadow-red-600/20 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#47957F] hover:bg-[#3D8383] text-white font-bold text-xs transition shadow-md shadow-[#47957F]/20 cursor-pointer"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -160,7 +160,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
 
         {/* Period Filter Selector */}
         <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-2 p-1 bg-zinc-950 rounded-2xl border border-zinc-800 w-fit overflow-x-auto">
+          <div className="flex items-center gap-1.5 p-1 bg-[#F0F6F4] rounded-2xl border border-[#E2ECE8] w-fit overflow-x-auto">
             {(
               [
                 { id: "TODAY", label: "Hari Ini" },
@@ -176,8 +176,8 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                 onClick={() => handleFilterChange(item.id)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
                   activePeriod === item.id
-                    ? "bg-red-600 text-white shadow-md shadow-red-600/20"
-                    : "text-zinc-400 hover:text-zinc-200"
+                    ? "bg-[#47957F] text-white shadow-xs"
+                    : "text-[#52706C] hover:text-[#183331]"
                 }`}
               >
                 {item.label}
@@ -185,20 +185,20 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
             ))}
           </div>
 
-          <span className="text-xs text-zinc-500 font-mono">
-            Periode: <strong className="text-zinc-300">{data.dateRangeLabel}</strong>
+          <span className="text-xs text-[#52706C] font-mono">
+            Periode: <strong className="text-[#183331]">{data.dateRangeLabel}</strong>
           </span>
         </div>
 
         {/* Main View Mode Switcher: Financial Analysis vs Audit Dossier */}
-        <div className="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-zinc-950 border border-zinc-800">
+        <div className="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-[#F0F6F4] border border-[#E2ECE8]">
           <button
             type="button"
             onClick={() => setMainView("FINANCIAL")}
             className={`py-2.5 px-4 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-2 ${
               mainView === "FINANCIAL"
-                ? "bg-zinc-800 text-zinc-100 shadow-sm"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-white text-[#183331] shadow-xs border border-[#E2ECE8]"
+                : "text-[#52706C] hover:text-[#183331]"
             }`}
           >
             <span>📊</span>
@@ -210,13 +210,13 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
             onClick={() => setMainView("AUDIT")}
             className={`py-2.5 px-4 rounded-xl text-xs font-bold transition cursor-pointer flex items-center justify-center gap-2 ${
               mainView === "AUDIT"
-                ? "bg-red-600 text-white shadow-md shadow-red-600/20"
-                : "text-zinc-400 hover:text-zinc-200"
+                ? "bg-[#47957F] text-white shadow-xs"
+                : "text-[#52706C] hover:text-[#183331]"
             }`}
           >
             <span>🛡️</span>
             <span>Buku Audit Transaksi & Bukti Pembayaran</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20">
+            <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${mainView === "AUDIT" ? "bg-white/20 text-white" : "bg-[#EAF5F1] text-[#3D8383]"}`}>
               {filteredAuditOrders.length}
             </span>
           </button>
@@ -230,75 +230,75 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
             {/* KPI Cards Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Total Sales */}
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 backdrop-blur-xs relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-red-600/10 rounded-full blur-xl pointer-events-none" />
-                <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+              <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs relative overflow-hidden transition hover:shadow-md">
+                <div className="absolute top-0 right-0 w-28 h-28 bg-[#47957F]/10 rounded-full blur-2xl pointer-events-none" />
+                <span className="text-[11px] font-bold text-[#52706C] uppercase tracking-wider">
                   Total Penjualan Kotor
                 </span>
-                <p className="text-2xl font-black text-zinc-100 font-mono mt-1">
+                <p className="text-2xl font-black text-[#183331] font-mono mt-1">
                   {formatRupiah(data.totalSales)}
                 </p>
-                <div className="mt-2 text-[11px] text-zinc-400 flex items-center gap-1.5">
-                  <span className="text-emerald-400 font-bold">{data.totalOrders} order</span>
+                <div className="mt-2 text-[11px] text-[#52706C] flex items-center gap-1.5">
+                  <span className="text-[#47957F] font-bold">{data.totalOrders} order</span>
                   <span>• Rata-rata: {formatRupiah(data.averageOrderValue)}</span>
                 </div>
               </div>
 
               {/* Total Expenses */}
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 backdrop-blur-xs relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-amber-600/10 rounded-full blur-xl pointer-events-none" />
-                <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+              <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs relative overflow-hidden transition hover:shadow-md">
+                <div className="absolute top-0 right-0 w-28 h-28 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
+                <span className="text-[11px] font-bold text-[#52706C] uppercase tracking-wider">
                   Total Pengeluaran Stand
                 </span>
-                <p className="text-2xl font-black text-amber-400 font-mono mt-1">
+                <p className="text-2xl font-black text-amber-700 font-mono mt-1">
                   {formatRupiah(data.totalExpenses)}
                 </p>
-                <div className="mt-2 text-[11px] text-zinc-400 flex items-center gap-1.5">
-                  <span className="text-amber-400 font-bold">{data.expenseCount} transaksi beban</span>
+                <div className="mt-2 text-[11px] text-[#52706C] flex items-center gap-1.5">
+                  <span className="text-amber-700 font-bold">{data.expenseCount} transaksi beban</span>
                 </div>
               </div>
 
               {/* Net Cash Flow */}
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 backdrop-blur-xs relative overflow-hidden">
+              <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs relative overflow-hidden transition hover:shadow-md">
                 <div
-                  className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-xl pointer-events-none ${
-                    data.netCashFlow >= 0 ? "bg-emerald-600/10" : "bg-red-600/10"
+                  className={`absolute top-0 right-0 w-28 h-28 rounded-full blur-2xl pointer-events-none ${
+                    data.netCashFlow >= 0 ? "bg-emerald-500/10" : "bg-rose-500/10"
                   }`}
                 />
-                <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-[#52706C] uppercase tracking-wider">
                   Arus Kas Bersih (Net Cash Flow)
                 </span>
                 <p
                   className={`text-2xl font-black font-mono mt-1 ${
-                    data.netCashFlow >= 0 ? "text-emerald-400" : "text-red-400"
+                    data.netCashFlow >= 0 ? "text-[#3D8383]" : "text-rose-600"
                   }`}
                 >
                   {data.netCashFlow >= 0 ? "+" : ""}
                   {formatRupiah(data.netCashFlow)}
                 </p>
-                <div className="mt-2 text-[11px] text-zinc-400">
+                <div className="mt-2 text-[11px] text-[#52706C]">
                   Penjualan dikurangi seluruh pengeluaran
                 </div>
               </div>
 
               {/* Estimated Gross Profit (Laba Kotor Produk) */}
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 backdrop-blur-xs relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-600/10 rounded-full blur-xl pointer-events-none" />
-                <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+              <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs relative overflow-hidden transition hover:shadow-md">
+                <div className="absolute top-0 right-0 w-28 h-28 bg-[#CDD272]/20 rounded-full blur-2xl pointer-events-none" />
+                <span className="text-[11px] font-bold text-[#52706C] uppercase tracking-wider">
                   Estimasi Laba Kotor Produk
                 </span>
-                <p className="text-2xl font-black text-blue-400 font-mono mt-1">
+                <p className="text-2xl font-black text-[#47957F] font-mono mt-1">
                   {formatRupiah(data.estimatedGrossProfit)}
                 </p>
-                <div className="mt-2 text-[11px] text-zinc-400 flex items-center gap-1">
+                <div className="mt-2 text-[11px] text-[#52706C] flex items-center gap-1">
                   <span>Beban HPP:</span>
-                  <span className="font-mono text-zinc-300">{formatRupiah(data.estimatedHpp)}</span>
+                  <span className="font-mono font-bold text-[#183331]">{formatRupiah(data.estimatedHpp)}</span>
                 </div>
               </div>
             </div>
 
             {/* Sub-Tabs Navigation for Financial Dashboard */}
-            <div className="flex border-b border-zinc-800 overflow-x-auto">
+            <div className="flex border-b border-[#E2ECE8] overflow-x-auto gap-1">
               {(
                 [
                   { id: "SALES", label: "Analisis Penjualan" },
@@ -311,10 +311,10 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                   key={tab.id}
                   type="button"
                   onClick={() => setFinancialTab(tab.id)}
-                  className={`px-4 py-3 text-xs font-bold transition border-b-2 whitespace-nowrap cursor-pointer ${
+                  className={`px-4 py-3 text-xs font-bold transition border-b-2 whitespace-nowrap cursor-pointer rounded-t-xl ${
                     financialTab === tab.id
-                      ? "border-red-500 text-red-400 bg-red-600/5"
-                      : "border-transparent text-zinc-400 hover:text-zinc-200"
+                      ? "border-[#47957F] text-[#47957F] bg-[#EAF5F1]/70"
+                      : "border-transparent text-[#52706C] hover:text-[#183331] hover:bg-zinc-50"
                   }`}
                 >
                   {tab.label}
@@ -327,32 +327,32 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Payment Method Breakdown */}
-                  <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-                    <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs">
+                    <h3 className="text-xs font-bold text-[#183331] uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <svg className="w-4 h-4 text-[#47957F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                       Distribusi Metode Pembayaran
                     </h3>
 
                     {data.paymentBreakdown.length === 0 ? (
-                      <p className="text-xs text-zinc-500 py-6 text-center">Belum ada transaksi penjualan.</p>
+                      <p className="text-xs text-[#7A9C96] py-6 text-center">Belum ada transaksi penjualan.</p>
                     ) : (
                       <div className="space-y-3">
                         {data.paymentBreakdown.map((pm) => (
                           <div key={pm.method} className="space-y-1">
                             <div className="flex justify-between text-xs">
-                              <span className="font-semibold text-zinc-200">
+                              <span className="font-semibold text-[#183331]">
                                 {pm.method} ({pm.count}x)
                               </span>
-                              <span className="font-mono text-zinc-300 font-bold">
+                              <span className="font-mono text-[#183331] font-bold">
                                 {formatRupiah(pm.total)}{" "}
-                                <span className="text-zinc-500 text-[10px]">({pm.percentage}%)</span>
+                                <span className="text-[#52706C] text-[10px]">({pm.percentage}%)</span>
                               </span>
                             </div>
-                            <div className="w-full bg-zinc-950 rounded-full h-2 overflow-hidden border border-zinc-800">
+                            <div className="w-full bg-[#EAF5F1] rounded-full h-2.5 overflow-hidden border border-[#E2ECE8]">
                               <div
-                                className="bg-red-500 h-2 rounded-full transition-all duration-500"
+                                className="bg-gradient-to-r from-[#47957F] to-[#3D8383] h-2.5 rounded-full transition-all duration-500"
                                 style={{ width: `${pm.percentage}%` }}
                               />
                             </div>
@@ -363,9 +363,9 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                   </div>
 
                   {/* Source Distribution: POS vs Online */}
-                  <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-                    <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <svg className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs">
+                    <h3 className="text-xs font-bold text-[#183331] uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <svg className="w-4 h-4 text-[#3D8383]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                       </svg>
                       Kanal Penjualan (POS vs Online Pre-Order)
@@ -375,15 +375,15 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                       {data.sourceBreakdown.map((src) => (
                         <div
                           key={src.source}
-                          className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 flex flex-col gap-1"
+                          className="p-4 rounded-xl bg-[#FAFCFB] border border-[#E2ECE8] flex flex-col gap-1"
                         >
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#52706C]">
                             {src.source === "POS" ? "Langsung di Kasir (POS)" : "Online Pre-Order"}
                           </span>
-                          <p className="text-lg font-bold text-zinc-100 font-mono mt-1">
+                          <p className="text-lg font-bold text-[#183331] font-mono mt-1">
                             {formatRupiah(src.total)}
                           </p>
-                          <p className="text-[11px] text-zinc-500">{src.count} pesanan</p>
+                          <p className="text-[11px] text-[#7A9C96]">{src.count} pesanan</p>
                         </div>
                       ))}
                     </div>
@@ -391,20 +391,20 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                 </div>
 
                 {/* Top Selling Products Table */}
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-                  <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs">
+                  <h3 className="text-xs font-bold text-[#183331] uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <svg className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                     </svg>
                     Peringkat Produk Terlaris (Top Selling Products)
                   </h3>
 
                   {data.topProducts.length === 0 ? (
-                    <p className="text-xs text-zinc-500 py-6 text-center">Belum ada data penjualan produk.</p>
+                    <p className="text-xs text-[#7A9C96] py-6 text-center">Belum ada data penjualan produk.</p>
                   ) : (
                     <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs text-zinc-300">
-                        <thead className="border-b border-zinc-800 bg-zinc-950/60 uppercase tracking-wider text-[10px] text-zinc-400">
+                      <table className="w-full text-left text-xs text-[#254440]">
+                        <thead className="border-b border-[#E2ECE8] bg-[#FAFCFB] uppercase tracking-wider text-[10px] text-[#52706C] font-bold">
                           <tr>
                             <th className="px-4 py-3 text-center">#</th>
                             <th className="px-4 py-3">Nama Produk</th>
@@ -413,24 +413,24 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                             <th className="px-4 py-3 text-right">Total Omset</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800/80">
+                        <tbody className="divide-y divide-[#E2ECE8]">
                           {data.topProducts.map((p, idx) => (
-                            <tr key={p.productId} className="hover:bg-zinc-800/20 transition-colors">
-                              <td className="px-4 py-3 text-center font-bold font-mono text-zinc-500">
+                            <tr key={p.productId} className="hover:bg-[#F3F8F6]/60 transition-colors">
+                              <td className="px-4 py-3 text-center font-bold font-mono text-[#7A9C96]">
                                 {idx + 1}
                               </td>
-                              <td className="px-4 py-3 font-semibold text-zinc-100">
+                              <td className="px-4 py-3 font-semibold text-[#183331]">
                                 {p.productName}
                               </td>
                               <td className="px-4 py-3 text-center">
-                                <span className="px-2 py-0.5 rounded-full bg-zinc-800 text-[10px] font-mono text-zinc-300">
+                                <span className="px-2.5 py-0.5 rounded-full bg-[#EAF5F1] text-[10px] font-medium text-[#3D8383] border border-[#E2ECE8]">
                                   {p.category || "PRODUK"}
                                 </span>
                               </td>
-                              <td className="px-4 py-3 text-center font-mono font-bold text-zinc-200">
+                              <td className="px-4 py-3 text-center font-mono font-bold text-[#183331]">
                                 {p.quantitySold} pcs
                               </td>
-                              <td className="px-4 py-3 text-right font-mono font-bold text-red-400">
+                              <td className="px-4 py-3 text-right font-mono font-bold text-[#47957F]">
                                 {formatRupiah(p.totalRevenue)}
                               </td>
                             </tr>
@@ -445,8 +445,8 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
 
             {financialTab === "EXPENSES" && (
               <div className="space-y-6">
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-                  <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs">
+                  <h3 className="text-xs font-bold text-[#183331] uppercase tracking-wider mb-4 flex items-center gap-2">
                     <svg className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
@@ -454,22 +454,22 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                   </h3>
 
                   {data.expenseBreakdown.length === 0 ? (
-                    <p className="text-xs text-zinc-500 py-6 text-center">Belum ada data pengeluaran pada periode ini.</p>
+                    <p className="text-xs text-[#7A9C96] py-6 text-center">Belum ada data pengeluaran pada periode ini.</p>
                   ) : (
                     <div className="space-y-4">
                       {data.expenseBreakdown.map((exp) => (
                         <div key={exp.category} className="space-y-1.5">
                           <div className="flex justify-between text-xs">
                             <div>
-                              <span className="font-semibold text-zinc-200">{exp.categoryLabel}</span>
-                              <span className="text-zinc-500 text-[11px] ml-2">({exp.count} transaksi)</span>
+                              <span className="font-semibold text-[#183331]">{exp.categoryLabel}</span>
+                              <span className="text-[#7A9C96] text-[11px] ml-2">({exp.count} transaksi)</span>
                             </div>
-                            <span className="font-mono text-amber-400 font-bold">
+                            <span className="font-mono text-amber-700 font-bold">
                               {formatRupiah(exp.total)}{" "}
-                              <span className="text-zinc-500 text-[10px]">({exp.percentage}%)</span>
+                              <span className="text-[#52706C] text-[10px]">({exp.percentage}%)</span>
                             </span>
                           </div>
-                          <div className="w-full bg-zinc-950 rounded-full h-2.5 overflow-hidden border border-zinc-800">
+                          <div className="w-full bg-amber-50 rounded-full h-2.5 overflow-hidden border border-amber-200/60">
                             <div
                               className="bg-amber-500 h-2.5 rounded-full transition-all duration-500"
                               style={{ width: `${exp.percentage}%` }}
@@ -485,48 +485,48 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
 
             {financialTab === "CASHFLOW" && (
               <div className="space-y-6">
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 space-y-4">
-                  <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-2">
-                    <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs space-y-4">
+                  <h3 className="text-xs font-bold text-[#183331] uppercase tracking-wider flex items-center gap-2">
+                    <svg className="w-4 h-4 text-[#47957F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                     Ringkasan Laporan Laba Rugi & Arus Kas
                   </h3>
 
-                  <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 space-y-3 text-xs">
-                    <div className="flex justify-between items-center text-zinc-300">
+                  <div className="rounded-xl border border-[#E2ECE8] bg-[#FAFCFB] p-5 space-y-3.5 text-xs">
+                    <div className="flex justify-between items-center text-[#254440]">
                       <span>Total Penerimaan Kas (Pendapatan Penjualan)</span>
-                      <span className="font-mono font-bold text-emerald-400 text-sm">
+                      <span className="font-mono font-bold text-[#47957F] text-sm">
                         +{formatRupiah(data.totalSales)}
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center text-zinc-300">
+                    <div className="flex justify-between items-center text-[#254440]">
                       <span>Total Beban Pokok Penjualan (HPP Bahan / Produksi Terjual)</span>
-                      <span className="font-mono font-semibold text-zinc-400">
+                      <span className="font-mono font-semibold text-[#52706C]">
                         -{formatRupiah(data.estimatedHpp)}
                       </span>
                     </div>
 
-                    <div className="pt-2 border-t border-zinc-800 flex justify-between items-center font-bold text-zinc-100">
+                    <div className="pt-2 border-t border-[#E2ECE8] flex justify-between items-center font-bold text-[#183331]">
                       <span>Estimasi Laba Kotor Produk</span>
-                      <span className="font-mono text-blue-400 text-sm">
+                      <span className="font-mono text-[#3D8383] text-sm">
                         {formatRupiah(data.estimatedGrossProfit)}
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center text-zinc-300 pt-1">
+                    <div className="flex justify-between items-center text-[#254440] pt-1">
                       <span>Total Seluruh Beban & Biaya Operasional (Expenses)</span>
-                      <span className="font-mono font-semibold text-amber-400">
+                      <span className="font-mono font-semibold text-amber-700">
                         -{formatRupiah(data.totalExpenses)}
                       </span>
                     </div>
 
-                    <div className="pt-3 border-t-2 border-dashed border-zinc-800 flex justify-between items-center text-sm font-black">
-                      <span className="text-zinc-100">Arus Kas Bersih (Net Cash Flow)</span>
+                    <div className="pt-3.5 border-t-2 border-dashed border-[#E2ECE8] flex justify-between items-center text-sm font-black">
+                      <span className="text-[#183331]">Arus Kas Bersih (Net Cash Flow)</span>
                       <span
                         className={`font-mono text-base ${
-                          data.netCashFlow >= 0 ? "text-emerald-400" : "text-red-400"
+                          data.netCashFlow >= 0 ? "text-[#47957F]" : "text-rose-600"
                         }`}
                       >
                         {data.netCashFlow >= 0 ? "+" : ""}
@@ -541,50 +541,50 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
             {financialTab === "INVENTORY" && (
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800">
-                    <span className="text-[11px] text-zinc-500 uppercase font-semibold">
+                  <div className="p-4 rounded-xl bg-white border border-[#E2ECE8] shadow-xs">
+                    <span className="text-[11px] text-[#52706C] uppercase font-semibold">
                       Total Unit Stok Tersedia
                     </span>
-                    <p className="text-2xl font-bold font-mono text-zinc-100 mt-1">
+                    <p className="text-2xl font-bold font-mono text-[#183331] mt-1">
                       {data.totalStockUnits} pcs
                     </p>
                   </div>
-                  <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800">
-                    <span className="text-[11px] text-zinc-500 uppercase font-semibold">
+                  <div className="p-4 rounded-xl bg-white border border-[#E2ECE8] shadow-xs">
+                    <span className="text-[11px] text-[#52706C] uppercase font-semibold">
                       Estimasi Nilai Aset Stok
                     </span>
-                    <p className="text-2xl font-bold font-mono text-blue-400 mt-1">
+                    <p className="text-2xl font-bold font-mono text-[#3D8383] mt-1">
                       {formatRupiah(data.totalStockAssetValue)}
                     </p>
                   </div>
                 </div>
 
                 {/* Low stock alerts */}
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-                  <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="rounded-2xl border border-[#E2ECE8] bg-white p-5 shadow-xs">
+                  <h3 className="text-xs font-bold text-[#183331] uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <svg className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
                     Peringatan Stok Menipis (Sisa ≤ 5)
                   </h3>
 
                   {data.lowStockProducts.length === 0 ? (
-                    <p className="text-xs text-emerald-400 py-3">Semua produk memiliki stok yang aman (&gt; 5 pcs).</p>
+                    <p className="text-xs text-[#47957F] py-3">Semua produk memiliki stok yang aman (&gt; 5 pcs).</p>
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                       {data.lowStockProducts.map((item) => (
                         <div
                           key={item.id}
-                          className="p-3 rounded-xl bg-zinc-950 border border-amber-900/40 flex items-center justify-between text-xs"
+                          className="p-3 rounded-xl bg-[#FAFCFB] border border-amber-200/80 flex items-center justify-between text-xs"
                         >
-                          <span className="font-semibold text-zinc-200 truncate max-w-[160px]">
+                          <span className="font-semibold text-[#183331] truncate max-w-[160px]">
                             {item.name}
                           </span>
                           <span
                             className={`font-mono font-bold px-2 py-0.5 rounded text-[11px] ${
                               item.stock <= 0
-                                ? "bg-red-500/20 text-red-400 border border-red-500/30"
-                                : "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                                ? "bg-rose-50 text-rose-600 border border-rose-200"
+                                : "bg-amber-50 text-amber-700 border border-amber-200"
                             }`}
                           >
                             {item.stock <= 0 ? "HABIS" : `${item.stock} pcs`}
@@ -605,37 +605,37 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
         {mainView === "AUDIT" && (
           <div className="space-y-4">
             {/* Audit Summary Banner */}
-            <div className="rounded-2xl border border-zinc-800 bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 p-4">
+            <div className="rounded-2xl border border-[#E2ECE8] bg-gradient-to-r from-[#EAF5F1] via-white to-[#CEE4EC]/30 p-5 shadow-xs">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center sm:text-left">
                 <div>
-                  <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">
+                  <span className="text-[10px] text-[#52706C] uppercase font-bold tracking-wider">
                     Total Transaksi
                   </span>
-                  <p className="text-xl font-black font-mono text-zinc-100 mt-0.5">
+                  <p className="text-xl font-black font-mono text-[#183331] mt-0.5">
                     {auditStats.count} order
                   </p>
                 </div>
                 <div>
-                  <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">
+                  <span className="text-[10px] text-[#52706C] uppercase font-bold tracking-wider">
                     Total Omset Riil
                   </span>
-                  <p className="text-xl font-black font-mono text-red-400 mt-0.5">
+                  <p className="text-xl font-black font-mono text-[#47957F] mt-0.5">
                     {formatRupiah(auditStats.totalNominal)}
                   </p>
                 </div>
                 <div>
-                  <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">
+                  <span className="text-[10px] text-[#52706C] uppercase font-bold tracking-wider">
                     Item Terjual
                   </span>
-                  <p className="text-xl font-black font-mono text-zinc-200 mt-0.5">
+                  <p className="text-xl font-black font-mono text-[#183331] mt-0.5">
                     {auditStats.totalItemsSold} pcs
                   </p>
                 </div>
                 <div>
-                  <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">
+                  <span className="text-[10px] text-[#52706C] uppercase font-bold tracking-wider">
                     Bukti Transfer/QRIS
                   </span>
-                  <p className="text-xl font-black font-mono text-emerald-400 mt-0.5">
+                  <p className="text-xl font-black font-mono text-[#3D8383] mt-0.5">
                     {auditStats.withProofCount} foto bukti
                   </p>
                 </div>
@@ -650,10 +650,10 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                   placeholder="Cari no. order, nama pelanggan, WA, atau produk..."
                   value={auditSearch}
                   onChange={(e) => setAuditSearch(e.target.value)}
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-3.5 py-2 pl-9 text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-red-500"
+                  className="w-full rounded-xl border border-[#E2ECE8] bg-white px-3.5 py-2 pl-9 text-xs text-[#183331] placeholder:text-[#7A9C96] focus:outline-none focus:border-[#47957F] focus:ring-1 focus:ring-[#47957F] shadow-xs"
                 />
                 <svg
-                  className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500"
+                  className="absolute left-3 top-2.5 h-4 w-4 text-[#7A9C96]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -666,7 +666,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                 <select
                   value={auditPaymentFilter}
                   onChange={(e) => setAuditPaymentFilter(e.target.value)}
-                  className="rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 text-xs font-semibold text-zinc-300 focus:outline-none focus:border-red-500 cursor-pointer"
+                  className="rounded-xl border border-[#E2ECE8] bg-white px-3 py-2 text-xs font-semibold text-[#183331] focus:outline-none focus:border-[#47957F] cursor-pointer shadow-xs"
                 >
                   <option value="ALL">Semua Metode</option>
                   <option value="QRIS">QRIS</option>
@@ -675,12 +675,12 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                   <option value="COD">COD</option>
                 </select>
 
-                <label className="flex items-center gap-2 px-3 py-2 rounded-xl border border-zinc-800 bg-zinc-900 text-xs font-semibold text-zinc-300 cursor-pointer whitespace-nowrap hover:bg-zinc-800">
+                <label className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[#E2ECE8] bg-white text-xs font-semibold text-[#183331] cursor-pointer whitespace-nowrap hover:bg-[#F3F8F6] shadow-xs">
                   <input
                     type="checkbox"
                     checked={auditOnlyWithProof}
                     onChange={(e) => setAuditOnlyWithProof(e.target.checked)}
-                    className="rounded text-red-600 focus:ring-red-500"
+                    className="rounded text-[#47957F] focus:ring-[#47957F]"
                   />
                   <span>Ada Foto Bukti</span>
                 </label>
@@ -688,10 +688,10 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
             </div>
 
             {/* Audit Transactions Table */}
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 overflow-hidden shadow-xl">
+            <div className="rounded-2xl border border-[#E2ECE8] bg-white overflow-hidden shadow-xs">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="border-b border-zinc-800 bg-zinc-950 text-zinc-400 font-semibold uppercase tracking-wider text-[10px]">
+                  <thead className="border-b border-[#E2ECE8] bg-[#FAFCFB] text-[#52706C] font-semibold uppercase tracking-wider text-[10px]">
                     <tr>
                       <th className="py-3 px-4">No. Order & Waktu</th>
                       <th className="py-3 px-4">Pelanggan</th>
@@ -702,10 +702,10 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                       <th className="py-3 px-4 text-center">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/60">
+                  <tbody className="divide-y divide-[#E2ECE8]">
                     {filteredAuditOrders.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="py-12 text-center text-zinc-500">
+                        <td colSpan={7} className="py-12 text-center text-[#7A9C96]">
                           Tidak ada transaksi yang sesuai kriteria pencarian audit.
                         </td>
                       </tr>
@@ -720,13 +720,13 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                             : "—";
 
                         return (
-                          <tr key={order.id} className="hover:bg-zinc-800/30 transition">
+                          <tr key={order.id} className="hover:bg-[#F3F8F6]/60 transition">
                             {/* Order Number & Timestamp */}
                             <td className="py-3.5 px-4 font-mono">
-                              <p className="font-bold text-red-400">#{order.orderNumber}</p>
-                              <p className="text-[10px] text-zinc-500 mt-0.5">{dateStr}</p>
+                              <p className="font-bold text-[#47957F]">#{order.orderNumber}</p>
+                              <p className="text-[10px] text-[#7A9C96] mt-0.5">{dateStr}</p>
                               {order.source && (
-                                <span className="inline-block mt-1 text-[9px] uppercase px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-300 font-semibold">
+                                <span className="inline-block mt-1 text-[9px] uppercase px-1.5 py-0.2 rounded bg-[#EAF5F1] text-[#3D8383] font-semibold border border-[#E2ECE8]">
                                   {order.source}
                                 </span>
                               )}
@@ -734,11 +734,11 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
 
                             {/* Customer */}
                             <td className="py-3.5 px-4">
-                              <p className="font-semibold text-zinc-200">
+                              <p className="font-semibold text-[#183331]">
                                 {order.customerName || "Umum / Walk-in"}
                               </p>
                               {order.customerPhone && (
-                                <p className="text-[10px] font-mono text-zinc-500 mt-0.5">
+                                <p className="text-[10px] font-mono text-[#52706C] mt-0.5">
                                   {order.customerPhone}
                                 </p>
                               )}
@@ -749,29 +749,29 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                               <div className="space-y-1 max-w-xs">
                                 {order.items && order.items.length > 0 ? (
                                   order.items.map((it, idx) => (
-                                    <div key={idx} className="text-[11px] text-zinc-300">
-                                      <span className="font-bold text-zinc-100">{it.quantity}x</span>{" "}
+                                    <div key={idx} className="text-[11px] text-[#254440]">
+                                      <span className="font-bold text-[#183331]">{it.quantity}x</span>{" "}
                                       <span>{it.productName}</span>{" "}
-                                      <span className="text-zinc-500 font-mono text-[10px]">
+                                      <span className="text-[#7A9C96] font-mono text-[10px]">
                                         (@{formatRupiah(it.unitPrice)})
                                       </span>
                                     </div>
                                   ))
                                 ) : (
-                                  <span className="text-zinc-500 italic">Transaksi Langsung</span>
+                                  <span className="text-[#7A9C96] italic">Transaksi Langsung</span>
                                 )}
                               </div>
                             </td>
 
                             {/* Payment Method */}
                             <td className="py-3.5 px-4">
-                              <span className="px-2 py-0.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-200 font-mono font-bold text-[11px]">
+                              <span className="px-2 py-0.5 rounded-lg bg-[#EAF5F1] border border-[#E2ECE8] text-[#3D8383] font-mono font-bold text-[11px]">
                                 {order.paymentMethod || "CASH"}
                               </span>
                             </td>
 
                             {/* Total */}
-                            <td className="py-3.5 px-4 text-right font-mono font-bold text-red-400">
+                            <td className="py-3.5 px-4 text-right font-mono font-bold text-[#183331]">
                               {formatRupiah(order.total)}
                             </td>
 
@@ -782,7 +782,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                                   <button
                                     type="button"
                                     onClick={() => setPreviewProofUrl(order.proofUrl!)}
-                                    className="relative w-12 h-12 rounded-lg overflow-hidden border border-emerald-500/50 hover:border-emerald-400 transition cursor-pointer group shadow-sm"
+                                    className="relative w-12 h-12 rounded-lg overflow-hidden border border-[#47957F]/40 hover:border-[#47957F] transition cursor-pointer group shadow-xs"
                                     title="Klik untuk memperbesar bukti pembayaran"
                                   >
                                     <Image
@@ -792,23 +792,23 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                                       className="object-cover group-hover:scale-105 transition"
                                       unoptimized
                                     />
-                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                                    <div className="absolute inset-0 bg-[#183331]/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
                                       <span className="text-[9px] text-white font-bold">Zoom</span>
                                     </div>
                                   </button>
-                                  <span className="text-[9px] text-emerald-400 font-semibold font-mono">
+                                  <span className="text-[9px] text-[#47957F] font-semibold font-mono">
                                     ✓ Bukti Foto
                                   </span>
                                 </div>
                               ) : order.paymentMethod === "CASH" || order.paymentMethod === "COD" ? (
                                 <div className="inline-flex flex-col items-center">
-                                  <span className="px-2 py-0.5 rounded-md bg-emerald-950/60 border border-emerald-800/80 text-[10px] font-semibold text-emerald-400">
+                                  <span className="px-2 py-0.5 rounded-md bg-[#EAF5F1] border border-[#E2ECE8] text-[10px] font-semibold text-[#3D8383]">
                                     💵 Tunai di Kasir
                                   </span>
-                                  <span className="text-[9px] text-zinc-500 mt-0.5">Validasi Fisik</span>
+                                  <span className="text-[9px] text-[#7A9C96] mt-0.5">Validasi Fisik</span>
                                 </div>
                               ) : (
-                                <span className="text-[10px] text-zinc-500 italic">Tanpa Foto</span>
+                                <span className="text-[10px] text-[#7A9C96] italic">Tanpa Foto</span>
                               )}
                             </td>
 
@@ -817,10 +817,10 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                               <span
                                 className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                                   order.status === "COMPLETED" || order.status === "REDEEMED"
-                                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                                     : order.status === "READY_FOR_REDEMPTION"
-                                    ? "bg-blue-500/20 text-blue-300 border border-blue-500/30"
-                                    : "bg-zinc-800 text-zinc-400"
+                                    ? "bg-[#EAF5F1] text-[#3D8383] border border-[#47957F]/30"
+                                    : "bg-zinc-100 text-zinc-600 border border-zinc-200"
                                 }`}
                               >
                                 {order.status}
@@ -850,10 +850,10 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
         {/* Header Dokumen Formal */}
         <div className="border-b-2 border-black pb-3 mb-4 text-center">
           <h2 className="text-xl font-black uppercase tracking-wider text-black">
-            BLACK MARKET — ENTREPRENEURSHIP & MARKET DAY
+            NOURY — NO WORRIES (FRESH & HEALTHY LIVING)
           </h2>
           <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-800 mt-0.5">
-            LAPORAN KEUANGAN RESMI & KINERJA BISNIS
+            LAPORAN KEUANGAN RESMI & KINERJA BISNIS ENTREPRENEURSHIP
           </h3>
           <p className="text-xs text-zinc-600 mt-1">
             Periode Laporan: <strong>{data.dateRangeLabel}</strong> • Dicetak: {printDateStr}
@@ -1030,7 +1030,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
         {/* VI. Kolom Pengesahan Laporan */}
         <div className="pt-4 page-break-inside-avoid border-t-2 border-black">
           <p className="text-[11px] text-zinc-600 italic text-center mb-6">
-            Laporan ini digenerate secara otomatis oleh sistem point-of-sale Black Market dan dinyatakan sah.
+            Laporan ini digenerate secara otomatis oleh sistem operasional Noury dan dinyatakan sah.
           </p>
           <div className="grid grid-cols-3 gap-6 text-center text-xs">
             <div>
@@ -1041,7 +1041,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
             </div>
             <div>
               <p className="font-bold">Diverifikasi Oleh,</p>
-              <p className="text-[10px] text-zinc-600">Ketua Stand Black Market</p>
+              <p className="text-[10px] text-zinc-600">Ketua Stand Noury</p>
               <div className="h-16" />
               <p className="border-b border-black w-4/5 mx-auto font-bold">( ........................................ )</p>
             </div>
@@ -1067,13 +1067,13 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
         {/* Header Buku Audit */}
         <div className="border-b-2 border-black pb-3 mb-4 text-center">
           <h2 className="text-xl font-black uppercase tracking-wider text-black">
-            BLACK MARKET — ENTREPRENEURSHIP & MARKET DAY
+            NOURY — NO WORRIES (FRESH & HEALTHY LIVING)
           </h2>
-          <h3 className="text-sm font-black uppercase tracking-widest text-red-700 mt-0.5">
+          <h3 className="text-sm font-black uppercase tracking-widest text-[#3D8383] mt-0.5">
             BUKU LAPORAN AUDIT TRANSAKSI & BUKTI PEMBAYARAN
           </h3>
           <p className="text-[11px] text-zinc-600 mt-0.5">
-            Dokumen Verifikasi Transaksi Riil & Anti-Kecurangan (Bahan Penilaian & Pertanggungjawaban)
+            Dokumen Verifikasi Transaksi Riil & Anti-Kecurangan (Bahan Penilaian Stand & Pertanggungjawaban)
           </p>
           <div className="mt-2 text-xs flex justify-center gap-6 font-semibold">
             <span>Periode: {data.dateRangeLabel}</span>
@@ -1241,7 +1241,7 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
           size="md"
         >
           <div className="py-2 flex flex-col items-center">
-            <div className="relative w-full h-[60vh] max-h-[500px] rounded-xl overflow-hidden bg-black flex items-center justify-center border border-zinc-800">
+            <div className="relative w-full h-[60vh] max-h-[500px] rounded-xl overflow-hidden bg-zinc-950 flex items-center justify-center border border-[#E2ECE8]">
               <Image
                 src={previewProofUrl}
                 alt="Bukti pembayaran penuh"
@@ -1255,14 +1255,14 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                 href={previewProofUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 py-2 px-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-center text-zinc-200"
+                className="flex-1 py-2 px-3 rounded-xl bg-[#47957F] hover:bg-[#3D8383] text-xs font-semibold text-center text-white transition shadow-xs"
               >
                 Buka Resolusi Penuh ↗
               </a>
               <button
                 type="button"
                 onClick={() => setPreviewProofUrl(null)}
-                className="flex-1 py-2 px-3 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-semibold text-center text-zinc-400 hover:text-zinc-200"
+                className="flex-1 py-2 px-3 rounded-xl bg-white border border-[#E2ECE8] text-xs font-semibold text-center text-[#52706C] hover:text-[#183331] hover:bg-[#F3F8F6] transition shadow-xs cursor-pointer"
               >
                 Tutup
               </button>
