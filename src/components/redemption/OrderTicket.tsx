@@ -318,11 +318,11 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
             <div>
               <p className="text-[#7A9C96]">Pengambilan</p>
               <p className="font-medium text-[#4A6864] mt-0.5">
-                {order.pickupMethod === "BATCH_PICKUP"
-                  ? `Pre-Order: ${order.batchInfo || "Jadwal Batch"}`
+                {order.batchInfo
+                  ? `Pre-Order: ${order.batchInfo}`
                   : order.pickupMethod === "FLEXIBLE"
                   ? "Ambil Fleksibel"
-                  : "Stand Market Day"}
+                  : "Batch 1 (Saat Ini)"}
               </p>
             </div>
           </div>

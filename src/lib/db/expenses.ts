@@ -127,9 +127,14 @@ export async function getCashFlowSummary(): Promise<CashFlowSummary> {
       .get();
 
     let totalRevenue = 0;
+    let paidOrdersCount = 0;
     ordersSnap.forEach((doc) => {
       const data = doc.data();
+      if (data.status === "CANCELLED" || data.paymentStatus === "CANCELLED") {
+        return;
+      }
       totalRevenue += Number(data.total) || 0;
+      paidOrdersCount++;
     });
 
     // 2. Fetch all expenses
@@ -146,7 +151,7 @@ export async function getCashFlowSummary(): Promise<CashFlowSummary> {
       totalRevenue,
       totalExpenses,
       netCashFlow,
-      totalOrdersCount: ordersSnap.size,
+      totalOrdersCount: paidOrdersCount,
       totalExpensesCount: expensesSnap.size,
     };
   } catch (error) {

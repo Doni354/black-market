@@ -157,8 +157,12 @@ export async function getReportData(filters?: ReportFilters): Promise<ReportSumm
     return true;
   });
 
-  // Filter orders by paid or completed status for sales & revenue calculation
+  // Filter orders by paid or completed status for sales & revenue calculation (EXCLUDE CANCELLED)
   const validOrders = allPeriodOrders.filter((order) => {
+    if (order.status === "CANCELLED" || order.paymentStatus === "CANCELLED") {
+      return false;
+    }
+
     const isPaid =
       order.paymentStatus === "PAID" ||
       order.status === "PAID" ||

@@ -4,6 +4,7 @@ import { serializeFirestoreData } from "@/lib/utils/serialization";
 import type { Customer } from "@/lib/types";
 
 export interface UpsertCustomerInput {
+  id?: string;
   name: string;
   phone?: string;
   email?: string;
@@ -12,17 +13,27 @@ export interface UpsertCustomerInput {
 }
 
 /**
- * Find existing customer by phone (or create new) and record order metrics.
+ * Find existing customer by id, phone, or email (or create new) and record order metrics.
  */
 export async function findOrCreateCustomer(
   input: UpsertCustomerInput
 ): Promise<Customer> {
   const cleanPhone = input.phone?.trim() || "";
+  const cleanEmail = input.email?.trim().toLowerCase() || "";
   const cleanName = input.name.trim();
 
   let customerDoc: FirebaseFirestore.DocumentSnapshot | null = null;
 
-  if (cleanPhone) {
+  // 1. Try by ID if provided
+  if (input.id?.trim()) {
+    const snap = await adminDb.collection("customers").doc(input.id.trim()).get();
+    if (snap.exists) {
+      customerDoc = snap;
+    }
+  }
+
+  // 2. Try by phone if not found yet
+  if (!customerDoc && cleanPhone) {
     const snap = await adminDb
       .collection("customers")
       .where("phone", "==", cleanPhone)
@@ -33,7 +44,20 @@ export async function findOrCreateCustomer(
     }
   }
 
+  // 3. Try by email if not found yet
+  if (!customerDoc && cleanEmail && !cleanEmail.includes("-")) {
+    const snap = await adminDb
+      .collection("customers")
+      .where("email", "==", cleanEmail)
+      .limit(1)
+      .get();
+    if (!snap.empty) {
+      customerDoc = snap.docs[0];
+    }
+  }
+
   if (customerDoc && customerDoc.exists) {
+    const existing = customerDoc.data() || {};
     const updateData: Record<string, unknown> = {
       totalOrders: FieldValue.increment(1),
       updatedAt: FieldValue.serverTimestamp(),
@@ -42,10 +66,13 @@ export async function findOrCreateCustomer(
     if (input.spentDelta && input.spentDelta > 0) {
       updateData.totalSpent = FieldValue.increment(input.spentDelta);
     }
-    if (input.email?.trim()) {
-      updateData.email = input.email.trim();
+    if (cleanEmail && !existing.email) {
+      updateData.email = cleanEmail;
     }
-    if (cleanName) {
+    if (cleanPhone && !existing.phone) {
+      updateData.phone = cleanPhone;
+    }
+    if (cleanName && (!existing.name || existing.name === "Sobat Noury")) {
       updateData.name = cleanName;
     }
 
@@ -57,18 +84,20 @@ export async function findOrCreateCustomer(
     });
   }
 
-  // Create new customer
+  // Create new customer only if no existing match was found
   const newRef = adminDb.collection("customers").doc();
   const customerData: Record<string, unknown> = {
     name: cleanName,
     totalOrders: 1,
     totalSpent: Math.max(0, input.spentDelta || 0),
+    stampsCount: 0,
+    claimedCoupons: [],
     createdAt: FieldValue.serverTimestamp(),
     updatedAt: FieldValue.serverTimestamp(),
   };
 
   if (cleanPhone) customerData.phone = cleanPhone;
-  if (input.email?.trim()) customerData.email = input.email.trim();
+  if (cleanEmail) customerData.email = cleanEmail;
   if (input.notes?.trim()) customerData.notes = input.notes.trim();
 
   await newRef.set(customerData);

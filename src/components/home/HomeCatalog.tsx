@@ -50,12 +50,16 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerNotes, setCustomerNotes] = useState("");
-  const [pickupMethod, setPickupMethod] = useState<"MARKET_DAY" | "BATCH_PICKUP">("MARKET_DAY");
+  const pickupMethod = "BATCH_PICKUP";
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("QRIS");
   const [proofUrl, setProofUrl] = useState("");
   const [uploadingProof, setUploadingProof] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [successOrderNumber, setSuccessOrderNumber] = useState<string | null>(null);
+
+  // Product Preview Modal & QRIS Preview
+  const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+  const [isQrisPreviewOpen, setIsQrisPreviewOpen] = useState(false);
 
   // Operational Settings (Payment QRIS/Bank & Batch Pre-Order)
   const [paymentSettings, setPaymentSettings] = useState<PaymentSettings>(DEFAULT_PAYMENT_SETTINGS);
@@ -63,6 +67,24 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
 
   // Selected coupon for discount
   const [selectedCoupon, setSelectedCoupon] = useState<CustomerCoupon | null>(null);
+
+  async function handleDownloadQris(url: string) {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `QRIS_${(paymentSettings.qrisMerchantName || "NOURY").replace(/[^a-zA-Z0-9]/g, "_")}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+      toast("Barcode QRIS berhasil diunduh!", "success");
+    } catch {
+      window.open(url, "_blank");
+    }
+  }
 
   // Load operational settings
   useEffect(() => {
@@ -382,7 +404,11 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
                 key={product.id}
                 className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[#DCE8E4] bg-white p-3 sm:p-4 transition-all hover:border-noury-mint/60 hover:shadow-lg hover:shadow-noury-mint/10"
               >
-                <div>
+                <div
+                  onClick={() => setPreviewProduct(product)}
+                  className="cursor-pointer"
+                  title="Klik untuk melihat detail & foto menu"
+                >
                   {/* Image container */}
                   <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#F4F9F7]">
                     {product.imageUrl ? (
@@ -714,44 +740,23 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
             onChange={(e) => setCustomerNotes(e.target.value)}
           />
 
-          {/* Pickup Method — Market Day vs Batch Pre-Order */}
-          <div>
-            <label className="text-[11px] font-semibold uppercase tracking-wider text-[#63847F] mb-1.5 block">
-              Pilihan Waktu & Pengambilan Pesanan
-            </label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => setPickupMethod("MARKET_DAY")}
-                className={`rounded-xl border py-2 px-2.5 text-left transition-all cursor-pointer ${
-                  pickupMethod === "MARKET_DAY"
-                    ? "border-noury-mint bg-noury-mint/15 text-[#183331] font-bold"
-                    : "border-[#DCE8E4] bg-white text-[#4A6864]"
-                }`}
-              >
-                <p className="text-xs font-bold">Stand Market Day</p>
-                <p className="text-[10px] text-[#63847F] font-normal">Ambil di stan saat hari H Market Day</p>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPickupMethod("BATCH_PICKUP")}
-                className={`rounded-xl border py-2 px-2.5 text-left transition-all cursor-pointer ${
-                  pickupMethod === "BATCH_PICKUP"
-                    ? "border-noury-mint bg-noury-mint/15 text-[#183331] font-bold"
-                    : "border-[#DCE8E4] bg-white text-[#4A6864]"
-                }`}
-              >
-                <p className="text-xs font-bold">{batchSettings.activeBatchName}</p>
-                <p className="text-[10px] text-[#63847F] font-normal">{batchSettings.batchPickupSchedule}</p>
-              </button>
+          {/* Pickup Method — Batch Pre-Order Saat Ini */}
+          <div className="rounded-xl border border-[#DCE8E4] bg-[#F7FAFA] p-3.5 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-[#183331] uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                Jadwal Ambil: {batchSettings.activeBatchName || "Batch 1 (Saat Ini)"}
+              </span>
+              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full border border-emerald-300">
+                Batch Aktif
+              </span>
             </div>
-
-            {pickupMethod === "BATCH_PICKUP" && (
-              <p className="mt-1.5 text-[10px] text-[#47957F] bg-[#EDF6F3] p-2 rounded-lg border border-[#D0E5DF]">
-                <strong>Lokasi Pengambilan:</strong> {batchSettings.batchPickupLocation}
-              </p>
-            )}
+            <p className="text-xs text-[#52706C]">
+              📅 <strong>Waktu Ambil:</strong> {batchSettings.batchPickupSchedule || "Sesuai Jadwal Stand"}
+            </p>
+            <p className="text-xs text-[#52706C]">
+              📍 <strong>Titik Stan:</strong> {batchSettings.batchPickupLocation || "Stand Noury"}
+            </p>
           </div>
 
           {/* Payment Method Selector — QRIS & Bank Transfer only (NO COD) */}
@@ -787,28 +792,55 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
 
           {/* Dynamic Payment Details (QRIS barcode vs Bank details) */}
           {paymentMethod === "QRIS" ? (
-            <div className="rounded-xl border border-[#DCE8E4] bg-[#F9FBFA] p-3 text-center space-y-2">
-              <p className="font-bold text-xs text-[#183331]">
-                Scan QRIS: {paymentSettings.qrisMerchantName}
-              </p>
+            <div className="rounded-2xl border border-[#DCE8E4] bg-[#F7FAFA] p-4 text-center space-y-3">
+              <div>
+                <p className="font-bold text-xs text-[#183331]">
+                  Scan QRIS: {paymentSettings.qrisMerchantName}
+                </p>
+                <p className="text-[10px] text-[#63847F] mt-0.5">
+                  Dapat di-scan via GoPay, OVO, Dana, ShopeePay, BCA, Mandiri, dll.
+                </p>
+              </div>
+
               {paymentSettings.qrisImageUrl ? (
-                <div className="relative h-44 w-44 mx-auto rounded-lg overflow-hidden border border-[#DCE8E4] bg-white shadow-xs">
-                  <Image
-                    src={paymentSettings.qrisImageUrl}
-                    alt="QRIS Barcode"
-                    fill
-                    className="object-contain"
-                    unoptimized
-                  />
+                <div className="flex flex-col items-center gap-2.5">
+                  <div className="p-2.5 bg-white rounded-2xl shadow-sm border border-[#DCE8E4] inline-block">
+                    <div className="relative w-52 h-52 sm:w-56 sm:h-56 mx-auto">
+                      <Image
+                        src={paymentSettings.qrisImageUrl}
+                        alt="QRIS Barcode"
+                        fill
+                        className="object-contain rounded-xl"
+                        unoptimized
+                        priority
+                      />
+                    </div>
+                  </div>
+
+                  {/* Action buttons: Zoom Preview & Download */}
+                  <div className="flex items-center justify-center gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => setIsQrisPreviewOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#CCE0DA] hover:bg-[#F2F7F5] text-xs font-semibold text-[#183331] transition shadow-xs cursor-pointer active:scale-95"
+                    >
+                      <span>🔍 Perbesar Tampilan</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDownloadQris(paymentSettings.qrisImageUrl!)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-noury-mint hover:bg-noury-teal text-white text-xs font-semibold transition shadow-xs cursor-pointer active:scale-95"
+                    >
+                      <span>📥 Unduh Barcode</span>
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="p-3 bg-white rounded-lg border border-dashed border-[#CCE0DA] text-[11px] text-[#63847F]">
                   Barcode QRIS tersedia. Silakan gunakan scanner e-wallet Anda ke nama merchant di atas.
                 </div>
               )}
-              <p className="text-[10px] text-[#63847F]">
-                Dapat di-scan melalui GoPay, OVO, Dana, ShopeePay, LinkAja, BCA, Mandiri, dll.
-              </p>
             </div>
           ) : (
             <div className="rounded-xl border border-[#DCE8E4] bg-[#F9FBFA] p-3 text-xs space-y-1">
@@ -890,6 +922,191 @@ export function HomeCatalog({ products }: HomeCatalogProps) {
           </p>
         </div>
       </Modal>
+
+      {/* Product Detail Preview Modal */}
+      {previewProduct && (
+        <Modal
+          isOpen={Boolean(previewProduct)}
+          onClose={() => setPreviewProduct(null)}
+          title={previewProduct.name}
+          description="Rincian komposisi, nutrisi segar, dan ketersediaan menu Noury."
+          size="lg"
+          footer={
+            <div className="flex items-center justify-between w-full flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-base font-black text-noury-teal">
+                  {formatRupiah(previewProduct.price)}
+                </span>
+                {previewProduct.trackInventory && (
+                  <span
+                    className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                      previewProduct.stock > 0
+                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        : "bg-red-50 text-red-700 border border-red-200"
+                    }`}
+                  >
+                    {previewProduct.stock > 0 ? `Sisa: ${previewProduct.stock} porsi` : "Habis"}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                {previewProduct.trackInventory && previewProduct.stock <= 0 ? (
+                  <span className="text-xs text-zinc-400 font-semibold px-3 py-1.5">
+                    Stok Habis
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleAddToCart(previewProduct.id);
+                      toast(`"${previewProduct.name}" berhasil ditambahkan ke keranjang!`, "success");
+                    }}
+                    className="px-4 py-2 rounded-xl bg-noury-mint hover:bg-noury-teal text-white font-bold text-xs transition shadow-md shadow-noury-mint/20 cursor-pointer active:scale-95 flex items-center gap-1.5"
+                  >
+                    <span>+ Tambah ke Pesanan</span>
+                    {(cart.get(previewProduct.id) || 0) > 0 && (
+                      <span className="bg-white/20 text-white px-1.5 py-0.2 rounded-full text-[10px]">
+                        {cart.get(previewProduct.id)} di keranjang
+                      </span>
+                    )}
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setPreviewProduct(null)}
+                  className="px-3.5 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-xs font-semibold text-zinc-700 transition cursor-pointer"
+                >
+                  Tutup
+                </button>
+              </div>
+            </div>
+          }
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 p-1 text-xs text-[#183331]">
+            {/* Image Box */}
+            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-[#F4F9F7] border border-[#DCE8E4] shadow-xs">
+              {previewProduct.imageUrl ? (
+                <Image
+                  src={previewProduct.imageUrl}
+                  alt={previewProduct.name}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center p-8 text-[#7A9C96]">
+                  <Image
+                    src="/icons/Logo.svg"
+                    alt="Noury"
+                    width={100}
+                    height={35}
+                    className="opacity-40 grayscale object-contain"
+                  />
+                </div>
+              )}
+              <div className="absolute top-2.5 left-2.5">
+                <span className="rounded-lg bg-white/95 backdrop-blur-md px-2.5 py-1 text-[10px] font-bold uppercase text-[#295B53] border border-[#CCE0DA] shadow-xs">
+                  {previewProduct.type === "FRUIT_BOWL"
+                    ? "Fruit Bowl"
+                    : previewProduct.type === "SMOOTHIE_JUICE"
+                    ? "Smoothie"
+                    : previewProduct.type === "INFUSED_WATER"
+                    ? "Infused Water"
+                    : previewProduct.type === "HEALTHY_FOOD"
+                    ? "Healthy Eat"
+                    : "Menu Segar"}
+                </span>
+              </div>
+            </div>
+
+            {/* Info & Nutrition Content */}
+            <div className="flex flex-col justify-between space-y-4">
+              <div>
+                <h3 className="text-lg font-black text-[#183331]">
+                  {previewProduct.name}
+                </h3>
+                <p className="mt-2 text-xs text-[#52706C] leading-relaxed">
+                  {previewProduct.description ||
+                    "Menu pilihan bergizi tinggi dari bahan segar pilihan stand Noury. Dibuat tanpa pemanis buatan berlebih untuk menjaga kesehatan dan kesegaran hari Anda."}
+                </p>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-[#F7FAFA] border border-[#DCE8E4] space-y-2">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-[#63847F]">Kategori:</span>
+                  <span className="font-bold text-[#183331]">{previewProduct.type}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-[#63847F]">Harga Satuan:</span>
+                  <span className="font-bold font-mono text-noury-teal text-sm">
+                    {formatRupiah(previewProduct.price)}
+                  </span>
+                </div>
+                {previewProduct.trackInventory && (
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-[#63847F]">Ketersediaan Hari H:</span>
+                    <span className="font-semibold text-emerald-700">
+                      {previewProduct.stock > 0
+                        ? `${previewProduct.stock} Porsi Tersedia`
+                        : "Habis"}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="rounded-xl p-3 bg-noury-mint/10 border border-noury-mint/20 text-[11px] text-[#2F5850]">
+                🌱 <strong>Stand Noury Fresh:</strong> Buah dipotong higienis di hari yang sama, bebas pemanis buatan, dan siap dinikmati saat penukaran tiket.
+              </div>
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {/* QRIS Full Resolution Zoom Modal */}
+      {isQrisPreviewOpen && paymentSettings.qrisImageUrl && (
+        <Modal
+          isOpen={isQrisPreviewOpen}
+          onClose={() => setIsQrisPreviewOpen(false)}
+          title={`Barcode QRIS: ${paymentSettings.qrisMerchantName}`}
+          description="Arahkan kamera e-wallet / m-banking Anda atau unduh gambar ini ke galeri ponsel."
+          size="md"
+          footer={
+            <div className="flex items-center justify-between w-full">
+              <button
+                type="button"
+                onClick={() => handleDownloadQris(paymentSettings.qrisImageUrl!)}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-noury-mint hover:bg-noury-teal text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
+              >
+                📥 Unduh Barcode QRIS
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsQrisPreviewOpen(false)}
+                className="px-4 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-xs font-semibold text-zinc-700 transition cursor-pointer"
+              >
+                Tutup
+              </button>
+            </div>
+          }
+        >
+          <div className="flex flex-col items-center justify-center p-2">
+            <div className="relative w-72 h-72 sm:w-80 sm:h-80 mx-auto bg-white p-3 rounded-2xl border border-zinc-200 shadow-md">
+              <Image
+                src={paymentSettings.qrisImageUrl}
+                alt="QRIS Barcode"
+                fill
+                className="object-contain rounded-xl"
+                unoptimized
+                priority
+              />
+            </div>
+            <p className="mt-3 text-xs text-center text-[#52706C]">
+              💡 <strong>Tips:</strong> Simpan / unduh gambar di atas lalu gunakan fitur <em>Scan dari Galeri / Upload Foto</em> di aplikasi GoPay, OVO, Dana, BCA Mobile, atau ShopeePay Anda.
+            </p>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

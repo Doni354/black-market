@@ -536,7 +536,7 @@ export async function createPreOrder(
     subtotal,
     discount,
     total,
-    pickupMethod: input.pickupMethod || "MARKET_DAY",
+    pickupMethod: input.pickupMethod || "BATCH_PICKUP",
     batchInfo: input.batchInfo?.trim() || undefined,
     productionStatus: "IN_PRODUCTION",
     items: orderItemsSnapshot,
@@ -596,23 +596,44 @@ export async function createPreOrder(
 
   await paymentRef.set(paymentData);
 
-  // 4. Update customer record and loyalty rewards
+  // 4. Update customer record and loyalty rewards directly (NO duplicate creation)
   if (input.customerId?.trim()) {
     try {
+      const custId = input.customerId.trim();
       if (input.couponCode?.trim()) {
-        await markCustomerCouponUsed(input.customerId.trim(), input.couponCode.trim());
+        await markCustomerCouponUsed(custId, input.couponCode.trim());
       }
-      await addCustomerStamp(input.customerId.trim(), subtotal);
-    } catch (e) {
-      console.warn("Could not process customer coupon or stamp:", e);
-    }
-  }
+      await addCustomerStamp(custId, total);
 
-  if (input.customerPhone?.trim()) {
+      // Directly sync phone, email, and name into the existing Google customer document
+      const custDocRef = adminDb.collection("customers").doc(custId);
+      const custSnap = await custDocRef.get();
+      if (custSnap.exists) {
+        const custData = custSnap.data() || {};
+        const profileUpdates: Record<string, unknown> = {};
+        if (input.customerPhone?.trim() && (!custData.phone || custData.phone !== input.customerPhone.trim())) {
+          profileUpdates.phone = input.customerPhone.trim();
+        }
+        if (input.customerEmail?.trim() && (!custData.email || custData.email !== input.customerEmail.trim())) {
+          profileUpdates.email = input.customerEmail.trim();
+        }
+        if (cleanCustomerName && (!custData.name || custData.name === "Sobat Noury")) {
+          profileUpdates.name = cleanCustomerName;
+        }
+        if (Object.keys(profileUpdates).length > 0) {
+          profileUpdates.updatedAt = FieldValue.serverTimestamp();
+          await custDocRef.update(profileUpdates);
+        }
+      }
+    } catch (e) {
+      console.warn("Could not process customer coupon, stamp, or profile update:", e);
+    }
+  } else if (input.customerPhone?.trim() || input.customerEmail?.trim()) {
+    // Only call findOrCreateCustomer for unauthenticated / POS orders
     try {
       await findOrCreateCustomer({
         name: cleanCustomerName,
-        phone: input.customerPhone.trim(),
+        phone: input.customerPhone?.trim(),
         email: input.customerEmail?.trim(),
         spentDelta: total,
       });
@@ -981,10 +1002,11 @@ export async function cancelOrder(
       }
     }
 
-    // Update order status
+    // Update order status & paymentStatus
     const cancellationNote = reason ? ` | Batal: ${reason}` : " | Dibatalkan";
     transaction.update(orderRef, {
       status: "CANCELLED",
+      paymentStatus: "CANCELLED",
       notes: (orderData.notes || "") + cancellationNote,
       updatedAt: FieldValue.serverTimestamp(),
     });
@@ -997,8 +1019,24 @@ export async function cancelOrder(
       .get();
     if (!paymentSnap.empty) {
       transaction.update(paymentSnap.docs[0].ref, {
-        status: "REJECTED",
+        status: "CANCELLED",
       });
+    }
+
+    // Rollback customer metrics if customer was associated and order was counted
+    if (orderData.customerId) {
+      const custRef = adminDb.collection("customers").doc(orderData.customerId);
+      const custDoc = await transaction.get(custRef);
+      if (custDoc.exists) {
+        const custData = custDoc.data() || {};
+        const currentOrders = custData.totalOrders || 0;
+        const currentSpent = custData.totalSpent || 0;
+        transaction.update(custRef, {
+          totalOrders: Math.max(0, currentOrders - 1),
+          totalSpent: Math.max(0, currentSpent - (Number(orderData.total) || 0)),
+          updatedAt: FieldValue.serverTimestamp(),
+        });
+      }
     }
   });
 }

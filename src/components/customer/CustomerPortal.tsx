@@ -528,11 +528,11 @@ export function CustomerPortal() {
                         </span>
                       </div>
                       <p className="text-[10px] text-[#63847F] mt-0.5">
-                        {order.pickupMethod === "BATCH_PICKUP"
-                          ? `Pre-Order: ${order.batchInfo || "Jadwal Batch"}`
+                        {order.batchInfo
+                          ? `Pre-Order: ${order.batchInfo}`
                           : order.pickupMethod === "FLEXIBLE"
                           ? "Pengambilan Fleksibel"
-                          : "Stand Event Market Day"}
+                          : "Batch 1 (Saat Ini)"}
                       </p>
                     </div>
 

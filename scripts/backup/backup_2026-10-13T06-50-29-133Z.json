@@ -1,0 +1,1745 @@
+{
+  "customers": [
+    {
+      "id": "340BaDyGWk0D5VMgNELB",
+      "name": "Test",
+      "totalOrders": 1,
+      "totalSpent": 15000,
+      "phone": "08123456789",
+      "createdAt": {
+        "_seconds": 1791818400,
+        "_nanoseconds": 96000000
+      },
+      "updatedAt": {
+        "_seconds": 1791818400,
+        "_nanoseconds": 96000000
+      }
+    },
+    {
+      "id": "3G6WAadq28MsGz05iyhaCgoDCrN2",
+      "name": "stfaizahh",
+      "email": "stfayyzahh98@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocJ6BwEKG42v0nDEHoy96m60LaQAn_P78R3x3HlGm301dJ603Q=s96-c",
+      "phone": "",
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791869908,
+        "_nanoseconds": 588000000
+      },
+      "stampsCount": 2,
+      "totalSpent": 30000,
+      "totalOrders": 2,
+      "updatedAt": {
+        "_seconds": 1791870939,
+        "_nanoseconds": 458000000
+      }
+    },
+    {
+      "id": "52E3Pm9lXMPAO0vrfJMA",
+      "name": "faizahh",
+      "totalOrders": 1,
+      "totalSpent": 15000,
+      "phone": "085156269496",
+      "email": "stfayyzahh98@gmail.com",
+      "createdAt": {
+        "_seconds": 1791870115,
+        "_nanoseconds": 18000000
+      },
+      "stampsCount": 1,
+      "updatedAt": {
+        "_seconds": 1791872807,
+        "_nanoseconds": 395000000
+      }
+    },
+    {
+      "id": "6hIYJPWnCq3pLh1aj4AW",
+      "name": "mario",
+      "totalOrders": 1,
+      "totalSpent": 15000,
+      "phone": "081299361512",
+      "email": "badygreen134@gmail.com",
+      "createdAt": {
+        "_seconds": 1791866433,
+        "_nanoseconds": 889000000
+      },
+      "updatedAt": {
+        "_seconds": 1791866433,
+        "_nanoseconds": 889000000
+      }
+    },
+    {
+      "id": "7C4MphTrSBzwoPZgqDZJ",
+      "name": "DiscountTest",
+      "totalOrders": 1,
+      "totalSpent": 5000,
+      "phone": "08123456788",
+      "createdAt": {
+        "_seconds": 1791818423,
+        "_nanoseconds": 590000000
+      },
+      "updatedAt": {
+        "_seconds": 1791818423,
+        "_nanoseconds": 590000000
+      }
+    },
+    {
+      "id": "9sjqStLb0SNnwSWuAZ3dO86f9f02",
+      "name": "asif nur fauzi",
+      "email": "asif.elek24@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocLeudCTJj8pBe3_Tf4Wa8zkl6r5XS1RlH8eqUa0X8z7aLFXhTZV=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791861871,
+        "_nanoseconds": 579000000
+      },
+      "updatedAt": {
+        "_seconds": 1791862082,
+        "_nanoseconds": 147000000
+      }
+    },
+    {
+      "id": "BlNpX96fgHSBEwYVJhazDHj5iC12",
+      "name": "Riyan Dwi Cahyadi",
+      "email": "riyandwicahyadi9@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocLB8GK__moTyMz_ZSwsptzpk7YM0N3_s6uFDNRTMzNcFqkknvE=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791864869,
+        "_nanoseconds": 23000000
+      },
+      "updatedAt": {
+        "_seconds": 1791864995,
+        "_nanoseconds": 463000000
+      }
+    },
+    {
+      "id": "CgVnNpDG0RIKsPXcQ9KH",
+      "name": "Anggun Pratiwi",
+      "totalOrders": 1,
+      "totalSpent": 25000,
+      "phone": "0878-9898-7383",
+      "email": "tirmidzyarthrsis@gmail.com",
+      "createdAt": {
+        "_seconds": 1791814696,
+        "_nanoseconds": 665000000
+      },
+      "stampsCount": 1,
+      "updatedAt": {
+        "_seconds": 1791872713,
+        "_nanoseconds": 375000000
+      }
+    },
+    {
+      "id": "Ng0TVRrXpsSTno4zhHpW",
+      "name": "Riyan Dwi Cahyadi",
+      "totalOrders": 1,
+      "totalSpent": 25000,
+      "phone": "081345507899",
+      "email": "riyandwicahyadi9@gmail.com",
+      "createdAt": {
+        "_seconds": 1791864994,
+        "_nanoseconds": 322000000
+      },
+      "updatedAt": {
+        "_seconds": 1791864994,
+        "_nanoseconds": 322000000
+      }
+    },
+    {
+      "id": "RL9aKliQcKZOY8O31yd2xMOuQhf2",
+      "name": "Doni 354",
+      "email": "doni.smpn1@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocISdN7N6vkA1jABaxKzSnad55J0I9usrgYNYiwgG9V932ZC5axXdQ=s96-c",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791448746,
+        "_nanoseconds": 393000000
+      },
+      "phone": "89683322400",
+      "updatedAt": {
+        "_seconds": 1791873342,
+        "_nanoseconds": 105000000
+      }
+    },
+    {
+      "id": "TWyYpwa7ZyVnvajWo2SrpNH0AIJ3",
+      "name": "savero dalta",
+      "email": "savero.dalta.saladin-2025@vokasi.unair.ac.id",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocIcIDoSB_8PdE6_CgmshIGtmE_JtK6tUIjSWLxuSvh9oQWg_A=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791814629,
+        "_nanoseconds": 593000000
+      },
+      "updatedAt": {
+        "_seconds": 1791814630,
+        "_nanoseconds": 341000000
+      }
+    },
+    {
+      "id": "X15xEq3dkKASJiJ8T50c",
+      "name": "Raffa",
+      "totalOrders": 1,
+      "totalSpent": 15000,
+      "phone": "0895329035005",
+      "email": "nafaloh2468@gmail.com",
+      "createdAt": {
+        "_seconds": 1791813337,
+        "_nanoseconds": 771000000
+      },
+      "stampsCount": 1,
+      "updatedAt": {
+        "_seconds": 1791872708,
+        "_nanoseconds": 698000000
+      }
+    },
+    {
+      "id": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "name": "SYAHRIL FARHAN SHAH",
+      "email": "syahrilfarhanshah@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocJ91kNSNN_LZfDB1s1MziP4Z9ItTbgm5VTbKYUFKZ-kRsl6Aw=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791452714,
+        "_nanoseconds": 275000000
+      },
+      "updatedAt": {
+        "_seconds": 1791866341,
+        "_nanoseconds": 580000000
+      }
+    },
+    {
+      "id": "ao2LnbeE1VqaVpUYyjdE",
+      "name": "Build Up (daffa)",
+      "totalOrders": 1,
+      "totalSpent": 10000,
+      "phone": "0818399292",
+      "email": "upbuild0@gmail.com",
+      "createdAt": {
+        "_seconds": 1791872994,
+        "_nanoseconds": 570000000
+      },
+      "updatedAt": {
+        "_seconds": 1791872994,
+        "_nanoseconds": 570000000
+      }
+    },
+    {
+      "id": "ay8qNpXGDWZh3JEhCwtcMmi8JC53",
+      "name": "Nafaloh",
+      "email": "nafaloh2468@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocJXQNpLBKwRSpgS-7adD3UabkGsslh98D5XTqHvAyKOm4dm9y0=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791813166,
+        "_nanoseconds": 182000000
+      },
+      "updatedAt": {
+        "_seconds": 1791815681,
+        "_nanoseconds": 191000000
+      }
+    },
+    {
+      "id": "dA1Ko1lIq9BqrqcFkIcd",
+      "name": "jhoseelvarel .s.",
+      "totalOrders": 1,
+      "totalSpent": 25000,
+      "phone": "082254181218",
+      "email": "sjhoseelvarel@gmail.com",
+      "createdAt": {
+        "_seconds": 1791862830,
+        "_nanoseconds": 321000000
+      },
+      "stampsCount": 1,
+      "updatedAt": {
+        "_seconds": 1791872739,
+        "_nanoseconds": 521000000
+      }
+    },
+    {
+      "id": "fs8g3s6sZRaKnzX3WomJDnx9wWl2",
+      "name": "Tirmidzy arthrsis",
+      "email": "tirmidzyarthrsis@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocJnQLG2BozLsgdvsWJ3SgoaMb4UQfhgqs7rHBjBXKveHwgYIYVG=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791813839,
+        "_nanoseconds": 797000000
+      },
+      "updatedAt": {
+        "_seconds": 1791859064,
+        "_nanoseconds": 683000000
+      }
+    },
+    {
+      "id": "gabFJWhb8DOe5xIYC9Je",
+      "name": "Muhammad Farras Ramadhan",
+      "totalOrders": 1,
+      "totalSpent": 10000,
+      "phone": "0895340342182",
+      "email": "farassboyz@gmail.com",
+      "createdAt": {
+        "_seconds": 1791869104,
+        "_nanoseconds": 536000000
+      },
+      "updatedAt": {
+        "_seconds": 1791869104,
+        "_nanoseconds": 536000000
+      }
+    },
+    {
+      "id": "jEskmDPAp3a1qhaCs6vN56s6Nl63",
+      "name": "jhoseelvarel .s.",
+      "email": "sjhoseelvarel@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocIMLwl9wUnkwcNp8T_C0oQHGNMffC5qPeRMx09JVOaAIq0QxXs=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791862736,
+        "_nanoseconds": 316000000
+      },
+      "updatedAt": {
+        "_seconds": 1791862831,
+        "_nanoseconds": 175000000
+      }
+    },
+    {
+      "id": "m2KupAf8slNS21jXdJJ4VCwyOUr1",
+      "name": "Daffa Yoni",
+      "email": "daffayoni97@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocLs7sr8wL87BfDLe_Td3DoSLzuA3TBph7gaopVpSE4pJ4grUg=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791872849,
+        "_nanoseconds": 890000000
+      },
+      "totalSpent": 10000,
+      "totalOrders": 1,
+      "updatedAt": {
+        "_seconds": 1791872916,
+        "_nanoseconds": 470000000
+      }
+    },
+    {
+      "id": "mAjscrqoicQNhELHQSHA8kicw0G2",
+      "name": "mario juan",
+      "email": "badygreen134@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocJK9Ur4aBj8zTEi0t6IKN268e22JzRM3eWGK9rHX9NWJf9kJbY=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791866072,
+        "_nanoseconds": 178000000
+      },
+      "updatedAt": {
+        "_seconds": 1791866495,
+        "_nanoseconds": 191000000
+      }
+    },
+    {
+      "id": "mgDBPb5ZTGel52VdGTOr33b3XHd2",
+      "name": "Zefanya Manullang",
+      "email": "zpijarmanullang@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocJa4kSyvaESsJ52hdjWk_Gj9baDbQ_fJHKwthEkDX58qpaj20cP=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791513870,
+        "_nanoseconds": 975000000
+      },
+      "updatedAt": {
+        "_seconds": 1791873133,
+        "_nanoseconds": 441000000
+      }
+    },
+    {
+      "id": "o2IvbSAokccWFGijCSwv",
+      "name": "SYAHRIL FARHAN SHAH",
+      "totalOrders": 1,
+      "totalSpent": 15000,
+      "phone": "0989212233123",
+      "email": "syahrilfarhanshah@gmail.com",
+      "createdAt": {
+        "_seconds": 1791549828,
+        "_nanoseconds": 925000000
+      },
+      "stampsCount": 1,
+      "updatedAt": {
+        "_seconds": 1791872701,
+        "_nanoseconds": 841000000
+      }
+    },
+    {
+      "id": "oefxvjsbg7wa2yJX18Bk",
+      "name": "Felix",
+      "totalOrders": 1,
+      "totalSpent": 20000,
+      "phone": "-",
+      "email": "-",
+      "createdAt": {
+        "_seconds": 1791861547,
+        "_nanoseconds": 990000000
+      },
+      "stampsCount": 1,
+      "updatedAt": {
+        "_seconds": 1791872730,
+        "_nanoseconds": 388000000
+      }
+    },
+    {
+      "id": "przvB8DxNuU2GwqCyDr4",
+      "name": "Daffa Yoni",
+      "totalOrders": 1,
+      "totalSpent": 10000,
+      "phone": "081383899202",
+      "email": "daffayoni97@gmail.com",
+      "createdAt": {
+        "_seconds": 1791872885,
+        "_nanoseconds": 796000000
+      },
+      "updatedAt": {
+        "_seconds": 1791872885,
+        "_nanoseconds": 796000000
+      }
+    },
+    {
+      "id": "s0RMZAMmp9M4T0FkUeTzoUB1ps02",
+      "name": "Clonira Rin",
+      "email": "clonirajean@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocLTa9fvwC6X5eL54eOYlJVO03J2F_SGwvcNhZpp6nz4s61F9T0=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791542271,
+        "_nanoseconds": 357000000
+      },
+      "updatedAt": {
+        "_seconds": 1791546271,
+        "_nanoseconds": 824000000
+      }
+    },
+    {
+      "id": "s8mg5F5cpFW8ysGHvh20p6cW5ol2",
+      "name": "Muhammad Farras Ramadhan",
+      "email": "farassboyz@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocJr3I1_woNELbO72_S6IY97OXkiYkAeAY-8YU6O8Fe8pFeM3Or2=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791869002,
+        "_nanoseconds": 18000000
+      },
+      "updatedAt": {
+        "_seconds": 1791869105,
+        "_nanoseconds": 458000000
+      }
+    },
+    {
+      "id": "uPVOSgoTvzYy8o3gjHce4xHP4nk1",
+      "name": "Build Up",
+      "email": "upbuild0@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocIZ477GXu4tqlP-zRYArvTZjiQLsdgCxdfwrdxgn4WHuDqIjA=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791872974,
+        "_nanoseconds": 65000000
+      },
+      "totalSpent": 10000,
+      "totalOrders": 1,
+      "updatedAt": {
+        "_seconds": 1791872995,
+        "_nanoseconds": 384000000
+      }
+    },
+    {
+      "id": "vZ73ZiwZbIOBfJC14Quj",
+      "name": "asif nur fauzi",
+      "totalOrders": 1,
+      "totalSpent": 10000,
+      "phone": "085784407378",
+      "email": "asif.elek24@gmail.com",
+      "createdAt": {
+        "_seconds": 1791862081,
+        "_nanoseconds": 58000000
+      },
+      "updatedAt": {
+        "_seconds": 1791862081,
+        "_nanoseconds": 58000000
+      }
+    },
+    {
+      "id": "yr8dCszfybW82faMRa07jdfJWvS2",
+      "name": "Daffa Rendra",
+      "email": "basukid3@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ACg8ocL53SjvthacjgR29SKfDhjt3KdM40CkUM_C9I6zrpvaidi43dtO=s96-c",
+      "phone": "",
+      "stampsCount": 0,
+      "totalOrders": 0,
+      "totalSpent": 0,
+      "claimedCoupons": [],
+      "createdAt": {
+        "_seconds": 1791448839,
+        "_nanoseconds": 316000000
+      },
+      "updatedAt": {
+        "_seconds": 1791873010,
+        "_nanoseconds": 748000000
+      }
+    }
+  ],
+  "orders": [
+    {
+      "id": "1kQ1eTuYW73Gy4FQNWMs",
+      "orderNumber": "NOURY-261012-29QE",
+      "customerName": "Test",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentStatus": "PENDING",
+      "subtotal": 15000,
+      "discount": 0,
+      "total": 15000,
+      "pickupMethod": "MARKET_DAY",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "9XjKHQT4e2aFXzAP2STH",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerPhone": "08123456789",
+      "createdAt": {
+        "_seconds": 1791818399,
+        "_nanoseconds": 773000000
+      },
+      "notes": " | Batal: Test produk",
+      "status": "CANCELLED",
+      "updatedAt": {
+        "_seconds": 1791869296,
+        "_nanoseconds": 140000000
+      }
+    },
+    {
+      "id": "3yuxWqRT88VKTSuOfI6T",
+      "orderNumber": "NOURY-261013-HUJR",
+      "customerName": "asif nur fauzi",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 10000,
+      "discount": 0,
+      "total": 10000,
+      "pickupMethod": "MARKET_DAY",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "5YzWs8dkjmdDoUqjlF8U",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "9sjqStLb0SNnwSWuAZ3dO86f9f02",
+      "customerPhone": "085784407378",
+      "customerEmail": "asif.elek24@gmail.com",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791862073/noury/payment-proofs/hv0v0xkjwanxwzqada0s.jpg",
+      "createdAt": {
+        "_seconds": 1791862080,
+        "_nanoseconds": 483000000
+      },
+      "redemptionCode": "RDM-3A27-9AF4-7D37-0985",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791862232,
+        "_nanoseconds": 35000000
+      }
+    },
+    {
+      "id": "ApK5RsBEQ5foUP4IADVV",
+      "orderNumber": "NOURY-261013-WXYK",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "paymentStatus": "PAID",
+      "paymentMethod": "CASH",
+      "subtotal": 20000,
+      "discount": 0,
+      "total": 20000,
+      "amountPaid": 20000,
+      "change": 0,
+      "items": [
+        {
+          "id": "JY7ukZPbPgnSS2cp6Ufu",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        },
+        {
+          "id": "f9hCYpIbFSVRh6L7YmK7",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Felix",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791860904/noury/payment-proofs/imaviquhoobbc5ebp0r9.jpg",
+      "createdAt": {
+        "_seconds": 1791860916,
+        "_nanoseconds": 943000000
+      },
+      "notes": "diambil Kamis | Batal: batal",
+      "status": "CANCELLED",
+      "updatedAt": {
+        "_seconds": 1791861382,
+        "_nanoseconds": 579000000
+      }
+    },
+    {
+      "id": "EGXKzvUHyov0DQvSiz09",
+      "orderNumber": "NOURY-261013-QM42",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "status": "COMPLETED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "QRIS",
+      "subtotal": 15000,
+      "discount": 0,
+      "total": 15000,
+      "amountPaid": 15000,
+      "change": 0,
+      "items": [
+        {
+          "id": "nkdNC0Znyd3OciQvgipo",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Arthes",
+      "notes": "Beli makanan",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791862643/noury/payment-proofs/gg6vydhiuhp1bu7419il.jpg",
+      "createdAt": {
+        "_seconds": 1791862650,
+        "_nanoseconds": 801000000
+      },
+      "updatedAt": {
+        "_seconds": 1791862650,
+        "_nanoseconds": 801000000
+      }
+    },
+    {
+      "id": "GmbQgsGUpfDQ8thKeeAl",
+      "orderNumber": "NOURY-261013-FW7A",
+      "customerName": "jhoseelvarel .s.",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 25000,
+      "discount": 0,
+      "total": 25000,
+      "pickupMethod": "BATCH_PICKUP",
+      "batchInfo": "Batch 1 (Minggu Ini) • Jumat, 17 Oktober 2026 • 11.30 - 15.00 WIB",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "RqQ6UGOI3lZH2Td9WeD1",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        },
+        {
+          "id": "X8QRZfoigmGBBQR7OifF",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "jEskmDPAp3a1qhaCs6vN56s6Nl63",
+      "customerPhone": "082254181218",
+      "customerEmail": "sjhoseelvarel@gmail.com",
+      "notes": "Titip ke zefaa",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791862823/noury/payment-proofs/zo2lmjflfqq1k5gdp3h6.png",
+      "createdAt": {
+        "_seconds": 1791862829,
+        "_nanoseconds": 893000000
+      },
+      "redemptionCode": "RDM-6F56-7A89-51DA-8567",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791862939,
+        "_nanoseconds": 247000000
+      }
+    },
+    {
+      "id": "LE3owYXjeca81ifV6mBN",
+      "orderNumber": "NOURY-261009-L597",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "status": "COMPLETED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "QRIS",
+      "subtotal": 15000,
+      "discount": 0,
+      "total": 15000,
+      "amountPaid": 15000,
+      "change": 0,
+      "items": [
+        {
+          "id": "NfvaoPFF5WsytT8kHNP2",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "BU AAN",
+      "notes": "Dianatar",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791548921/noury/payment-proofs/iz4mcedvsmhnex12rwnx.jpg",
+      "createdAt": {
+        "_seconds": 1791548950,
+        "_nanoseconds": 866000000
+      },
+      "updatedAt": {
+        "_seconds": 1791548950,
+        "_nanoseconds": 866000000
+      }
+    },
+    {
+      "id": "LPHYxBrE0c6P3OreU00N",
+      "orderNumber": "NOURY-261012-SFVC",
+      "customerName": "Raffa",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 15000,
+      "discount": 0,
+      "total": 15000,
+      "pickupMethod": "BATCH_PICKUP",
+      "batchInfo": "Batch 1 (Minggu Ini) • Jumat, 17 Oktober 2026 • 11.30 - 15.00 WIB",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "jDQXlgsKDWaXaO2OHfyv",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "ay8qNpXGDWZh3JEhCwtcMmi8JC53",
+      "customerPhone": "0895329035005",
+      "customerEmail": "nafaloh2468@gmail.com",
+      "notes": "Ambil jam 12 siang",
+      "createdAt": {
+        "_seconds": 1791813337,
+        "_nanoseconds": 203000000
+      },
+      "redemptionCode": "RDM-8081-8103-4171-0448",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791860675/noury/payment-proofs/n0klb8czkj4wzaqlohnp.jpg",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791860682,
+        "_nanoseconds": 620000000
+      }
+    },
+    {
+      "id": "MqkhLpvNUg6UceAUhlkh",
+      "orderNumber": "NOURY-261013-4F3Q",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "paymentStatus": "PAID",
+      "paymentMethod": "CASH",
+      "subtotal": 10000,
+      "discount": 0,
+      "total": 10000,
+      "amountPaid": 10000,
+      "change": 0,
+      "items": [
+        {
+          "id": "hB7JNqO1a42MLanAiFPQ",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Alfin",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791860823/noury/payment-proofs/rgxocatmio8xsw8ldmnf.jpg",
+      "createdAt": {
+        "_seconds": 1791860840,
+        "_nanoseconds": 297000000
+      },
+      "notes": "Kamis | Batal: batal",
+      "status": "CANCELLED",
+      "updatedAt": {
+        "_seconds": 1791861392,
+        "_nanoseconds": 107000000
+      }
+    },
+    {
+      "id": "NbrY2ZttLP3Eo7S3Qvc7",
+      "orderNumber": "NOURY-261013-5Y2M",
+      "customerName": "Aldo",
+      "source": "POS",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 20000,
+      "discount": 0,
+      "total": 20000,
+      "pickupMethod": "MARKET_DAY",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "YFFMFCTPgZQ86JuZH3Kv",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        },
+        {
+          "id": "FhOzATptY7KGsSNtsZi6",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791861570/noury/payment-proofs/zfisubp06jmi8yfxsomz.jpg",
+      "createdAt": {
+        "_seconds": 1791861574,
+        "_nanoseconds": 158000000
+      },
+      "redemptionCode": "RDM-E83F-32EA-8A5A-CEC5",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791861580,
+        "_nanoseconds": 439000000
+      }
+    },
+    {
+      "id": "OJd4hwiW7TnjdykDUAb3",
+      "orderNumber": "NOURY-261013-8RWW",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "status": "COMPLETED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "QRIS",
+      "subtotal": 10000,
+      "discount": 0,
+      "total": 10000,
+      "amountPaid": 10000,
+      "change": 0,
+      "items": [
+        {
+          "id": "Fz0uSiDNmTrWYdaRhJlL",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Pembeli Pertama",
+      "notes": "Dibeli secara offline",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791861700/noury/payment-proofs/jrkivf6gxcnan1xpjmhz.jpg",
+      "createdAt": {
+        "_seconds": 1791861725,
+        "_nanoseconds": 808000000
+      },
+      "updatedAt": {
+        "_seconds": 1791861725,
+        "_nanoseconds": 808000000
+      }
+    },
+    {
+      "id": "Tf6BvvjFovitEBxrNMZ6",
+      "orderNumber": "NOURY-261013-AKQN",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "status": "COMPLETED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "QRIS",
+      "subtotal": 15000,
+      "discount": 0,
+      "total": 15000,
+      "amountPaid": 15000,
+      "change": 0,
+      "items": [
+        {
+          "id": "oOARwYxpzadvqHDhgcXH",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Zeffa",
+      "notes": "Beli makanan",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791862854/noury/payment-proofs/jlubmq7yyj2g5fdjipvi.jpg",
+      "createdAt": {
+        "_seconds": 1791862863,
+        "_nanoseconds": 416000000
+      },
+      "updatedAt": {
+        "_seconds": 1791862863,
+        "_nanoseconds": 416000000
+      }
+    },
+    {
+      "id": "UcJWdpHocHfbciSzBb5q",
+      "orderNumber": "NOURY-261013-EN86",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "status": "COMPLETED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "CASH",
+      "subtotal": 25000,
+      "discount": 0,
+      "total": 25000,
+      "amountPaid": 25000,
+      "change": 0,
+      "items": [
+        {
+          "id": "m1F3IBs2monce1Ix62zu",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        },
+        {
+          "id": "aLtxsjsnVZRqCfrCyw2y",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Ferdi",
+      "createdAt": {
+        "_seconds": 1791861960,
+        "_nanoseconds": 633000000
+      },
+      "updatedAt": {
+        "_seconds": 1791861960,
+        "_nanoseconds": 633000000
+      }
+    },
+    {
+      "id": "W6RZiXkZkVtoKXA3NHQW",
+      "orderNumber": "NOURY-261013-TXW2",
+      "customerName": "faizahh",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 15000,
+      "discount": 0,
+      "total": 15000,
+      "pickupMethod": "MARKET_DAY",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "NbZ1gbADuB5mm04hzGqv",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "3G6WAadq28MsGz05iyhaCgoDCrN2",
+      "customerPhone": "085156269496",
+      "customerEmail": "stfayyzahh98@gmail.com",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791870108/noury/payment-proofs/dhwxrsfb036hd5hvlyjb.jpg",
+      "createdAt": {
+        "_seconds": 1791870114,
+        "_nanoseconds": 325000000
+      },
+      "redemptionCode": "RDM-5224-3D9D-0E2E-A3D1",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791870939,
+        "_nanoseconds": 168000000
+      }
+    },
+    {
+      "id": "WFrXpCsbecAQozqIEPyp",
+      "orderNumber": "NOURY-261013-UJN8",
+      "customerName": "Alfin",
+      "source": "POS",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "CASH",
+      "subtotal": 10000,
+      "discount": 0,
+      "total": 10000,
+      "pickupMethod": "MARKET_DAY",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "nrPACHZWLf756GEwvkQf",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerEmail": "-",
+      "notes": "Ambil hari kamis",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791861428/noury/payment-proofs/c3bssoqq5nqyflsuyxho.jpg",
+      "createdAt": {
+        "_seconds": 1791861432,
+        "_nanoseconds": 416000000
+      },
+      "redemptionCode": "RDM-9039-65F0-4C20-6934",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791861438,
+        "_nanoseconds": 775000000
+      }
+    },
+    {
+      "id": "Y4L3Tm371m3ermg4ShcC",
+      "orderNumber": "NOURY-261013-33NT",
+      "customerName": "Muhammad Farras Ramadhan",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 10000,
+      "discount": 0,
+      "total": 10000,
+      "pickupMethod": "BATCH_PICKUP",
+      "batchInfo": "Batch 1 (Minggu Ini) • Jumat, 17 Oktober 2026 • 11.30 - 15.00 WIB",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "jZ0GJ9HRYRymFfdfbej9",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "s8mg5F5cpFW8ysGHvh20p6cW5ol2",
+      "customerPhone": "0895340342182",
+      "customerEmail": "farassboyz@gmail.com",
+      "createdAt": {
+        "_seconds": 1791869103,
+        "_nanoseconds": 977000000
+      },
+      "redemptionCode": "RDM-71B2-74FC-5A24-098D",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791869170/noury/payment-proofs/nwlq9fmxzmwu77rausmq.jpg",
+      "updatedAt": {
+        "_seconds": 1791869171,
+        "_nanoseconds": 754000000
+      }
+    },
+    {
+      "id": "YXzflgeGYvczlbkwHQJ7",
+      "orderNumber": "NOURY-261013-DGEQ",
+      "customerName": "Daffa Yoni",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "status": "PENDING_PAYMENT",
+      "paymentStatus": "PENDING",
+      "paymentMethod": "QRIS",
+      "subtotal": 10000,
+      "discount": 0,
+      "total": 10000,
+      "pickupMethod": "BATCH_PICKUP",
+      "batchInfo": "Batch 1 (Minggu Ini) • Jumat, 17 Oktober 2026 • 11.30 - 15.00 WIB",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "74BM8GUzcUYn2eGreqr6",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "m2KupAf8slNS21jXdJJ4VCwyOUr1",
+      "customerPhone": "081383899202",
+      "customerEmail": "daffayoni97@gmail.com",
+      "notes": "Testing doang",
+      "createdAt": {
+        "_seconds": 1791872884,
+        "_nanoseconds": 956000000
+      },
+      "updatedAt": {
+        "_seconds": 1791872884,
+        "_nanoseconds": 956000000
+      }
+    },
+    {
+      "id": "YYFrlvSyfo6duZSq6k4k",
+      "orderNumber": "NOURY-261012-T7T3",
+      "customerName": "Anggun Pratiwi",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 25000,
+      "discount": 0,
+      "total": 25000,
+      "pickupMethod": "BATCH_PICKUP",
+      "batchInfo": "Batch 1 (Minggu Ini) • Jumat, 17 Oktober 2026 • 11.30 - 15.00 WIB",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "eCjkn0t523TBuhkKxvmm",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        },
+        {
+          "id": "qtTFTAkbp9A26jZooG3K",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "fs8g3s6sZRaKnzX3WomJDnx9wWl2",
+      "customerPhone": "0878-9898-7383",
+      "customerEmail": "tirmidzyarthrsis@gmail.com",
+      "notes": "amb jam 10 an",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791814216/noury/payment-proofs/mwpndnqxvnqp9lzqixeu.jpg",
+      "createdAt": {
+        "_seconds": 1791814696,
+        "_nanoseconds": 219000000
+      },
+      "redemptionCode": "RDM-5AC7-F07B-CFF9-71CE",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791860596,
+        "_nanoseconds": 35000000
+      }
+    },
+    {
+      "id": "aU0rOHwiuIB3kZLeOaEi",
+      "orderNumber": "NOURY-261012-AM5P",
+      "customerName": "DiscountTest",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentStatus": "PENDING",
+      "subtotal": 15000,
+      "discount": 10000,
+      "total": 5000,
+      "pickupMethod": "MARKET_DAY",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "7FWE58PC5angYf9wmQYS",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerPhone": "08123456788",
+      "createdAt": {
+        "_seconds": 1791818423,
+        "_nanoseconds": 319000000
+      },
+      "notes": " | Batal: Test",
+      "status": "CANCELLED",
+      "updatedAt": {
+        "_seconds": 1791869268,
+        "_nanoseconds": 684000000
+      }
+    },
+    {
+      "id": "cLIlPADx9TI27VcmHHik",
+      "orderNumber": "NOURY-261013-66TL",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "status": "COMPLETED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "QRIS",
+      "subtotal": 20000,
+      "discount": 0,
+      "total": 20000,
+      "amountPaid": 20000,
+      "change": 0,
+      "items": [
+        {
+          "id": "d2XGfbSJ5I2FtdFig018",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        },
+        {
+          "id": "THUdWVc04EQt0HIAQxDa",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Pembeli Ketiga",
+      "notes": "Dibeli secara offline",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791861761/noury/payment-proofs/d9jdlijmenfkjvumxgym.jpg",
+      "createdAt": {
+        "_seconds": 1791861768,
+        "_nanoseconds": 129000000
+      },
+      "updatedAt": {
+        "_seconds": 1791861768,
+        "_nanoseconds": 129000000
+      }
+    },
+    {
+      "id": "gCnHAOG15LI7r3msFsED",
+      "orderNumber": "NOURY-261009-HFCN",
+      "customerName": "SYAHRIL FARHAN SHAH",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentStatus": "PENDING",
+      "paymentMethod": "QRIS",
+      "subtotal": 15000,
+      "discount": 0,
+      "total": 15000,
+      "pickupMethod": "BATCH_PICKUP",
+      "batchInfo": "Batch 1 (Minggu Ini) • Jumat, 17 Oktober 2026 • 11.30 - 15.00 WIB",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "UjnopHrN4nbqBfgt1FW6",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerPhone": "0989212233123",
+      "customerEmail": "syahrilfarhanshah@gmail.com",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791549825/noury/payment-proofs/xdkkc0egwgkud64mxxck.jpg",
+      "createdAt": {
+        "_seconds": 1791549828,
+        "_nanoseconds": 360000000
+      },
+      "notes": "Ambil jam 12 malam | Batal: batal",
+      "status": "CANCELLED",
+      "updatedAt": {
+        "_seconds": 1791549920,
+        "_nanoseconds": 115000000
+      }
+    },
+    {
+      "id": "gr3ZGPVWYBuIrlGbj91h",
+      "orderNumber": "NOURY-261013-4YC5",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "status": "COMPLETED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "QRIS",
+      "subtotal": 15000,
+      "discount": 0,
+      "total": 15000,
+      "amountPaid": 15000,
+      "change": 0,
+      "items": [
+        {
+          "id": "nFnITAOS3bbkrAC26Pz7",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Daffa",
+      "notes": "Beli makanan",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791862682/noury/payment-proofs/ivri0wpympx4bmqhnj4q.jpg",
+      "createdAt": {
+        "_seconds": 1791862690,
+        "_nanoseconds": 999000000
+      },
+      "updatedAt": {
+        "_seconds": 1791862690,
+        "_nanoseconds": 999000000
+      }
+    },
+    {
+      "id": "nRe6fRJ44cjw9rczo1bD",
+      "orderNumber": "NOURY-261013-P5K8",
+      "customerName": "mario",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 15000,
+      "discount": 0,
+      "total": 15000,
+      "pickupMethod": "BATCH_PICKUP",
+      "batchInfo": "Batch 1 (Minggu Ini) • Jumat, 17 Oktober 2026 • 11.30 - 15.00 WIB",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "0uRE4lBmyDg24UlE6QYK",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "mAjscrqoicQNhELHQSHA8kicw0G2",
+      "customerPhone": "081299361512",
+      "customerEmail": "badygreen134@gmail.com",
+      "createdAt": {
+        "_seconds": 1791866433,
+        "_nanoseconds": 453000000
+      },
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791866449/noury/payment-proofs/s7tx46usllqfx02z6esz.png",
+      "redemptionCode": "RDM-2C11-B64C-B28C-B3D8",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791866489,
+        "_nanoseconds": 907000000
+      }
+    },
+    {
+      "id": "qmzVN7XY7v0XfIuHAmCS",
+      "orderNumber": "NOURY-261009-3DEY",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "status": "COMPLETED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "QRIS",
+      "subtotal": 20000,
+      "discount": 0,
+      "total": 20000,
+      "amountPaid": 20000,
+      "change": 0,
+      "items": [
+        {
+          "id": "as11blnd98Ov4Sl3L0hZ",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        },
+        {
+          "id": "eol6iPkP2khuzfpNaRcE",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "BU AAN",
+      "notes": "Minuman 2",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791518309/noury/payment-proofs/wacmwmmowu1vvr6ly5sx.jpg",
+      "createdAt": {
+        "_seconds": 1791518324,
+        "_nanoseconds": 132000000
+      },
+      "updatedAt": {
+        "_seconds": 1791518324,
+        "_nanoseconds": 132000000
+      }
+    },
+    {
+      "id": "rfyMSE8Ff4y9qhfEF05I",
+      "orderNumber": "NOURY-261013-97NJ",
+      "customerName": "Felix",
+      "source": "POS",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 20000,
+      "discount": 0,
+      "total": 20000,
+      "pickupMethod": "MARKET_DAY",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "4vc5HsiXSYDvmcobXW5g",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        },
+        {
+          "id": "2sjyvNa1ltiVHl1qwTSK",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerPhone": "-",
+      "customerEmail": "-",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791861543/noury/payment-proofs/rc2gkgknh1dk1zlbkgih.jpg",
+      "createdAt": {
+        "_seconds": 1791861547,
+        "_nanoseconds": 408000000
+      },
+      "redemptionCode": "RDM-9AFF-1926-EA80-D90A",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791861585,
+        "_nanoseconds": 348000000
+      }
+    },
+    {
+      "id": "uYl0dAZi9bBJznDaEQp0",
+      "orderNumber": "NOURY-261013-M4MY",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "status": "COMPLETED",
+      "paymentStatus": "PAID",
+      "paymentMethod": "QRIS",
+      "subtotal": 10000,
+      "discount": 0,
+      "total": 10000,
+      "amountPaid": 10000,
+      "change": 0,
+      "items": [
+        {
+          "id": "zq8wRAalY9i58jUgEjsD",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Arill",
+      "notes": "Dibeli secara offline",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791861821/noury/payment-proofs/zdih8lpdm2udfgbxqbjr.jpg",
+      "createdAt": {
+        "_seconds": 1791861829,
+        "_nanoseconds": 614000000
+      },
+      "updatedAt": {
+        "_seconds": 1791861829,
+        "_nanoseconds": 614000000
+      }
+    },
+    {
+      "id": "w0aGt9HXGilBVNmkJwgP",
+      "orderNumber": "NOURY-261013-PTBQ",
+      "customerName": "Build Up (daffa)",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "status": "PENDING_PAYMENT",
+      "paymentStatus": "PENDING",
+      "paymentMethod": "QRIS",
+      "subtotal": 10000,
+      "discount": 0,
+      "total": 10000,
+      "pickupMethod": "BATCH_PICKUP",
+      "batchInfo": "Batch 1 (Minggu Ini) • Jumat, 17 Oktober 2026 • 11.30 - 15.00 WIB",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "QhES3uZhqrPe2rn6xnd5",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "uPVOSgoTvzYy8o3gjHce4xHP4nk1",
+      "customerPhone": "0818399292",
+      "customerEmail": "upbuild0@gmail.com",
+      "notes": "Tester",
+      "createdAt": {
+        "_seconds": 1791872994,
+        "_nanoseconds": 71000000
+      },
+      "updatedAt": {
+        "_seconds": 1791872994,
+        "_nanoseconds": 71000000
+      }
+    },
+    {
+      "id": "wYZ5oC5w7FjkEL3pwdAG",
+      "orderNumber": "NOURY-261013-5MPN",
+      "customerName": "Riyan Dwi Cahyadi",
+      "source": "ONLINE",
+      "orderType": "PRE_ORDER",
+      "paymentMethod": "QRIS",
+      "subtotal": 25000,
+      "discount": 0,
+      "total": 25000,
+      "pickupMethod": "BATCH_PICKUP",
+      "batchInfo": "Batch 1 (Minggu Ini) • Jumat, 17 Oktober 2026 • 11.30 - 15.00 WIB",
+      "productionStatus": "IN_PRODUCTION",
+      "items": [
+        {
+          "id": "1lz3qaa8Y9PPg6U4NPiT",
+          "productId": "csACG6BZJbSqFJY1cNC9",
+          "productName": "Grilled Chicken Salad",
+          "quantity": 1,
+          "unitPrice": 15000,
+          "subtotal": 15000,
+          "type": "FRUIT_BOWL",
+          "costPrice": 8000
+        },
+        {
+          "id": "j91bybHLx7TZu5pxsFr0",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "ONLINE_CUSTOMER",
+      "customerId": "BlNpX96fgHSBEwYVJhazDHj5iC12",
+      "customerPhone": "081345507899",
+      "customerEmail": "riyandwicahyadi9@gmail.com",
+      "createdAt": {
+        "_seconds": 1791864993,
+        "_nanoseconds": 807000000
+      },
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791865547/noury/payment-proofs/vzvnxqkbheal1hxtylhj.jpg",
+      "redemptionCode": "RDM-2514-69DC-AF73-2E9B",
+      "paymentStatus": "PAID",
+      "status": "READY_FOR_REDEMPTION",
+      "updatedAt": {
+        "_seconds": 1791865558,
+        "_nanoseconds": 550000000
+      }
+    },
+    {
+      "id": "wtYRWtZhc0GgYbzOLAlZ",
+      "orderNumber": "NOURY-261013-4J45",
+      "source": "POS",
+      "orderType": "DIRECT",
+      "paymentStatus": "PAID",
+      "paymentMethod": "CASH",
+      "subtotal": 20000,
+      "discount": 0,
+      "total": 20000,
+      "amountPaid": 20000,
+      "change": 0,
+      "items": [
+        {
+          "id": "U1ESPXizfJg0CFMKSNvQ",
+          "productId": "VP9tr3FHYZADlsyf17yT",
+          "productName": "Citrus Crisp",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        },
+        {
+          "id": "3H1oLa7x4eLd3uf3RX0K",
+          "productId": "hNja2nD8HAztC7x9T1Qf",
+          "productName": "Melon Mask",
+          "quantity": 1,
+          "unitPrice": 10000,
+          "subtotal": 10000,
+          "type": "INFUSED_WATER",
+          "costPrice": 5000
+        }
+      ],
+      "createdBy": "YTyjpsh6lZTgbsnpzbLQwxYEP7h2",
+      "customerName": "Aldo",
+      "proofUrl": "https://res.cloudinary.com/pornijiv/image/upload/v1791861188/noury/payment-proofs/ozx9xcab2n0nstvd1i7h.jpg",
+      "createdAt": {
+        "_seconds": 1791861194,
+        "_nanoseconds": 378000000
+      },
+      "notes": "Diambil hari jumat | Batal: batal",
+      "status": "CANCELLED",
+      "updatedAt": {
+        "_seconds": 1791861373,
+        "_nanoseconds": 709000000
+      }
+    }
+  ]
+}

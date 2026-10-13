@@ -88,13 +88,16 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
     let totalItemsSold = 0;
 
     for (const o of ordersToAnalyze) {
-      totalNominal += Math.round(o.total || 0);
-      if (o.proofUrl) withProofCount++;
-      if (o.items && Array.isArray(o.items)) {
-        for (const it of o.items) {
-          totalItemsSold += it.quantity || 1;
+      const isCancelled = o.status === "CANCELLED" || o.paymentStatus === "CANCELLED";
+      if (!isCancelled) {
+        totalNominal += Math.round(o.total || 0);
+        if (o.items && Array.isArray(o.items)) {
+          for (const it of o.items) {
+            totalItemsSold += it.quantity || 1;
+          }
         }
       }
+      if (o.proofUrl) withProofCount++;
     }
 
     return {
@@ -770,7 +773,14 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
 
                             {/* Total */}
                             <td className="py-3.5 px-4 text-right font-mono font-bold text-[#183331]">
-                              {formatRupiah(order.total)}
+                              {order.status === "CANCELLED" || order.paymentStatus === "CANCELLED" ? (
+                                <div>
+                                  <span className="line-through text-zinc-400 font-normal">{formatRupiah(order.total)}</span>
+                                  <span className="block text-[10px] text-rose-600 font-bold">Rp 0 (Batal)</span>
+                                </div>
+                              ) : (
+                                formatRupiah(order.total)
+                              )}
                             </td>
 
                             {/* Proof Image / Cashier Validation */}
@@ -814,14 +824,16 @@ export function ReportsContainer({ initialData }: ReportsContainerProps) {
                             <td className="py-3.5 px-4 text-center">
                               <span
                                 className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                                  order.status === "COMPLETED" || order.status === "REDEEMED"
+                                  order.status === "CANCELLED" || order.paymentStatus === "CANCELLED"
+                                    ? "bg-rose-50 text-rose-700 border border-rose-200"
+                                    : order.status === "COMPLETED" || order.status === "REDEEMED"
                                     ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                                     : order.status === "READY_FOR_REDEMPTION"
                                     ? "bg-[#EAF5F1] text-[#3D8383] border border-[#47957F]/30"
                                     : "bg-zinc-100 text-zinc-600 border border-zinc-200"
                                 }`}
                               >
-                                {order.status}
+                                {order.status === "CANCELLED" || order.paymentStatus === "CANCELLED" ? "CANCELLED" : order.status}
                               </span>
                             </td>
                           </tr>

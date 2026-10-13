@@ -52,7 +52,7 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
     return orders.filter((order) => {
       if (statusFilter !== "ALL" && order.status !== statusFilter) return false;
       if (sourceFilter !== "ALL" && order.source !== sourceFilter) return false;
-      if (pickupFilter !== "ALL" && (order.pickupMethod || "MARKET_DAY") !== pickupFilter) return false;
+      if (pickupFilter !== "ALL" && (order.pickupMethod || "BATCH_PICKUP") !== pickupFilter) return false;
 
       if (search.trim()) {
         const query = search.toLowerCase();

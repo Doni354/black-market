@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { formatRupiah } from "@/lib/utils/money";
+import { Modal } from "@/components/ui/Modal";
 import { createCustomerOrderAction } from "@/lib/actions/orders";
 import { getPaymentSettingsAction, getBatchSettingsAction } from "@/lib/actions/operational-settings";
 import { useCustomerAuth } from "@/lib/auth/customer-context";
@@ -31,16 +32,35 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerNotes, setCustomerNotes] = useState("");
-  const [pickupMethod, setPickupMethod] = useState<"MARKET_DAY" | "BATCH_PICKUP">("MARKET_DAY");
+  const pickupMethod = "BATCH_PICKUP";
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("QRIS");
   const [proofUrl, setProofUrl] = useState<string | null>(null);
   const [uploadingProof, setUploadingProof] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState<CustomerCoupon | null>(null);
+  const [isQrisPreviewOpen, setIsQrisPreviewOpen] = useState(false);
 
   // Operational Settings (Payment QRIS/Bank & Batch Pre-Order)
   const [paymentSettings, setPaymentSettings] = useState<PaymentSettings>(DEFAULT_PAYMENT_SETTINGS);
   const [batchSettings, setBatchSettings] = useState<BatchSettings>(DEFAULT_BATCH_SETTINGS);
+
+  async function handleDownloadQris(url: string) {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `QRIS_${(paymentSettings.qrisMerchantName || "NOURY").replace(/[^a-zA-Z0-9]/g, "_")}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+      toast("Barcode QRIS berhasil diunduh!", "success");
+    } catch {
+      window.open(url, "_blank");
+    }
+  }
 
   // Load operational settings
   useEffect(() => {
@@ -580,44 +600,23 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
 
           {/* Payment Method & Proof Upload */}
           <div className="rounded-2xl border border-[#DCE8E4] bg-white p-5 space-y-4 shadow-xs">
-            {/* Pickup Location / Batch */}
-            <div>
-              <label className="text-xs font-semibold text-[#183331] block mb-2">
-                Waktu & Lokasi Pengambilan
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setPickupMethod("MARKET_DAY")}
-                  className={`p-3 rounded-xl border text-left transition cursor-pointer ${
-                    pickupMethod === "MARKET_DAY"
-                      ? "bg-noury-mint/15 border-noury-mint text-[#183331]"
-                      : "bg-white border-[#DCE8E4] text-[#4A6864] hover:bg-[#F4F9F7]"
-                  }`}
-                >
-                  <p className="text-xs font-bold">Stand Market Day</p>
-                  <p className="text-[10px] text-[#63847F] mt-0.5">Ambil di stan hari H</p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setPickupMethod("BATCH_PICKUP")}
-                  className={`p-3 rounded-xl border text-left transition cursor-pointer ${
-                    pickupMethod === "BATCH_PICKUP"
-                      ? "bg-noury-mint/15 border-noury-mint text-[#183331]"
-                      : "bg-white border-[#DCE8E4] text-[#4A6864] hover:bg-[#F4F9F7]"
-                  }`}
-                >
-                  <p className="text-xs font-bold">{batchSettings.activeBatchName}</p>
-                  <p className="text-[10px] text-[#63847F] mt-0.5">{batchSettings.batchPickupSchedule}</p>
-                </button>
+            {/* Waktu & Lokasi Pengambilan: Batch Saat Ini */}
+            <div className="rounded-xl border border-[#DCE8E4] bg-[#F7FAFA] p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-[#183331] uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Jadwal Pengambilan: {batchSettings.activeBatchName || "Batch 1 (Saat Ini)"}
+                </span>
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full border border-emerald-300">
+                  Batch Aktif
+                </span>
               </div>
-
-              {pickupMethod === "BATCH_PICKUP" && (
-                <p className="mt-2 text-[10px] text-[#47957F] bg-[#EDF6F3] p-2 rounded-lg border border-[#D0E5DF]">
-                  <strong>Titik Ambil:</strong> {batchSettings.batchPickupLocation}
-                </p>
-              )}
+              <p className="text-xs text-[#52706C]">
+                📅 <strong>Jadwal Ambil:</strong> {batchSettings.batchPickupSchedule || "Sesuai Jadwal Stand"}
+              </p>
+              <p className="text-xs text-[#52706C]">
+                📍 <strong>Titik Lokasi:</strong> {batchSettings.batchPickupLocation || "Stand Noury"}
+              </p>
             </div>
 
             <h2 className="text-sm font-bold text-[#183331] uppercase tracking-wider flex items-center gap-2 pt-2 border-t border-[#DCE8E4]">
@@ -659,28 +658,62 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
 
             {/* Dynamic Destination instructions */}
             {paymentMethod === "QRIS" ? (
-              <div className="rounded-xl border border-[#DCE8E4] bg-[#F7FAFA] p-3.5 text-center space-y-2">
-                <p className="font-bold text-xs text-[#183331]">
-                  Scan QRIS: {paymentSettings.qrisMerchantName}
-                </p>
+              <div className="rounded-2xl border border-[#DCE8E4] bg-[#F7FAFA] p-4 text-center space-y-3">
+                <div>
+                  <p className="font-bold text-sm text-[#183331]">
+                    Scan QRIS: {paymentSettings.qrisMerchantName}
+                  </p>
+                  <p className="text-[11px] text-[#63847F] mt-0.5">
+                    Dapat di-scan via GoPay, OVO, Dana, ShopeePay, BCA, Mandiri, dll.
+                  </p>
+                </div>
+
                 {paymentSettings.qrisImageUrl ? (
-                  <div className="relative h-44 w-44 mx-auto rounded-lg overflow-hidden border border-[#DCE8E4] bg-white shadow-xs">
-                    <Image
-                      src={paymentSettings.qrisImageUrl}
-                      alt="QRIS Barcode"
-                      fill
-                      className="object-contain"
-                      unoptimized
-                    />
+                  <div className="flex flex-col items-center gap-3">
+                    {/* Clean QRIS Card with NO double nested borders */}
+                    <div className="p-3 bg-white rounded-2xl shadow-sm border border-[#DCE8E4] inline-block">
+                      <div className="relative w-56 h-56 sm:w-64 sm:h-64 mx-auto">
+                        <Image
+                          src={paymentSettings.qrisImageUrl}
+                          alt="QRIS Barcode"
+                          fill
+                          className="object-contain rounded-xl"
+                          unoptimized
+                          priority
+                        />
+                      </div>
+                    </div>
+
+                    {/* Action buttons: Zoom Preview & Download */}
+                    <div className="flex items-center justify-center gap-2 flex-wrap">
+                      <button
+                        type="button"
+                        onClick={() => setIsQrisPreviewOpen(true)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#CCE0DA] hover:bg-[#F2F7F5] text-xs font-semibold text-[#183331] transition shadow-xs cursor-pointer active:scale-95"
+                      >
+                        <svg className="w-3.5 h-3.5 text-noury-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                        </svg>
+                        <span>🔍 Perbesar Tampilan</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadQris(paymentSettings.qrisImageUrl!)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-noury-mint hover:bg-noury-teal text-white text-xs font-semibold transition shadow-xs cursor-pointer active:scale-95"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span>📥 Unduh Barcode QRIS</span>
+                      </button>
+                    </div>
                   </div>
                 ) : (
-                  <div className="p-3 bg-white rounded-lg border border-dashed border-[#CCE0DA] text-[11px] text-[#63847F]">
-                    Barcode QRIS aktif. Silakan gunakan scanner e-wallet Anda.
+                  <div className="p-4 bg-white rounded-xl border border-dashed border-[#CCE0DA] text-xs text-[#63847F]">
+                    Barcode QRIS aktif. Silakan gunakan scanner e-wallet Anda ke nama merchant di atas.
                   </div>
                 )}
-                <p className="text-[10px] text-[#63847F]">
-                  Dapat di-scan via GoPay, OVO, Dana, ShopeePay, LinkAja, BCA, Mandiri, dll.
-                </p>
               </div>
             ) : (
               <div className="rounded-xl border border-[#DCE8E4] bg-[#F7FAFA] p-3.5 space-y-2 text-xs">
@@ -767,6 +800,51 @@ export function CustomerOrderForm({ products }: CustomerOrderFormProps) {
           </div>
         </div>
       </form>
+
+      {/* QRIS Full Resolution Preview Modal */}
+      {isQrisPreviewOpen && paymentSettings.qrisImageUrl && (
+        <Modal
+          isOpen={isQrisPreviewOpen}
+          onClose={() => setIsQrisPreviewOpen(false)}
+          title={`Barcode QRIS: ${paymentSettings.qrisMerchantName}`}
+          description="Arahkan kamera e-wallet/m-banking Anda atau simpan gambar barcode ini ke galeri."
+          size="md"
+          footer={
+            <div className="flex items-center justify-between w-full">
+              <button
+                type="button"
+                onClick={() => handleDownloadQris(paymentSettings.qrisImageUrl!)}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-noury-mint hover:bg-noury-teal text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95"
+              >
+                📥 Unduh Barcode QRIS
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsQrisPreviewOpen(false)}
+                className="px-4 py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-xs font-semibold text-zinc-700 transition cursor-pointer"
+              >
+                Tutup
+              </button>
+            </div>
+          }
+        >
+          <div className="flex flex-col items-center justify-center p-2">
+            <div className="relative w-72 h-72 sm:w-80 sm:h-80 mx-auto bg-white p-3 rounded-2xl border border-zinc-200 shadow-md">
+              <Image
+                src={paymentSettings.qrisImageUrl}
+                alt="QRIS Barcode"
+                fill
+                className="object-contain rounded-xl"
+                unoptimized
+                priority
+              />
+            </div>
+            <p className="mt-3 text-xs text-center text-[#52706C]">
+              💡 <strong>Tips Pembayaran:</strong> Jika Anda memesan dari 1 ponsel yang sama, unduh gambar QRIS di atas lalu buka m-banking/e-wallet Anda dan gunakan fitur <em>Scan dari Galeri / Unggah Foto</em>.
+            </p>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
