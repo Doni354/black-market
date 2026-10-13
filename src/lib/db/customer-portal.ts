@@ -84,20 +84,53 @@ export async function syncCustomerProfile(
   const snap = await docRef.get();
 
   if (!snap.exists) {
+    // Check if a legacy customer doc with this email already exists (e.g. from prior guest order)
+    let existingGuestData: Record<string, unknown> | null = null;
+    let existingGuestDocId: string | null = null;
+
+    if (email && email.trim()) {
+      const guestSnap = await adminDb
+        .collection("customers")
+        .where("email", "==", email.trim().toLowerCase())
+        .limit(1)
+        .get();
+      if (!guestSnap.empty) {
+        existingGuestData = guestSnap.docs[0].data() as Record<string, unknown>;
+        existingGuestDocId = guestSnap.docs[0].id;
+      }
+    }
+
     const initialData = {
-      name: displayName || "Sobat Noury",
-      email: email || "",
-      photoURL: photoURL || "",
-      phone: "",
-      stampsCount: 0,
-      totalOrders: 0,
-      totalSpent: 0,
-      claimedCoupons: [], // Empty initially - no free handouts
-      createdAt: FieldValue.serverTimestamp(),
+      name: displayName || (existingGuestData?.name as string) || "Sobat Noury",
+      email: email || (existingGuestData?.email as string) || "",
+      photoURL: photoURL || (existingGuestData?.photoURL as string) || "",
+      phone: (existingGuestData?.phone as string) || "",
+      stampsCount: (existingGuestData?.stampsCount as number) || 0,
+      totalOrders: (existingGuestData?.totalOrders as number) || 0,
+      totalSpent: (existingGuestData?.totalSpent as number) || 0,
+      claimedCoupons: (existingGuestData?.claimedCoupons as any[]) || [],
+      createdAt: existingGuestData?.createdAt || FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
     };
 
     await docRef.set(initialData);
+
+    // If a legacy guest doc existed under an auto-id, transfer its orders and delete it
+    if (existingGuestDocId && existingGuestDocId !== uid) {
+      try {
+        const guestOrders = await adminDb
+          .collection("orders")
+          .where("customerId", "==", existingGuestDocId)
+          .get();
+        for (const oDoc of guestOrders.docs) {
+          await oDoc.ref.update({ customerId: uid });
+        }
+        await adminDb.collection("customers").doc(existingGuestDocId).delete();
+      } catch (e) {
+        console.warn("Could not migrate legacy guest customer orders:", e);
+      }
+    }
+
     const createdSnap = await docRef.get();
     return serializeFirestoreData<CustomerAccount>({
       id: uid,
@@ -343,15 +376,14 @@ export async function markCustomerCouponUsed(
 }
 
 /**
- * Increment stamps count for a customer after an order IF order amount meets minSpendPerStamp and loyalty is enabled.
+ * Increment stamps count and record customer activity after a paid order.
  */
 export async function addCustomerStamp(uid: string, orderSubtotal = 0): Promise<void> {
-  const settings = await getLoyaltySettings();
-  if (!settings.isLoyaltyEnabled) return;
-
   const docRef = adminDb.collection("customers").doc(uid);
   const snap = await docRef.get();
   if (!snap.exists) return;
+
+  const settings = await getLoyaltySettings();
 
   const updates: Record<string, unknown> = {
     totalOrders: FieldValue.increment(1),
@@ -359,7 +391,7 @@ export async function addCustomerStamp(uid: string, orderSubtotal = 0): Promise<
     updatedAt: FieldValue.serverTimestamp(),
   };
 
-  if (orderSubtotal >= settings.minSpendPerStamp) {
+  if (settings.isLoyaltyEnabled && orderSubtotal >= settings.minSpendPerStamp) {
     updates.stampsCount = FieldValue.increment(1);
   }
 
@@ -373,9 +405,6 @@ export async function addCustomerStampByPhone(phone: string, orderSubtotal = 0):
   const cleanPhone = phone.trim();
   if (!cleanPhone) return;
 
-  const settings = await getLoyaltySettings();
-  if (!settings.isLoyaltyEnabled) return;
-
   const snap = await adminDb
     .collection("customers")
     .where("phone", "==", cleanPhone)
@@ -383,13 +412,15 @@ export async function addCustomerStampByPhone(phone: string, orderSubtotal = 0):
     .get();
 
   if (!snap.empty) {
+    const settings = await getLoyaltySettings();
+
     const updates: Record<string, unknown> = {
       totalOrders: FieldValue.increment(1),
       totalSpent: FieldValue.increment(orderSubtotal),
       updatedAt: FieldValue.serverTimestamp(),
     };
 
-    if (orderSubtotal >= settings.minSpendPerStamp) {
+    if (settings.isLoyaltyEnabled && orderSubtotal >= settings.minSpendPerStamp) {
       updates.stampsCount = FieldValue.increment(1);
     }
 

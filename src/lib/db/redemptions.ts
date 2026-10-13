@@ -1,6 +1,7 @@
 import { adminDb } from "@/lib/firebase/admin";
 import { FieldValue } from "firebase-admin/firestore";
 import { serializeFirestoreData } from "@/lib/utils/serialization";
+import { addCustomerStamp, addCustomerStampByPhone } from "@/lib/db/customer-portal";
 import type { Order, Redemption } from "@/lib/types";
 
 export interface RedemptionDetails {
@@ -109,7 +110,7 @@ export async function executeRedemption(
     throw new Error("Kode redemption tidak boleh kosong.");
   }
 
-  return await adminDb.runTransaction(async (transaction) => {
+  const result = await adminDb.runTransaction(async (transaction) => {
     // 1. Find redemption doc by code or orderNumber
     let redQuery = await adminDb
       .collection("redemptions")
@@ -304,4 +305,23 @@ export async function executeRedemption(
       }),
     };
   });
+
+  // If COD settlement was finalized, award customer stamp and order metrics
+  if (options?.settleCod && result.order.paymentStatus === "PAID") {
+    if (result.order.customerId) {
+      try {
+        await addCustomerStamp(result.order.customerId, Number(result.order.total) || 0);
+      } catch (e) {
+        console.warn("Could not award loyalty stamp for COD order:", e);
+      }
+    } else if (result.order.customerPhone) {
+      try {
+        await addCustomerStampByPhone(result.order.customerPhone, Number(result.order.total) || 0);
+      } catch (e) {
+        console.warn("Could not award loyalty stamp by phone for COD order:", e);
+      }
+    }
+  }
+
+  return result;
 }

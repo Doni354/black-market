@@ -59,11 +59,11 @@ export async function findOrCreateCustomer(
   if (customerDoc && customerDoc.exists) {
     const existing = customerDoc.data() || {};
     const updateData: Record<string, unknown> = {
-      totalOrders: FieldValue.increment(1),
       updatedAt: FieldValue.serverTimestamp(),
     };
 
     if (input.spentDelta && input.spentDelta > 0) {
+      updateData.totalOrders = FieldValue.increment(1);
       updateData.totalSpent = FieldValue.increment(input.spentDelta);
     }
     if (cleanEmail && !existing.email) {
@@ -88,7 +88,7 @@ export async function findOrCreateCustomer(
   const newRef = adminDb.collection("customers").doc();
   const customerData: Record<string, unknown> = {
     name: cleanName,
-    totalOrders: 1,
+    totalOrders: input.spentDelta && input.spentDelta > 0 ? 1 : 0,
     totalSpent: Math.max(0, input.spentDelta || 0),
     stampsCount: 0,
     claimedCoupons: [],
@@ -110,6 +110,7 @@ export async function findOrCreateCustomer(
 
 /**
  * Get all customers for customer directory / management.
+ * Reconciles customer order metrics dynamically with real orders.
  */
 export async function getCustomers(limitCount = 100): Promise<Customer[]> {
   try {
@@ -120,13 +121,89 @@ export async function getCustomers(limitCount = 100): Promise<Customer[]> {
       // index fallback
     }
 
-    const snap = await query.limit(limitCount).get();
-    return snap.docs.map((doc) =>
-      serializeFirestoreData<Customer>({
+    const [custSnap, orderSnap] = await Promise.all([
+      query.limit(limitCount).get(),
+      adminDb.collection("orders").get(),
+    ]);
+
+    const orders = orderSnap.docs.map((d) => ({ id: d.id, ...d.data() } as Record<string, unknown>));
+
+    // Calculate actual valid orders per customer to ensure 100% data fidelity
+    const rawCustomers = custSnap.docs.map((doc) => {
+      const cData = doc.data();
+      const custId = doc.id;
+
+      const custOrders = orders.filter((o) => {
+        const matchId = o.customerId === custId;
+        const matchPhone =
+          cData.phone &&
+          typeof o.customerPhone === "string" &&
+          cData.phone.replace(/\D/g, "") === o.customerPhone.replace(/\D/g, "") &&
+          cData.phone.replace(/\D/g, "").length >= 7;
+        const matchEmail =
+          cData.email &&
+          typeof o.customerEmail === "string" &&
+          cData.email.trim().toLowerCase() === o.customerEmail.trim().toLowerCase();
+        return matchId || matchPhone || matchEmail;
+      });
+
+      const validOrders = custOrders.filter(
+        (o) => o.status !== "CANCELLED" && o.paymentStatus !== "CANCELLED"
+      );
+
+      const actualTotalOrders = validOrders.length;
+      const actualTotalSpent = validOrders.reduce(
+        (sum, o) => sum + (Number(o.total) || 0),
+        0
+      );
+
+      // Self-heal customer document if drift is detected
+      if (
+        (cData.totalOrders !== actualTotalOrders || cData.totalSpent !== actualTotalSpent) &&
+        custOrders.length > 0
+      ) {
+        doc.ref
+          .update({
+            totalOrders: actualTotalOrders,
+            totalSpent: actualTotalSpent,
+            updatedAt: FieldValue.serverTimestamp(),
+          })
+          .catch((err) => console.warn(`Could not auto-heal customer ${custId}:`, err));
+      }
+
+      return serializeFirestoreData<Customer>({
         id: doc.id,
-        ...doc.data(),
-      })
-    );
+        ...cData,
+        totalOrders: actualTotalOrders,
+        totalSpent: actualTotalSpent,
+      });
+    });
+
+    // Deduplicate any secondary duplicate docs by email or phone
+    const uniqueMap = new Map<string, Customer>();
+    for (const cust of rawCustomers) {
+      const key =
+        cust.email?.toLowerCase().trim() ||
+        cust.phone?.replace(/\D/g, "") ||
+        cust.id;
+
+      if (!uniqueMap.has(key)) {
+        uniqueMap.set(key, cust);
+      } else {
+        const existing = uniqueMap.get(key)!;
+        // Prioritize 28-character Google Auth UID
+        if (cust.id.length === 28 && existing.id.length !== 28) {
+          uniqueMap.set(key, {
+            ...cust,
+            phone: cust.phone || existing.phone,
+            totalOrders: Math.max(cust.totalOrders, existing.totalOrders),
+            totalSpent: Math.max(cust.totalSpent, existing.totalSpent),
+          });
+        }
+      }
+    }
+
+    return Array.from(uniqueMap.values());
   } catch (error) {
     console.error("Error fetching customers:", error);
     return [];

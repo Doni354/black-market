@@ -603,7 +603,8 @@ export async function createPreOrder(
       if (input.couponCode?.trim()) {
         await markCustomerCouponUsed(custId, input.couponCode.trim());
       }
-      await addCustomerStamp(custId, total);
+      // Note: We do NOT increment totalOrders, totalSpent, or stampsCount here.
+      // Those are only awarded when the order is verified and PAID (or COD settled).
 
       // Directly sync phone, email, and name into the existing Google customer document
       const custDocRef = adminDb.collection("customers").doc(custId);
@@ -626,16 +627,16 @@ export async function createPreOrder(
         }
       }
     } catch (e) {
-      console.warn("Could not process customer coupon, stamp, or profile update:", e);
+      console.warn("Could not process customer coupon or profile update:", e);
     }
   } else if (input.customerPhone?.trim() || input.customerEmail?.trim()) {
-    // Only call findOrCreateCustomer for unauthenticated / POS orders
+    // Only call findOrCreateCustomer for unauthenticated / guest orders
     try {
       await findOrCreateCustomer({
         name: cleanCustomerName,
         phone: input.customerPhone?.trim(),
         email: input.customerEmail?.trim(),
-        spentDelta: total,
+        spentDelta: 0, // Will be incremented when order is marked PAID
       });
     } catch (e) {
       console.warn("Could not upsert customer record:", e);
@@ -851,13 +852,13 @@ export async function verifyOrderPayment(
 
   if (result.order.customerId) {
     try {
-      await addCustomerStamp(result.order.customerId, result.order.subtotal);
+      await addCustomerStamp(result.order.customerId, Number(result.order.total) || 0);
     } catch (e) {
       console.warn("Could not award loyalty stamp for verified pre-order:", e);
     }
   } else if (result.order.customerPhone) {
     try {
-      await addCustomerStampByPhone(result.order.customerPhone, result.order.subtotal);
+      await addCustomerStampByPhone(result.order.customerPhone, Number(result.order.total) || 0);
     } catch (e) {
       console.warn("Could not award loyalty stamp by phone:", e);
     }
@@ -1023,19 +1024,40 @@ export async function cancelOrder(
       });
     }
 
-    // Rollback customer metrics if customer was associated and order was counted
+    // Rollback customer metrics if customer was associated and order was paid
     if (orderData.customerId) {
       const custRef = adminDb.collection("customers").doc(orderData.customerId);
       const custDoc = await transaction.get(custRef);
       if (custDoc.exists) {
         const custData = custDoc.data() || {};
-        const currentOrders = custData.totalOrders || 0;
-        const currentSpent = custData.totalSpent || 0;
-        transaction.update(custRef, {
-          totalOrders: Math.max(0, currentOrders - 1),
-          totalSpent: Math.max(0, currentSpent - (Number(orderData.total) || 0)),
+        const custUpdates: Record<string, unknown> = {
           updatedAt: FieldValue.serverTimestamp(),
-        });
+        };
+
+        // Only rollback metrics if order was actually counted as PAID
+        if (orderData.paymentStatus === "PAID") {
+          const currentOrders = custData.totalOrders || 0;
+          const currentSpent = custData.totalSpent || 0;
+          custUpdates.totalOrders = Math.max(0, currentOrders - 1);
+          custUpdates.totalSpent = Math.max(0, currentSpent - (Number(orderData.total) || 0));
+
+          if ((Number(orderData.total) || 0) >= 15000 && (custData.stampsCount || 0) > 0) {
+            custUpdates.stampsCount = Math.max(0, (custData.stampsCount || 0) - 1);
+          }
+        }
+
+        // Restore coupon if one was used so the customer does not lose their voucher
+        if (orderData.couponCode && Array.isArray(custData.claimedCoupons)) {
+          const restoredCoupons = custData.claimedCoupons.map((c: any) => {
+            if (c.code === orderData.couponCode) {
+              return { ...c, isUsed: false, usedAt: null };
+            }
+            return c;
+          });
+          custUpdates.claimedCoupons = restoredCoupons;
+        }
+
+        transaction.update(custRef, custUpdates);
       }
     }
   });
