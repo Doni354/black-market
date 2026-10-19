@@ -1048,12 +1048,14 @@ export async function cancelOrder(
 
         // Restore coupon if one was used so the customer does not lose their voucher
         if (orderData.couponCode && Array.isArray(custData.claimedCoupons)) {
-          const restoredCoupons = custData.claimedCoupons.map((c: any) => {
-            if (c.code === orderData.couponCode) {
-              return { ...c, isUsed: false, usedAt: null };
+          const restoredCoupons = custData.claimedCoupons.map(
+            (c: { code: string; isUsed: boolean; usedAt?: unknown }) => {
+              if (c.code === orderData.couponCode) {
+                return { ...c, isUsed: false, usedAt: null };
+              }
+              return c;
             }
-            return c;
-          });
+          );
           custUpdates.claimedCoupons = restoredCoupons;
         }
 
@@ -1062,4 +1064,393 @@ export async function cancelOrder(
     }
   });
 }
+
+export interface UpdateOrderStatusInput {
+  orderId: string;
+  cashierId: string;
+  status: OrderStatus;
+  paymentStatus?: PaymentStatus;
+  reason?: string;
+}
+
+/**
+ * Manually update the status of an order and synchronize all related documents:
+ * - Updates orders document (status, paymentStatus, redeemedAt, redeemedBy, notes, updatedAt)
+ * - Updates or provisions redemptions document (READY, REDEEMED, or CANCELLED)
+ * - Updates payments document if payment status changed
+ * - Handles inventory deduction or rollback if status changes between unfulfilled <-> fulfilled/cancelled
+ * - Manages customer loyalty stamps if payment transitioned to/from PAID
+ */
+export async function updateOrderStatus(
+  input: UpdateOrderStatusInput
+): Promise<Order> {
+  const result = await adminDb.runTransaction(async (transaction) => {
+    const orderRef = adminDb.collection("orders").doc(input.orderId);
+    const orderDoc = await transaction.get(orderRef);
+
+    if (!orderDoc.exists) {
+      throw new Error(`Pesanan dengan ID ${input.orderId} tidak ditemukan.`);
+    }
+
+    const orderData = orderDoc.data() as Order;
+    const prevStatus = orderData.status;
+    const prevPaymentStatus = orderData.paymentStatus;
+    const newStatus = input.status;
+
+    // Determine target payment status
+    let newPaymentStatus = input.paymentStatus;
+    if (!newPaymentStatus) {
+      if (newStatus === "COMPLETED" || newStatus === "REDEEMED") {
+        newPaymentStatus = "PAID";
+      } else if (newStatus === "CANCELLED") {
+        newPaymentStatus = "CANCELLED";
+      } else {
+        newPaymentStatus = orderData.paymentStatus;
+      }
+    }
+
+    const wasStockDeducted =
+      prevStatus === "READY_FOR_REDEMPTION" ||
+      prevStatus === "REDEEMED" ||
+      prevStatus === "COMPLETED" ||
+      prevPaymentStatus === "PAID";
+
+    const shouldStockBeDeducted =
+      newStatus === "READY_FOR_REDEMPTION" ||
+      newStatus === "REDEEMED" ||
+      newStatus === "COMPLETED" ||
+      newPaymentStatus === "PAID";
+
+    const items = (orderData.items || []) as OrderItem[];
+
+    // 1. Handle stock transitions
+    if (wasStockDeducted && !shouldStockBeDeducted && items.length > 0) {
+      // Revert / restore stock
+      const primaryProductIds = items.map((i) => i.productId);
+      const primaryProductDocs = await Promise.all(
+        primaryProductIds.map((id) =>
+          transaction.get(adminDb.collection("products").doc(id))
+        )
+      );
+
+      const productMap = new Map<string, Product>();
+      for (const doc of primaryProductDocs) {
+        if (doc.exists) {
+          productMap.set(doc.id, { id: doc.id, ...doc.data() } as Product);
+        }
+      }
+
+      const componentIdsToFetch: string[] = [];
+      for (const item of items) {
+        const prod = productMap.get(item.productId);
+        if (prod && prod.type === "BUNDLE" && prod.bundleItems) {
+          for (const bItem of prod.bundleItems) {
+            if (!productMap.has(bItem.productId)) {
+              componentIdsToFetch.push(bItem.productId);
+            }
+          }
+        }
+      }
+
+      if (componentIdsToFetch.length > 0) {
+        const compDocs = await Promise.all(
+          componentIdsToFetch.map((id) =>
+            transaction.get(adminDb.collection("products").doc(id))
+          )
+        );
+        for (const doc of compDocs) {
+          if (doc.exists) {
+            productMap.set(doc.id, { id: doc.id, ...doc.data() } as Product);
+          }
+        }
+      }
+
+      for (const item of items) {
+        const prod = productMap.get(item.productId);
+        if (!prod) continue;
+
+        const qty = item.quantity;
+        if (prod.type === "BUNDLE" && prod.bundleItems && prod.bundleItems.length > 0) {
+          for (const bItem of prod.bundleItems) {
+            const compProd = productMap.get(bItem.productId);
+            if (compProd && compProd.trackInventory) {
+              const restoredQty = bItem.quantity * qty;
+              const prodRef = adminDb.collection("products").doc(compProd.id);
+              transaction.update(prodRef, {
+                stock: FieldValue.increment(restoredQty),
+                updatedAt: FieldValue.serverTimestamp(),
+              });
+
+              const movementRef = adminDb.collection("inventoryMovements").doc();
+              transaction.set(movementRef, {
+                productId: compProd.id,
+                productName: compProd.name,
+                type: "CANCELLED_ORDER",
+                quantity: restoredQty,
+                referenceType: "ORDER",
+                referenceId: orderData.orderNumber,
+                note: `Rollback update status #${orderData.orderNumber} (${prevStatus} -> ${newStatus}): ${input.reason || ""}`,
+                createdBy: input.cashierId,
+                createdAt: FieldValue.serverTimestamp(),
+              });
+            }
+          }
+        } else if (prod.trackInventory) {
+          const prodRef = adminDb.collection("products").doc(prod.id);
+          transaction.update(prodRef, {
+            stock: FieldValue.increment(qty),
+            updatedAt: FieldValue.serverTimestamp(),
+          });
+
+          const movementRef = adminDb.collection("inventoryMovements").doc();
+          transaction.set(movementRef, {
+            productId: prod.id,
+            productName: prod.name,
+            type: "CANCELLED_ORDER",
+            quantity: qty,
+            referenceType: "ORDER",
+            referenceId: orderData.orderNumber,
+            note: `Rollback update status #${orderData.orderNumber} (${prevStatus} -> ${newStatus}): ${input.reason || ""}`,
+            createdBy: input.cashierId,
+            createdAt: FieldValue.serverTimestamp(),
+          });
+        }
+      }
+    } else if (!wasStockDeducted && shouldStockBeDeducted && items.length > 0) {
+      // Deduct stock for the first time
+      const primaryProductIds = items.map((i) => i.productId);
+      const primaryProductDocs = await Promise.all(
+        primaryProductIds.map((id) =>
+          transaction.get(adminDb.collection("products").doc(id))
+        )
+      );
+
+      const productMap = new Map<string, Product>();
+      for (const doc of primaryProductDocs) {
+        if (doc.exists) {
+          productMap.set(doc.id, { id: doc.id, ...doc.data() } as Product);
+        }
+      }
+
+      const componentIdsToFetch: string[] = [];
+      for (const item of items) {
+        const prod = productMap.get(item.productId);
+        if (prod && prod.type === "BUNDLE" && prod.bundleItems) {
+          for (const bItem of prod.bundleItems) {
+            if (!productMap.has(bItem.productId)) {
+              componentIdsToFetch.push(bItem.productId);
+            }
+          }
+        }
+      }
+
+      if (componentIdsToFetch.length > 0) {
+        const compDocs = await Promise.all(
+          componentIdsToFetch.map((id) =>
+            transaction.get(adminDb.collection("products").doc(id))
+          )
+        );
+        for (const doc of compDocs) {
+          if (doc.exists) {
+            productMap.set(doc.id, { id: doc.id, ...doc.data() } as Product);
+          }
+        }
+      }
+
+      const stockDeductionMap = new Map<string, number>();
+      for (const item of items) {
+        const prod = productMap.get(item.productId);
+        if (!prod) continue;
+
+        const qty = item.quantity;
+        if (prod.type === "BUNDLE" && prod.bundleItems && prod.bundleItems.length > 0) {
+          for (const bItem of prod.bundleItems) {
+            const compProd = productMap.get(bItem.productId);
+            if (compProd && compProd.trackInventory) {
+              const needed = bItem.quantity * qty;
+              const current = stockDeductionMap.get(compProd.id) || 0;
+              stockDeductionMap.set(compProd.id, current + needed);
+            }
+          }
+        } else if (prod.trackInventory) {
+          const current = stockDeductionMap.get(prod.id) || 0;
+          stockDeductionMap.set(prod.id, current + qty);
+        }
+      }
+
+      for (const [productId, deduction] of stockDeductionMap.entries()) {
+        const prodRef = adminDb.collection("products").doc(productId);
+        const prod = productMap.get(productId);
+
+        transaction.update(prodRef, {
+          stock: FieldValue.increment(-deduction),
+          updatedAt: FieldValue.serverTimestamp(),
+        });
+
+        const movementRef = adminDb.collection("inventoryMovements").doc();
+        transaction.set(movementRef, {
+          productId,
+          productName: prod?.name || "Product",
+          type: "SALE",
+          quantity: -deduction,
+          referenceType: "ORDER",
+          referenceId: orderData.orderNumber,
+          note: `Manual status update #${orderData.orderNumber} (${prevStatus} -> ${newStatus}): ${input.reason || ""}`,
+          createdBy: input.cashierId,
+          createdAt: FieldValue.serverTimestamp(),
+        });
+      }
+    }
+
+    // 2. Synchronize Redemptions
+    let redemptionCode = orderData.redemptionCode;
+    const redSnap = await adminDb
+      .collection("redemptions")
+      .where("orderId", "==", input.orderId)
+      .limit(1)
+      .get();
+
+    if (newStatus === "COMPLETED" || newStatus === "REDEEMED") {
+      if (!redSnap.empty) {
+        transaction.update(redSnap.docs[0].ref, {
+          status: "REDEEMED",
+          redeemedBy: input.cashierId,
+          redeemedAt: FieldValue.serverTimestamp(),
+        });
+      } else if (redemptionCode) {
+        const redRef = adminDb.collection("redemptions").doc();
+        transaction.set(redRef, {
+          orderId: input.orderId,
+          redemptionCode,
+          status: "REDEEMED",
+          redeemedBy: input.cashierId,
+          redeemedAt: FieldValue.serverTimestamp(),
+          createdAt: FieldValue.serverTimestamp(),
+        });
+      }
+    } else if (newStatus === "READY_FOR_REDEMPTION") {
+      if (!redemptionCode) {
+        redemptionCode = generateRedemptionCode();
+      }
+      if (!redSnap.empty) {
+        transaction.update(redSnap.docs[0].ref, {
+          status: "READY",
+          redeemedBy: FieldValue.delete(),
+          redeemedAt: FieldValue.delete(),
+        });
+      } else {
+        const redRef = adminDb.collection("redemptions").doc();
+        transaction.set(redRef, {
+          orderId: input.orderId,
+          redemptionCode,
+          status: "READY",
+          createdAt: FieldValue.serverTimestamp(),
+        });
+      }
+    } else if (newStatus === "CANCELLED") {
+      if (!redSnap.empty) {
+        transaction.update(redSnap.docs[0].ref, {
+          status: "CANCELLED",
+        });
+      }
+    }
+
+    // 3. Update Order document
+    const orderUpdate: Record<string, unknown> = {
+      status: newStatus,
+      paymentStatus: newPaymentStatus,
+      updatedAt: FieldValue.serverTimestamp(),
+    };
+
+    if (newStatus === "COMPLETED" || newStatus === "REDEEMED") {
+      if (!orderData.redeemedAt) {
+        orderUpdate.redeemedAt = FieldValue.serverTimestamp();
+      }
+      if (!orderData.redeemedBy) {
+        orderUpdate.redeemedBy = input.cashierId;
+      }
+    } else if (newStatus === "READY_FOR_REDEMPTION") {
+      orderUpdate.redeemedAt = FieldValue.delete();
+      orderUpdate.redeemedBy = FieldValue.delete();
+      if (!orderData.redemptionCode && redemptionCode) {
+        orderUpdate.redemptionCode = redemptionCode;
+      }
+    }
+
+    if (input.reason?.trim()) {
+      const reasonTag = `[Ubah status ke ${newStatus}: ${input.reason.trim()}]`;
+      orderUpdate.notes = orderData.notes
+        ? `${orderData.notes} | ${reasonTag}`
+        : reasonTag;
+    }
+
+    transaction.update(orderRef, orderUpdate);
+
+    // 4. Update Payments document if exists
+    const paymentSnap = await adminDb
+      .collection("payments")
+      .where("orderId", "==", input.orderId)
+      .limit(1)
+      .get();
+
+    if (!paymentSnap.empty) {
+      const paymentUpdate: Record<string, unknown> = {
+        status: newPaymentStatus,
+      };
+      if (newPaymentStatus === "PAID") {
+        paymentUpdate.verifiedBy = input.cashierId;
+        paymentUpdate.verifiedAt = FieldValue.serverTimestamp();
+      }
+      transaction.update(paymentSnap.docs[0].ref, paymentUpdate);
+    }
+
+    // 5. Customer metrics rollback if cancelling previously paid order
+    if (orderData.customerId && prevPaymentStatus === "PAID" && newPaymentStatus === "CANCELLED") {
+      const custRef = adminDb.collection("customers").doc(orderData.customerId);
+      const custDoc = await transaction.get(custRef);
+      if (custDoc.exists) {
+        const custData = custDoc.data() || {};
+        const custUpdates: Record<string, unknown> = {
+          updatedAt: FieldValue.serverTimestamp(),
+          totalOrders: Math.max(0, (custData.totalOrders || 0) - 1),
+          totalSpent: Math.max(0, (custData.totalSpent || 0) - (Number(orderData.total) || 0)),
+        };
+        if ((Number(orderData.total) || 0) >= 15000 && (custData.stampsCount || 0) > 0) {
+          custUpdates.stampsCount = Math.max(0, (custData.stampsCount || 0) - 1);
+        }
+        transaction.update(custRef, custUpdates);
+      }
+    }
+
+    return {
+      ...orderData,
+      ...orderUpdate,
+      status: newStatus,
+      paymentStatus: newPaymentStatus,
+      redemptionCode: redemptionCode || orderData.redemptionCode,
+    };
+  });
+
+  const orderResult = serializeFirestoreData<Order>(result as unknown as Order);
+
+  // Award customer stamps if newly marked as PAID
+  if (input.paymentStatus === "PAID") {
+    if (orderResult.customerId) {
+      try {
+        await addCustomerStamp(orderResult.customerId, Number(orderResult.total) || 0);
+      } catch (e) {
+        console.warn("Could not award customer stamp on status change:", e);
+      }
+    } else if (orderResult.customerPhone) {
+      try {
+        await addCustomerStampByPhone(orderResult.customerPhone, Number(orderResult.total) || 0);
+      } catch (e) {
+        console.warn("Could not award customer stamp by phone on status change:", e);
+      }
+    }
+  }
+
+  return orderResult;
+}
+
 

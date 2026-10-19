@@ -7,9 +7,10 @@ import {
   verifyOrderPayment,
   cancelOrder,
   updateOrderProof,
+  updateOrderStatus,
   type CreatePreOrderResult,
 } from "@/lib/db/orders";
-import type { ActionState, PaymentMethod, Order } from "@/lib/types";
+import type { ActionState, PaymentMethod, Order, OrderStatus, PaymentStatus } from "@/lib/types";
 
 export interface CreatePreOrderPayload {
   items: Array<{
@@ -322,6 +323,60 @@ export async function updateProductionStatusAction(
     return {
       success: false,
       message: error instanceof Error ? error.message : "Gagal memperbarui status produksi.",
+    };
+  }
+}
+
+/**
+ * Server Action: Manually edit an order's status and payment status.
+ * Handles cases where staff forgot to scan QR code on item handover,
+ * need to mark as COMPLETED/REDEEMED, or revert back to READY_FOR_REDEMPTION.
+ */
+export async function updateOrderStatusAction(
+  orderId: string,
+  newStatus: OrderStatus,
+  newPaymentStatus?: PaymentStatus,
+  reason?: string
+): Promise<ActionState & { order?: Order }> {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { success: false, message: "Sesi telah berakhir. Silakan login kembali." };
+    }
+
+    if (!orderId) {
+      return { success: false, message: "ID pesanan tidak valid." };
+    }
+
+    const updatedOrder = await updateOrderStatus({
+      orderId,
+      cashierId: user.id,
+      status: newStatus,
+      paymentStatus: newPaymentStatus,
+      reason,
+    });
+
+    revalidatePath("/admin/orders");
+    revalidatePath("/admin/pos");
+    revalidatePath("/admin/pos/redeem");
+    revalidatePath("/admin/inventory");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/admin/reports");
+    if (updatedOrder.orderNumber) {
+      revalidatePath(`/order/${updatedOrder.orderNumber}`);
+    }
+
+    return {
+      success: true,
+      message: `Status pesanan #${updatedOrder.orderNumber} berhasil diperbarui menjadi ${newStatus}.`,
+      order: updatedOrder,
+    };
+  } catch (error) {
+    console.error("updateOrderStatusAction error:", error);
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Gagal memperbarui status pesanan.",
     };
   }
 }

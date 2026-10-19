@@ -13,6 +13,7 @@ import { updateProductionStatusAction } from "@/lib/actions/orders";
 import { PaymentVerifyModal } from "./PaymentVerifyModal";
 import { CancelOrderModal } from "./CancelOrderModal";
 import { CreatePreOrderModal } from "./CreatePreOrderModal";
+import { EditOrderStatusModal } from "./EditOrderStatusModal";
 import type { Order, OrderItem, Product } from "@/lib/types";
 
 interface OrderTableProps {
@@ -40,6 +41,9 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
 
   // Cancellation modal
   const [cancellingOrder, setCancellingOrder] = useState<Order | null>(null);
+
+  // Edit status modal
+  const [editingStatusOrder, setEditingStatusOrder] = useState<Order | null>(null);
 
   // Preview full size proof image
   const [previewProofUrl, setPreviewProofUrl] = useState<string | null>(null);
@@ -160,6 +164,15 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
     );
     setSelectedOrder((prev) =>
       prev && prev.id === orderId ? { ...prev, status: "CANCELLED" } : prev
+    );
+  }
+
+  function handleStatusUpdateSuccess(updatedOrder: Order) {
+    setOrders((prev) =>
+      prev.map((o) => (o.id === updatedOrder.id ? { ...o, ...updatedOrder } : o))
+    );
+    setSelectedOrder((prev) =>
+      prev && prev.id === updatedOrder.id ? { ...prev, ...updatedOrder } : prev
     );
   }
 
@@ -407,6 +420,14 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                           )}
                           <button
                             type="button"
+                            onClick={() => setEditingStatusOrder(order)}
+                            className="rounded-lg bg-amber-50 border border-amber-200 px-2 py-1 text-xs font-semibold text-amber-800 hover:bg-amber-100 transition-colors cursor-pointer"
+                            title="Ubah status pesanan manual"
+                          >
+                            Ubah Status
+                          </button>
+                          <button
+                            type="button"
                             onClick={() => setSelectedOrder(order)}
                             className="rounded-lg bg-zinc-100 px-2.5 py-1 text-xs font-semibold text-zinc-700 hover:bg-zinc-200 transition-colors cursor-pointer"
                           >
@@ -447,6 +468,17 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
                     ✓ Verifikasi Pembayaran
                   </Button>
                 )}
+
+              {selectedOrder && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setEditingStatusOrder(selectedOrder)}
+                  className="text-xs font-semibold border-amber-300 text-amber-800 hover:bg-amber-50"
+                >
+                  ✎ Ubah Status
+                </Button>
+              )}
 
               {selectedOrder && selectedOrder.status !== "CANCELLED" && (
                 <Button
@@ -501,10 +533,17 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
             <div className="grid grid-cols-2 gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3">
               <div>
                 <span className="text-zinc-500">Status Order:</span>
-                <div className="mt-1">
+                <div className="mt-1 flex items-center gap-2">
                   <Badge variant={getOrderStatusVariant(selectedOrder.status)}>
                     {selectedOrder.status}
                   </Badge>
+                  <button
+                    type="button"
+                    onClick={() => setEditingStatusOrder(selectedOrder)}
+                    className="text-[11px] font-semibold text-[#3D8383] hover:text-[#2A5E56] underline cursor-pointer"
+                  >
+                    Ubah
+                  </button>
                 </div>
               </div>
               <div>
@@ -899,6 +938,14 @@ export function OrderTable({ initialOrders, products = [] }: OrderTableProps) {
         isOpen={Boolean(cancellingOrder)}
         onClose={() => setCancellingOrder(null)}
         onSuccess={handleCancellationSuccess}
+      />
+
+      {/* Edit Order Status Modal */}
+      <EditOrderStatusModal
+        order={editingStatusOrder}
+        isOpen={Boolean(editingStatusOrder)}
+        onClose={() => setEditingStatusOrder(null)}
+        onSuccess={handleStatusUpdateSuccess}
       />
 
       {/* Create Pre-Order Modal */}

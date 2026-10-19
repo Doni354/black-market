@@ -66,7 +66,7 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
   }
 
   const isReady = order.status === "READY_FOR_REDEMPTION";
-  const isRedeemed = order.status === "REDEEMED";
+  const isRedeemed = order.status === "REDEEMED" || order.status === "COMPLETED";
   const isPending =
     order.status === "PENDING_PAYMENT" ||
     order.status === "WAITING_VERIFICATION";
@@ -150,13 +150,15 @@ export function OrderTicket({ order, qrDataUrl }: OrderTicketProps) {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider print:text-black">Pesanan Sudah Diambil</p>
+                  <p className="text-xs font-bold uppercase tracking-wider print:text-black">
+                    {order.status === "COMPLETED" ? "Pesanan Telah Selesai" : "Pesanan Sudah Diambil"}
+                  </p>
                   <p className="text-[11px] text-blue-700 print:text-zinc-600">
-                    Di-redeem: <strong className="text-blue-900 print:text-black">{redeemedTime} WIB</strong>
+                    Selesai / Di-redeem: <strong className="text-blue-900 print:text-black">{redeemedTime} WIB</strong>
                   </p>
                 </div>
               </div>
-              <span className="text-[10px] bg-blue-200 px-2 py-0.5 rounded font-mono font-bold print:border print:border-zinc-300 print:text-black">REDEEMED</span>
+              <span className="text-[10px] bg-blue-200 px-2 py-0.5 rounded font-mono font-bold print:border print:border-zinc-300 print:text-black">{order.status}</span>
             </div>
           )}
 
